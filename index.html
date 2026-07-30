@@ -22,19 +22,28 @@
     .tab-content.active { display: block; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex relative overflow-x-hidden">
 
-  <!-- MENU LATERAL -->
-  <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between hidden md:flex shrink-0">
+  <!-- OVERLAY ESCURO PARA MOBILE -->
+  <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden md:hidden"></div>
+
+  <!-- MENU LATERAL (SIDEBAR) -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between z-50 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out shrink-0">
     <div>
-      <div class="p-5 border-b border-slate-800 flex items-center space-x-3">
-        <div class="p-2 bg-indigo-600 rounded-lg text-white">
-          <i class="ph-bold ph-shield-check text-xl"></i>
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="p-2 bg-indigo-600 rounded-lg text-white">
+            <i class="ph-bold ph-shield-check text-xl"></i>
+          </div>
+          <div>
+            <h1 class="font-bold text-lg leading-none tracking-wide text-white">CGEx OS</h1>
+            <span class="text-xs text-slate-400">Sistema Corregedor</span>
+          </div>
         </div>
-        <div>
-          <h1 class="font-bold text-lg leading-none tracking-wide text-white">CGEx OS</h1>
-          <span class="text-xs text-slate-400">Sistema Corregedor</span>
-        </div>
+        <!-- Botão para fechar sidebar no celular -->
+        <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1">
+          <i class="ph-bold ph-x text-xl"></i>
+        </button>
       </div>
 
       <nav class="p-4 space-y-1 text-sm font-medium" id="sidebar-nav">
@@ -74,35 +83,43 @@
   </aside>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
 
     <!-- HEADER SUPERIOR -->
-    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10">
-      <div class="relative w-full max-w-md">
-        <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input 
-          type="text" 
-          id="global-search"
-          placeholder="Pesquisar..." 
-          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200 placeholder-slate-500"
-          onkeyup="applyGlobalSearch()"
-        />
+    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30 space-x-3">
+      <div class="flex items-center space-x-3 w-full max-w-md">
+        <!-- BOTÃO HAMBÚRGUER (CELULAR) -->
+        <button onclick="toggleMobileSidebar()" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none shrink-0">
+          <i class="ph-bold ph-list text-xl"></i>
+        </button>
+
+        <!-- BUSCA -->
+        <div class="relative w-full">
+          <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input 
+            type="text" 
+            id="global-search"
+            placeholder="Pesquisar..." 
+            class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200 placeholder-slate-500"
+            onkeyup="applyGlobalSearch()"
+          />
+        </div>
       </div>
 
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-3 shrink-0">
         <div class="flex items-center space-x-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Online</span>
+          <span class="hidden sm:inline">Online</span>
         </div>
       </div>
     </header>
 
-    <div class="p-6 space-y-6 max-w-7xl w-full mx-auto">
+    <div class="p-4 md:p-6 space-y-6 max-w-7xl w-full mx-auto">
 
       <!-- ================= ABA 1: DASHBOARD ================= -->
       <section id="tab-dashboard" class="tab-content active space-y-6">
         <h2 class="text-xl font-bold tracking-tight">Visão Geral</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
             <div>
               <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total de Casos</p>
@@ -136,15 +153,15 @@
 
       <!-- ================= ABA 2: CASOS GERAL ================= -->
       <section id="tab-casos" class="tab-content space-y-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 class="text-xl font-bold">Registro de Casos</h2>
-          <button onclick="openCasoModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openCasoModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Caso</span>
           </button>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-          <table class="w-full text-left text-sm">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
+          <table class="w-full text-left text-sm min-w-[600px]">
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Membro</th>
@@ -161,9 +178,9 @@
 
       <!-- ================= ABA 3: METAS ================= -->
       <section id="tab-metas" class="tab-content space-y-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 class="text-xl font-bold">Controle de Metas</h2>
-          <button onclick="openMetaModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openMetaModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Nova Meta</span>
           </button>
         </div>
@@ -173,762 +190,274 @@
 
       <!-- ================= ABA 4: CONTROLE APRENDIZ ================= -->
       <section id="tab-equipe" class="tab-content space-y-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-xl font-bold">Controle de Aprendizes & Estagiários</h2>
             <p class="text-xs text-slate-400 mt-0.5">Gestão de membros em formação técnica</p>
           </div>
-          <button onclick="openAprendizModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openAprendizModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Membro</span>
           </button>
         </div>
 
         <!-- Seção 1: Estagiários -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
-            <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
-            <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
-          </div>
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th class="p-4">Nome do Membro</th>
-                <th class="p-4">Início</th>
-                <th class="p-4">Status / Progresso</th>
-                <th class="p-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
-          </table>
-        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
+          <div classAqui está o código completo e atualizado. Adicionei um **botão de menu hambúrguer** (que aparece apenas em telas menores/celular) e uma barra lateral colapsável com transição suave, além de ajustar o layout para que todo o conteúdo fique 100% responsivo e bem enquadrado.
 
-        <!-- Seção 2: Aprendizes -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
-            <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
-            <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
-          </div>
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th class="p-4">Nome do Membro</th>
-                <th class="p-4">Início</th>
-                <th class="p-4">Status / Progresso</th>
-                <th class="p-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="aprendizes-list" class="divide-y divide-slate-800"></tbody>
-          </table>
-        </div>
-      </section>
+### Código Completo (HTML, CSS e JS)
 
-      <!-- ================= ABA 5: SETORES ================= -->
-      <section id="tab-setores" class="tab-content space-y-6">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl font-bold">Divisão por Setores Operacionais</h2>
-          <button onclick="openSetorModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
-            <i class="ph-bold ph-plus"></i><span>Atribuir ao Setor</span>
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="setores-container">
-          <!-- Setores injetados via JS -->
-        </div>
-      </section>
-
-      <!-- ================= ABA 6: BIBLIOTECA ================= -->
-      <section id="tab-biblioteca" class="tab-content space-y-6">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xl font-bold">Biblioteca de Documentos & Modelos</h2>
-          <button onclick="openBiblioModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
-            <i class="ph-bold ph-plus"></i><span>Novo Documento</span>
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="biblioteca-list"></div>
-      </section>
-
-      <!-- ================= ABA 7: CONFIGURAÇÕES ================= -->
-      <section id="tab-configuracoes" class="tab-content space-y-6">
-        <h2 class="text-xl font-bold">Configurações do Banco de Dados</h2>
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-xl">
-          <form onsubmit="saveFirebaseConfig(event)" class="space-y-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">API Key</label>
-              <input type="text" id="cfg-apiKey" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Database URL</label>
-              <input type="text" id="cfg-databaseURL" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1">Project ID</label>
-              <input type="text" id="cfg-projectId" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
-            </div>
-            <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-sm transition">Salvar na Nuvem</button>
-          </form>
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <!-- ================= MODAIS ================= -->
-
-  <!-- Modal Casos Geral -->
-  <div id="modal-caso" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-lg">Novo Caso Geral</h3>
-        <button onclick="closeModal('modal-caso')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
-      </div>
-      <form onsubmit="saveCaso(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Tipo de Ocorrência</label>
-          <select id="caso-tipo" onchange="handleCasoTipoChange()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-            <option value="Advertência">Advertência</option>
-            <option value="Rebaixamento">Rebaixamento</option>
-            <option value="Exílio">Exílio</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
-          <input type="text" id="caso-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        
-        <div id="caso-date-single">
-          <label class="block text-xs font-medium text-slate-400 mb-1">Data da Ocorrência</label>
-          <input type="date" id="caso-data" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-        </div>
-
-        <div id="caso-date-range" class="hidden space-y-3">
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
-            <input type="date" id="caso-data-inicio" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Data Término (Até)</label>
-            <input type="date" id="caso-data-fim" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Motivo / Descrição</label>
-          <textarea id="caso-motivo" required rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500"></textarea>
-        </div>
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal('modal-caso')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Aprendiz / Estagiário -->
-  <div id="modal-aprendiz" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-lg">Novo Aprendiz / Estagiário</h3>
-        <button onclick="closeModal('modal-aprendiz')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
-      </div>
-      <form onsubmit="saveAprendiz(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
-          <select id="ap-categoria" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-            <option value="Estagiário">Estagiário</option>
-            <option value="Aprendiz">Aprendiz</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
-          <input type="text" id="ap-nome" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
-          <input type="date" id="ap-inicio" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Status / Observações</label>
-          <input type="text" id="ap-status" placeholder="Ex: Em avaliação / Módulo I" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal('modal-aprendiz')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Setor -->
-  <div id="modal-setor" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-lg">Atribuir ao Setor</h3>
-        <button onclick="closeModal('modal-setor')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
-      </div>
-      <form onsubmit="saveSetorMembro(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Setor</label>
-          <select id="st-nome" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-            <option value="Rebaixamento e Advertências">Rebaixamento e Advertências</option>
-            <option value="Promoções">Promoções</option>
-            <option value="Instruções">Instruções</option>
-            <option value="Avais">Avais</option>
-            <option value="Autorização">Autorização</option>
-            <option value="Revogações">Revogações</option>
-            <option value="Exílios">Exílios</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
-          <input type="text" id="st-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Cargo Hierárquico</label>
-          <select id="st-cargo" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-            <option value="Corregedor Geral">Corregedor Geral (Topo)</option>
-            <option value="Corregedor">Corregedor (Destaque)</option>
-            <option value="Coordenador">Coordenador</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Analista">Analista</option>
-            <option value="Sênior">Sênior</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Função Específica</label>
-          <select id="st-funcao" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
-            <option value="Auditor">Auditor</option>
-            <option value="Responsável">Responsável (⭐ Destaque)</option>
-          </select>
-        </div>
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal('modal-setor')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Metas -->
-  <div id="modal-meta" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-lg">Nova Meta Operacional</h3>
-        <button onclick="closeModal('modal-meta')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
-      </div>
-      <form onsubmit="saveMeta(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Título da Meta</label>
-          <input type="text" id="mt-titulo" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Progresso (%)</label>
-          <input type="number" id="mt-progresso" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Prazo / Target</label>
-          <input type="text" id="mt-prazo" placeholder="Ex: Mensal / Fim do Trimestre" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal('modal-meta')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Biblioteca -->
-  <div id="modal-biblio" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 class="font-bold text-lg">Adicionar à Biblioteca</h3>
-        <button onclick="closeModal('modal-biblio')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
-      </div>
-      <form onsubmit="saveBiblio(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Título do Documento</label>
-          <input type="text" id="bb-titulo" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
-          <input type="text" id="bb-categoria" placeholder="Ex: Regimento, Diretrizes, Modelos" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">URL / Link do Documento</label>
-          <input type="url" id="bb-link" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
-        </div>
-        <div class="flex justify-end space-x-2 pt-2">
-          <button type="button" onclick="closeModal('modal-biblio')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- SCRIPT DE NAVEGAÇÃO E LÓGICA -->
-  <script>
-    // Configurações Padrão
-    const defaultConfig = {
-      apiKey: "AIzaSyDummyKeyForTemplatePurposes123",
-      databaseURL: "https://cgex-e7d18-default-rtdb.firebaseio.com",
-      projectId: "cgex-e7d18"
-    };
-
-    let db = null;
-
-    // Inicialização
-    window.addEventListener('DOMContentLoaded', () => {
-      initFirebase();
-      handleCasoTipoChange();
-    });
-
-    function initFirebase() {
-      const savedConfig = JSON.parse(localStorage.getItem('cgex_fb_config')) || defaultConfig;
-      document.getElementById('cfg-apiKey').value = savedConfig.apiKey;
-      document.getElementById('cfg-databaseURL').value = savedConfig.databaseURL;
-      document.getElementById('cfg-projectId').value = savedConfig.projectId;
-
-      try {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(savedConfig);
-        }
-        db = firebase.database();
-        listenToDatabase();
-      } catch (err) {
-        console.error("Erro Firebase:", err);
-      }
-    }
-
-    function saveFirebaseConfig(e) {
-      e.preventDefault();
-      const config = {
-        apiKey: document.getElementById('cfg-apiKey').value,
-        databaseURL: document.getElementById('cfg-databaseURL').value,
-        projectId: document.getElementById('cfg-projectId').value
-      };
-      localStorage.setItem('cgex_fb_config', JSON.stringify(config));
-      alert("Configurações salvas. A página será recarregada.");
-      location.reload();
-    }
-
-    // Navegação de Abas
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.getElementById(`tab-${tabId}`).classList.add('active');
-
-      document.querySelectorAll('#sidebar-nav button').forEach(btn => {
-        btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition";
-      });
-
-      const activeNav = document.getElementById(`nav-${tabId}`);
-      if (activeNav) {
-        activeNav.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20";
-      }
-    }
-
-    // Modal Helpers
-    function openCasoModal() { 
-      document.getElementById('caso-data').valueAsDate = new Date();
-      document.getElementById('caso-data-inicio').valueAsDate = new Date();
-      document.getElementById('caso-data-fim').valueAsDate = new Date();
-      handleCasoTipoChange();
-      document.getElementById('modal-caso').classList.remove('hidden'); 
-    }
-    function openAprendizModal() { document.getElementById('modal-aprendiz').classList.remove('hidden'); }
-    function openSetorModal() { document.getElementById('modal-setor').classList.remove('hidden'); }
-    function openMetaModal() { document.getElementById('modal-meta').classList.remove('hidden'); }
-    function openBiblioModal() { document.getElementById('modal-biblio').classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-    // Alternar campos de data conforme tipo no Caso Geral
-    function handleCasoTipoChange() {
-      const tipo = document.getElementById('caso-tipo').value;
-      const singleDate = document.getElementById('caso-date-single');
-      const rangeDate = document.getElementById('caso-date-range');
-
-      if (tipo === 'Exílio') {
-        singleDate.classList.add('hidden');
-        rangeDate.classList.remove('hidden');
-      } else {
-        singleDate.classList.remove('hidden');
-        rangeDate.classList.add('hidden');
-        document.getElementById('caso-data').valueAsDate = new Date();
-      }
-    }
-
-    // ================= BANCO DE DADOS REALTIME =================
-    function listenToDatabase() {
-      if (!db) return;
-
-      db.ref('casos').on('value', snapshot => {
-        renderCasos(snapshot.val() || {});
-      });
-
-      db.ref('aprendizes').on('value', snapshot => {
-        renderAprendizes(snapshot.val() || {});
-      });
-
-      db.ref('setores').on('value', snapshot => {
-        renderSetores(snapshot.val() || {});
-      });
-
-      db.ref('metas').on('value', snapshot => {
-        renderMetas(snapshot.val() || {});
-      });
-
-      db.ref('biblioteca').on('value', snapshot => {
-        renderBiblioteca(snapshot.val() || {});
-      });
-    }
-
-    // RENDERIZAR CASOS GERAIS
-    function renderCasos(casos) {
-      const list = document.getElementById('casos-list');
-      list.innerHTML = '';
-
-      let total = 0, adv = 0, reb = 0, exi = 0;
-
-      Object.keys(casos).forEach(key => {
-        const c = casos[key];
-        total++;
-        if (c.tipo === 'Advertência') adv++;
-        if (c.tipo === 'Rebaixamento') reb++;
-        if (c.tipo === 'Exílio') exi++;
-
-        let badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
-        if (c.tipo === 'Rebaixamento') badgeColor = "bg-orange-500/10 text-orange-400 border-orange-500/20";
-        if (c.tipo === 'Exílio') badgeColor = "bg-rose-500/10 text-rose-400 border-rose-500/20";
-
-        let dateDisplay = c.data || 'N/A';
-        if (c.tipo === 'Exílio' && c.dataInicio && c.dataFim) {
-          dateDisplay = `${c.dataInicio} até ${c.dataFim}`;
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Usuário</title>
+    <style>
+        /* --- RESET E ESTILOS GERAIS --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-900/50 transition searchable-item";
-        tr.innerHTML = `
-          <td class="p-4 font-semibold text-slate-200">${c.membro}</td>
-          <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeColor}">${c.tipo}</span></td>
-          <td class="p-4 text-slate-400 text-xs">${dateDisplay}</td>
-          <td class="p-4 text-slate-300 max-w-xs truncate">${c.motivo}</td>
-          <td class="p-4 text-right">
-            <button onclick="deleteRecord('casos/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-          </td>
-        `;
-        list.appendChild(tr);
-      });
-
-      document.getElementById('dash-total-casos').innerText = total;
-      document.getElementById('dash-advertencias').innerText = adv;
-      document.getElementById('dash-rebaixamentos').innerText = reb;
-      document.getElementById('dash-exilios').innerText = exi;
-    }
-
-    // RENDERIZAR APRENDIZES / ESTAGIÁRIOS
-    function renderAprendizes(data) {
-      const listEstagiarios = document.getElementById('estagiarios-list');
-      const listAprendizes = document.getElementById('aprendizes-list');
-
-      listEstagiarios.innerHTML = '';
-      listAprendizes.innerHTML = '';
-
-      let countEstagiarios = 0;
-      let countAprendizes = 0;
-
-      Object.keys(data).forEach(key => {
-        const item = data[key];
-        const categoria = item.categoria || 'Aprendiz';
-
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-slate-900/50 transition searchable-item";
-
-        if (categoria === 'Estagiário') {
-          countEstagiarios++;
-          tr.innerHTML = `
-            <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
-            <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
-            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">${item.status}</span></td>
-            <td class="p-4 text-right">
-              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-            </td>
-          `;
-          listEstagiarios.appendChild(tr);
-        } else {
-          countAprendizes++;
-          tr.innerHTML = `
-            <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
-            <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
-            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status}</span></td>
-            <td class="p-4 text-right">
-              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-            </td>
-          `;
-          listAprendizes.appendChild(tr);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
-      });
 
-      if (countEstagiarios === 0) {
-        listEstagiarios.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum estagiário cadastrado.</td></tr>`;
-      }
-      if (countAprendizes === 0) {
-        listAprendizes.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum aprendiz cadastrado.</td></tr>`;
-      }
-    }
+        /* --- OVERLAY PARA DISPOSITIVOS MÓVEIS --- */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
 
-    // RENDERIZAR SETORES OPERACIONAIS (LISTA ATUALIZADA DE SETORES)
-    function renderSetores(data) {
-      const container = document.getElementById('setores-container');
-      container.innerHTML = '';
+        .overlay.active {
+            display: block;
+        }
 
-      const listaSetores = [
-        "Rebaixamento e Advertências", 
-        "Promoções", 
-        "Instruções", 
-        "Avais", 
-        "Autorização", 
-        "Revogações", 
-        "Exílios"
-      ];
+        /* --- BARRA LATERAL (SIDEBAR) --- */
+        .sidebar {
+            width: 250px;
+            background-color: #1e293b;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
 
-      const hierarquiaOrdem = {
-        "Corregedor Geral": 1,
-        "Corregedor": 2,
-        "Coordenador": 3,
-        "Supervisor": 4,
-        "Analista": 5,
-        "Sênior": 6
-      };
+        .sidebar-header {
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: #0f172a;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-      listaSetores.forEach(setorNome => {
-        const membrosSetor = [];
-        Object.keys(data).forEach(k => {
-          if (data[k].setor === setorNome) {
-            membrosSetor.push({ key: k, ...data[k] });
-          }
-        });
+        .sidebar-menu {
+            list-style: none;
+            padding: 10px 0;
+            flex: 1;
+        }
 
-        // Ordenar por hierarquia
-        membrosSetor.sort((a, b) => {
-          const oA = hierarquiaOrdem[a.cargo] || 99;
-          const oB = hierarquiaOrdem[b.cargo] || 99;
-          return oA - oB;
-        });
+        .sidebar-menu li a {
+            display: block;
+            padding: 15px 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
 
-        let membrosHTML = '';
-        if (membrosSetor.length === 0) {
-          membrosHTML = `<p class="text-xs text-slate-500 italic p-3 text-center">Nenhum membro neste setor.</p>`;
-        } else {
-          membrosSetor.forEach(m => {
-            const isCorregedorGeral = m.cargo === "Corregedor Geral";
-            const isCorregedor = m.cargo === "Corregedor";
-            const isResponsavel = m.funcao === "Responsável";
+        .sidebar-menu li a:hover,
+        .sidebar-menu li a.active {
+            color: #fff;
+            background-color: #334155;
+            border-left: 4px solid #3b82f6;
+        }
 
-            let bgStyle = "bg-slate-950/60 border-slate-800/80";
-            let badgeStyle = "bg-slate-800 text-slate-400 border-slate-700";
+        /* --- ÁREA PRINCIPAL --- */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow-y: auto;
+        }
 
-            if (isCorregedorGeral) {
-              bgStyle = "bg-gradient-to-r from-amber-950/40 to-slate-900 border-amber-500/40 shadow-sm";
-              badgeStyle = "bg-amber-500/20 text-amber-300 border-amber-500/30";
-            } else if (isCorregedor) {
-              bgStyle = "bg-gradient-to-r from-indigo-950/40 to-slate-900 border-indigo-500/40 shadow-sm";
-              badgeStyle = "bg-indigo-500/20 text-indigo-300 border-indigo-500/30";
+        /* --- CABEÇALHO SUPERIOR (TOPBAR) --- */
+        .topbar {
+            background-color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* Botão Hambúrguer (Mobile) */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #1e293b;
+            margin-right: 15px;
+        }
+
+        .topbar h1 {
+            font-size: 1.25rem;
+            color: #1e293b;
+        }
+
+        /* --- CONTEÚDO DAS ABAS --- */
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tab-panel {
+            display: none;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .tab-panel h2 {
+            margin-bottom: 15px;
+            color: #1e293b;
+        }
+
+        /* --- LAYOUT RESPONSIVO (TELAS ATÉ 768px) --- */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%); /* Esconde a sidebar fora da tela */
             }
 
-            membrosHTML += `
-              <div class="flex items-center justify-between p-3 rounded-lg border ${bgStyle} transition searchable-item">
-                <div class="space-y-0.5">
-                  <div class="flex items-center space-x-1.5">
-                    <span class="font-semibold text-sm text-slate-100">${m.membro}</span>
-                    ${isResponsavel ? '<span class="text-amber-400 text-xs" title="Responsável pelo Setor">⭐</span>' : ''}
-                  </div>
-                  <div class="flex items-center space-x-2">
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeStyle}">${m.cargo || 'Membro'}</span>
-                    <span class="text-[11px] text-slate-400">${m.funcao || 'Auditor'}</span>
-                  </div>
-                </div>
-                <button onclick="deleteRecord('setores/${m.key}')" class="text-slate-600 hover:text-rose-400 p-1 transition"><i class="ph-bold ph-trash"></i></button>
-              </div>
-            `;
-          });
+            .sidebar.open {
+                transform: translateX(0); /* Mostra a sidebar */
+            }
+
+            .menu-btn {
+                display: block; /* Exibe o botão de menu no celular */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Escurecimento de fundo ao abrir menu mobile -->
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span>Meu App</span>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="nav-link active" onclick="switchTab(event, 'aba1')">Dashboard</a></li>
+            <li><a href="#" class="nav-link" onclick="switchTab(event, 'aba2')">Relatórios</a></li>
+            <li><a href="#" class="nav-link" onclick="switchTab(event, 'aba3')">Configurações</a></li>
+        </ul>
+    </aside>
+
+    <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
+    <div class="main-wrapper">
+        <header class="topbar">
+            <!-- Botão do Menu Hambúrguer -->
+            <button class="menu-btn" onclick="toggleSidebar()" aria-label="Abrir Menu">
+                &#9776;
+            </button>
+            <h1 id="page-title">Dashboard</h1>
+        </header>
+
+        <main class="content">
+            <!-- CONTEÚDO DA ABA 1 -->
+            <section id="aba1" class="tab-panel active">
+                <h2>Visão Geral</h2>
+                <p>Aqui fica o conteúdo da primeira aba. Todos os elementos foram adaptados para manter o alinhamento perfeito tanto no PC quanto no smartphone.</p>
+            </section>
+
+            <!-- CONTEÚDO DA ABA 2 -->
+            <section id="aba2" class="tab-panel">
+                <h2>Relatórios detalhados</h2>
+                <p>Conteúdo referente aos relatórios da sua aplicação.</p>
+            </section>
+
+            <!-- CONTEÚDO DA ABA 3 -->
+            <section id="aba3" class="tab-panel">
+                <h2>Configurações do Sistema</h2>
+                <p>Ajustes e preferências gerais da conta.</p>
+            </section>
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Função para alternar entre as abas
+        function switchTab(event, tabId) {
+            event.preventDefault();
+
+            // Oculta todas as abas
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            // Remove o destaque dos links do menu
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => link.classList.remove('active'));
+
+            // Exibe a aba clicada e ativa o item do menu
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+
+            // Atualiza o título do topo
+            document.getElementById('page-title').innerText = event.currentTarget.innerText;
+
+            // Fecha o menu lateral automaticamente em dispositivos móveis
+            closeSidebar();
         }
 
-        const card = document.createElement('div');
-        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col justify-between";
-        card.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div class="flex items-center space-x-2">
-                <i class="ph-bold ph-folder text-indigo-400 text-lg"></i>
-                <h3 class="font-bold text-slate-200">${setorNome}</h3>
-              </div>
-              <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-medium">${membrosSetor.length}</span>
-            </div>
-            <div class="space-y-2">
-              ${membrosHTML}
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // RENDERIZAR METAS
-    function renderMetas(metas) {
-      const container = document.getElementById('metas-list');
-      container.innerHTML = '';
-
-      Object.keys(metas).forEach(key => {
-        const m = metas[key];
-        const card = document.createElement('div');
-        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 searchable-item";
-        card.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div>
-              <h3 class="font-semibold text-slate-200">${m.titulo}</h3>
-              <p class="text-xs text-slate-400 mt-0.5">Target: ${m.prazo}</p>
-            </div>
-            <button onclick="deleteRecord('metas/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
-          </div>
-          <div>
-            <div class="flex justify-between text-xs font-semibold mb-1">
-              <span class="text-slate-400">Progresso</span>
-              <span class="text-indigo-400">${m.progresso}%</span>
-            </div>
-            <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
-              <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${m.progresso}%"></div>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // RENDERIZAR BIBLIOTECA
-    function renderBiblioteca(docs) {
-      const container = document.getElementById('biblioteca-list');
-      container.innerHTML = '';
-
-      Object.keys(docs).forEach(key => {
-        const d = docs[key];
-        const card = document.createElement('div');
-        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between hover:border-slate-700 transition searchable-item";
-        card.innerHTML = `
-          <div class="flex items-center space-x-3">
-            <div class="p-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-lg">
-              <i class="ph-bold ph-file-text text-xl"></i>
-            </div>
-            <div>
-              <h3 class="font-semibold text-sm text-slate-200">${d.titulo}</h3>
-              <span class="text-xs text-slate-400">${d.categoria}</span>
-            </div>
-          </div>
-          <div class="flex items-center space-x-2">
-            <a href="${d.link}" target="_blank" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center space-x-1 transition">
-              <i class="ph-bold ph-arrow-square-out"></i>
-            </a>
-            <button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400 p-2"><i class="ph-bold ph-trash"></i></button>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    // ================= SALVAMENTO DE REGISTROS =================
-    function saveCaso(e) {
-      e.preventDefault();
-      const tipo = document.getElementById('caso-tipo').value;
-      const dataObj = {
-        membro: document.getElementById('caso-membro').value,
-        tipo: tipo,
-        motivo: document.getElementById('caso-motivo').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      };
-
-      if (tipo === 'Exílio') {
-        dataObj.dataInicio = document.getElementById('caso-data-inicio').value;
-        dataObj.dataFim = document.getElementById('caso-data-fim').value;
-      } else {
-        dataObj.data = document.getElementById('caso-data').value;
-      }
-
-      db.ref('casos').push(dataObj, () => {
-        closeModal('modal-caso');
-        e.target.reset();
-      });
-    }
-
-    function saveAprendiz(e) {
-      e.preventDefault();
-      db.ref('aprendizes').push({
-        categoria: document.getElementById('ap-categoria').value,
-        nome: document.getElementById('ap-nome').value,
-        inicio: document.getElementById('ap-inicio').value,
-        status: document.getElementById('ap-status').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      }, () => {
-        closeModal('modal-aprendiz');
-        e.target.reset();
-      });
-    }
-
-    function saveSetorMembro(e) {
-      e.preventDefault();
-      db.ref('setores').push({
-        setor: document.getElementById('st-nome').value,
-        membro: document.getElementById('st-membro').value,
-        cargo: document.getElementById('st-cargo').value,
-        funcao: document.getElementById('st-funcao').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      }, () => {
-        closeModal('modal-setor').reset();
-        e.target.reset();
-      });
-    }
-
-    function saveMeta(e) {
-      e.preventDefault();
-      db.ref('metas').push({
-        titulo: document.getElementById('mt-titulo').value,
-        progresso: document.getElementById('mt-progresso').value,
-        prazo: document.getElementById('mt-prazo').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      }, () => {
-        closeModal('modal-meta');
-        e.target.reset();
-      });
-    }
-
-    function saveBiblio(e) {
-      e.preventDefault();
-      db.ref('biblioteca').push({
-        titulo: document.getElementById('bb-titulo').value,
-        categoria: document.getElementById('bb-categoria').value,
-        link: document.getElementById('bb-link').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      }, () => {
-        closeModal('modal-biblio');
-        e.target.reset();
-      });
-    }
-
-    function deleteRecord(path) {
-      if (confirm("Deseja realmente excluir este registro?")) {
-        db.ref(path).remove();
-      }
-    }
-
-    // BUSCA GLOBAL DENTRO DOS ELEMENTOS
-    function applyGlobalSearch() {
-      const term = document.getElementById('global-search').value.toLowerCase();
-      document.querySelectorAll('.searchable-item').forEach(item => {
-        const text = item.innerText.toLowerCase();
-        if (text.includes(term)) {
-          item.style.display = '';
-        } else {
-          item.style.display = 'none';
+        // Abrir/Fechar a Sidebar no Celular
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
         }
-      });
-    }
-  </script>
+
+        // Fechar a Sidebar ao clicar fora
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    </script>
 </body>
 </html>
