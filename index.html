@@ -311,20 +311,19 @@
   </div>
 
   <script>
-    // -------------------------------------------------------------
-    // CONFIGURAÇÃO COMPLETA DO FIREBASE
-    // -------------------------------------------------------------
+    // CONFIGURAÇÃO COMPLETA DO FIREBASE EM MODO COMPATÍVEL (NATIVE BROWSER SCRIPT)
     const firebaseConfig = {
       apiKey: "AIzaSyB6vkQZ-SOYbtEtXJOoRWV03PsTA2rUvoI",
       authDomain: "cgex-e7d18.firebaseapp.com",
       databaseURL: "https://cgex-e7d18-default-rtdb.firebaseio.com",
       projectId: "cgex-e7d18",
-      storageBucket: "cgex-e7d18.appspot.com",
+      storageBucket: "cgex-e7d18.firebasestorage.app",
       messagingSenderId: "828709040823",
-      appId: "1:828709040823:web:bd54de8c0f6610c840d332"
+      appId: "1:828709040823:web:bd54de8c0f6610c840d332",
+      measurementId: "G-KM4PZ8CW9K"
     };
 
-    // Inicialização do Firebase
+    // Inicialização da aplicação e do Realtime Database
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -348,7 +347,23 @@
 
     let currentModalType = "";
 
-    // ESCUTAR MUDANÇAS EM TEMPO REAL NO FIREBASE
+    // MONITORAR CONEXÃO E LEITURA EM TEMPO REAL
+    const statusText = document.getElementById('connection-status');
+
+    db.ref('.info/connected').on('value', (snap) => {
+      if (snap.val() === true) {
+        if(statusText) {
+          statusText.className = "text-[10px] text-emerald-400 flex items-center gap-1 justify-end";
+          statusText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Conectado';
+        }
+      } else {
+        if(statusText) {
+          statusText.className = "text-[10px] text-amber-400 flex items-center gap-1 justify-end";
+          statusText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> Reconectando...';
+        }
+      }
+    });
+
     db.ref('cgex_db').on('value', (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -362,10 +377,19 @@
         appData = { casos: [], metas: [], equipe: [], setores: [] };
       }
       renderAll();
+    }, (error) => {
+      console.error("Erro ao ler do Firebase:", error);
     });
 
     function saveData() {
-      db.ref('cgex_db').set(appData);
+      db.ref('cgex_db').set(appData)
+        .then(() => {
+          console.log("Dados gravados com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro ao gravar dados:", error);
+          alert("Erro ao gravar no Firebase. Verifique se as Regras do Realtime Database estão públicas (.read: true, .write: true).");
+        });
     }
 
     // NAVEGAÇÃO ENTRE ABAS
