@@ -51,8 +51,8 @@
           <span>Metas</span>
         </button>
         <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
-          <i class="ph-bold ph-users-three text-lg"></i>
-          <span>Supervisores & Instrutores</span>
+          <i class="ph-bold ph-student text-lg"></i>
+          <span>Controle Aprendiz</span>
         </button>
         <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-buildings text-lg"></i>
@@ -83,542 +83,852 @@
         <input 
           type="text" 
           id="global-search"
-          placeholder="Pesquisar nos casos, membros ou biblioteca..." 
-          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition placeholder-slate-500"
+          placeholder="Pesquisar..." 
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200 placeholder-slate-500"
+          onkeyup="applyGlobalSearch()"
         />
       </div>
 
-      <div class="flex items-center space-x-4">
-        <div class="text-right hidden sm:block">
-          <p class="text-xs font-semibold text-slate-200">Painel Nuvem</p>
-          <p id="connection-status" class="text-[10px] text-emerald-400 flex items-center gap-1 justify-end">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Conectado
-          </p>
-        </div>
-        <div class="h-8 w-8 bg-indigo-600/30 border border-indigo-500 rounded-full flex items-center justify-center font-bold text-xs text-indigo-400">
-          CG
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Online</span>
         </div>
       </div>
     </header>
 
     <div class="p-6 space-y-6 max-w-7xl w-full mx-auto">
 
-      <!-- ABA 1: DASHBOARD -->
-      <div id="tab-dashboard" class="tab-content active space-y-6">
-        <section class="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 rounded-xl p-6">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <!-- ================= ABA 1: DASHBOARD ================= -->
+      <section id="tab-dashboard" class="tab-content active space-y-6">
+        <h2 class="text-xl font-bold tracking-tight">Visão Geral</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
             <div>
-              <div class="flex items-center space-x-2 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-1">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Central do Corregedor • Sincronizado</span>
-              </div>
-              <h2 class="text-2xl font-bold text-white">Status Operacional</h2>
+              <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total de Casos</p>
+              <h3 class="text-2xl font-bold mt-1" id="dash-total-casos">0</h3>
             </div>
-            <button onclick="openModal('caso')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-              + Registrar Novo Caso
-            </button>
+            <div class="p-3 bg-slate-800 rounded-lg text-indigo-400"><i class="ph-bold ph-folder text-xl"></i></div>
           </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-            <div class="bg-slate-950/50 border border-amber-500/20 rounded-lg p-3 text-center">
-              <span id="dash-exilios" class="text-2xl font-bold text-amber-400">0</span>
-              <span class="block text-[11px] text-slate-400 mt-0.5">Exílios</span>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Advertências</p>
+              <h3 class="text-2xl font-bold mt-1 text-amber-400" id="dash-advertencias">0</h3>
             </div>
-            <div class="bg-slate-950/50 border border-blue-500/20 rounded-lg p-3 text-center">
-              <span id="dash-rebaixamentos" class="text-2xl font-bold text-blue-400">0</span>
-              <span class="block text-[11px] text-slate-400 mt-0.5">Rebaixamentos</span>
-            </div>
-            <div class="bg-slate-950/50 border border-emerald-500/20 rounded-lg p-3 text-center">
-              <span id="dash-advertencias" class="text-2xl font-bold text-emerald-400">0</span>
-              <span class="block text-[11px] text-slate-400 mt-0.5">Advertências</span>
-            </div>
-            <div class="bg-slate-950/50 border border-purple-500/20 rounded-lg p-3 text-center">
-              <span id="dash-equipe" class="text-2xl font-bold text-purple-400">0</span>
-              <span class="block text-[11px] text-slate-400 mt-0.5">Equipe Total</span>
-            </div>
+            <div class="p-3 bg-slate-800 rounded-lg text-amber-400"><i class="ph-bold ph-warning text-xl"></i></div>
           </div>
-        </section>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <button onclick="switchTab('casos')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
-            <i class="ph-bold ph-gavel text-amber-400 text-xl mb-1"></i>
-            <h4 class="text-sm font-bold text-white">Casos & Punições</h4>
-            <p class="text-xs text-slate-400">Gerenciar exílios e advertências</p>
-          </button>
-          <button onclick="switchTab('metas')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
-            <i class="ph-bold ph-target text-indigo-400 text-xl mb-1"></i>
-            <h4 class="text-sm font-bold text-white">Metas Semanais</h4>
-            <p class="text-xs text-slate-400">Acompanhar rendimento</p>
-          </button>
-          <button onclick="switchTab('setores')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
-            <i class="ph-bold ph-buildings text-sky-400 text-xl mb-1"></i>
-            <h4 class="text-sm font-bold text-white">Setores Operacionais</h4>
-            <p class="text-xs text-slate-400">Atribuição de membros por categoria</p>
-          </button>
-          <button onclick="switchTab('biblioteca')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
-            <i class="ph-bold ph-book-open text-emerald-400 text-xl mb-1"></i>
-            <h4 class="text-sm font-bold text-white">Biblioteca</h4>
-            <p class="text-xs text-slate-400">Modelos, frases e regras</p>
-          </button>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Rebaixamentos</p>
+              <h3 class="text-2xl font-bold mt-1 text-orange-400" id="dash-rebaixamentos">0</h3>
+            </div>
+            <div class="p-3 bg-slate-800 rounded-lg text-orange-400"><i class="ph-bold ph-trend-down text-xl"></i></div>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
+            <div>
+              <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Exílios</p>
+              <h3 class="text-2xl font-bold mt-1 text-rose-400" id="dash-exilios">0</h3>
+            </div>
+            <div class="p-3 bg-slate-800 rounded-lg text-rose-400"><i class="ph-bold ph-prohibit text-xl"></i></div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- ABA 2: CASOS -->
-      <div id="tab-casos" class="tab-content space-y-4">
-        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
-          <div>
-            <h3 class="font-bold text-lg text-white">Registro de Casos & Punições</h3>
-            <p class="text-xs text-slate-400">Exílios, Rebaixamentos e Advertências registrados</p>
-          </div>
-          <button onclick="openModal('caso')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Novo Caso
+      <!-- ================= ABA 2: CASOS GERAL ================= -->
+      <section id="tab-casos" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Registro de Casos</h2>
+          <button onclick="openCasoModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Novo Caso</span>
           </button>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-300">
-            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
-                <th class="p-3">Nome</th>
-                <th class="p-3">Tipo</th>
-                <th class="p-3">Motivo</th>
-                <th class="p-3">Data</th>
-                <th class="p-3">Ações</th>
+                <th class="p-4">Membro</th>
+                <th class="p-4">Tipo</th>
+                <th class="p-4">Data / Período</th>
+                <th class="p-4">Motivo</th>
+                <th class="p-4 text-right">Ações</th>
               </tr>
             </thead>
-            <tbody id="table-casos-body" class="divide-y divide-slate-800/50"></tbody>
+            <tbody id="casos-list" class="divide-y divide-slate-800"></tbody>
           </table>
         </div>
-      </div>
+      </section>
 
-      <!-- ABA 3: METAS -->
-      <div id="tab-metas" class="tab-content space-y-4">
-        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
-          <div>
-            <h3 class="font-bold text-lg text-white">Controle de Metas Semanal</h3>
-            <p class="text-xs text-slate-400">Monitore o cumprimento de metas de cada setor</p>
-          </div>
-          <button onclick="openModal('meta')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Nova Meta
+      <!-- ================= ABA 3: METAS ================= -->
+      <section id="tab-metas" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Controle de Metas</h2>
+          <button onclick="openMetaModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Nova Meta</span>
           </button>
         </div>
 
-        <div id="grid-metas" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-      </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="metas-list"></div>
+      </section>
 
-      <!-- ABA 4: EQUIPE -->
-      <div id="tab-equipe" class="tab-content space-y-4">
-        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
+      <!-- ================= ABA 4: CONTROLE APRENDIZ (SEPARADO) ================= -->
+      <section id="tab-equipe" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
           <div>
-            <h3 class="font-bold text-lg text-white">Supervisores & Instrutores</h3>
-            <p class="text-xs text-slate-400">Membros da equipe e pendências técnicas</p>
+            <h2 class="text-xl font-bold">Controle de Aprendizes & Estagiários</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Gestão de membros em formação técnica</p>
           </div>
-          <button onclick="openModal('equipe')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Novo Membro
+          <button onclick="openAprendizModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Novo Membro</span>
           </button>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
-          <table class="w-full text-left text-sm text-slate-300">
-            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+        <!-- Seção 1: Estagiários -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
+            <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
+            <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
+          </div>
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
-                <th class="p-3">Nome</th>
-                <th class="p-3">Cargo</th>
-                <th class="p-3">ID DISCORD</th>
-                <th class="p-3">Situação</th>
-                <th class="p-3">Ações</th>
+                <th class="p-4">Nome do Membro</th>
+                <th class="p-4">Início</th>
+                <th class="p-4">Status / Progresso</th>
+                <th class="p-4 text-right">Ações</th>
               </tr>
             </thead>
-            <tbody id="table-equipe-body" class="divide-y divide-slate-800/50"></tbody>
+            <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
           </table>
         </div>
-      </div>
 
-      <!-- ABA 5: SETORES -->
-      <div id="tab-setores" class="tab-content space-y-6">
-        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
-          <div>
-            <h3 class="font-bold text-lg text-white">Divisão por Setores Operacionais</h3>
-            <p class="text-xs text-slate-400">Membros organizados individualmente por cada setor e função</p>
+        <!-- Seção 2: Aprendizes -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
+            <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
+            <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
           </div>
-          <button onclick="openModal('setor')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Adicionar ao Setor
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-4">Nome do Membro</th>
+                <th class="p-4">Início</th>
+                <th class="p-4">Status / Progresso</th>
+                <th class="p-4 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="aprendizes-list" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= ABA 5: SETORES ================= -->
+      <section id="tab-setores" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Divisão por Setores Operacionais</h2>
+          <button onclick="openSetorModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Atribuir ao Setor</span>
           </button>
         </div>
 
-        <div id="setores-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-      </div>
-
-      <!-- ABA 6: BIBLIOTECA -->
-      <div id="tab-biblioteca" class="tab-content space-y-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-          <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3">Biblioteca de Scripts & Regras</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
-              <h4 class="font-bold text-indigo-400 text-sm">Script: Modelo de Exílio</h4>
-              <p class="text-xs text-slate-400 bg-slate-900 p-3 rounded font-mono border border-slate-800">
-                [EXÍLIO CGEx]<br>
-                Usuário: {NOME}<br>
-                Motivo: {MOTIVO}<br>
-                Data: {DATA}<br>
-                Veredito: Confirmado pela Corregedoria.
-              </p>
-              <button onclick="copyToClipboard('[EXÍLIO CGEx]\nUsuário: \nMotivo: \nData: \nVeredito: Confirmado.')" class="text-xs text-indigo-400 hover:underline">Copiar Script</button>
-            </div>
-            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
-              <h4 class="font-bold text-indigo-400 text-sm">Script: Modelo de Advertência</h4>
-              <p class="text-xs text-slate-400 bg-slate-900 p-3 rounded font-mono border border-slate-800">
-                [ADVERTÊNCIA CGEx]<br>
-                Usuário: {NOME}<br>
-                Infração: {MOTIVO}<br>
-                Qtd: {QUANTIDADE}ª Advertência
-              </p>
-              <button onclick="copyToClipboard('[ADVERTÊNCIA CGEx]\nUsuário: \nInfração: \nQtd: ')" class="text-xs text-indigo-400 hover:underline">Copiar Script</button>
-            </div>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="setores-container">
+          <!-- Os setores predefinidos serão injetados via JavaScript -->
         </div>
-      </div>
+      </section>
 
-      <!-- ABA 7: CONFIGURAÇÕES -->
-      <div id="tab-configuracoes" class="tab-content space-y-4">
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-          <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3">Gerenciamento do Banco de Dados</h3>
-          <p class="text-sm text-slate-400">Esta ação limpa o banco de dados do Firebase para todos os usuários.</p>
-          <button onclick="resetSystemData()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition">
-            ⚠️ Limpar Banco de Dados
+      <!-- ================= ABA 6: BIBLIOTECA ================= -->
+      <section id="tab-biblioteca" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Biblioteca de Documentos & Modelos</h2>
+          <button onclick="openBiblioModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Novo Documento</span>
           </button>
         </div>
-      </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="biblioteca-list"></div>
+      </section>
+
+      <!-- ================= ABA 7: CONFIGURAÇÕES ================= -->
+      <section id="tab-configuracoes" class="tab-content space-y-6">
+        <h2 class="text-xl font-bold">Configurações do Banco de Dados</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-xl">
+          <form onsubmit="saveFirebaseConfig(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">API Key</label>
+              <input type="text" id="cfg-apiKey" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Database URL</label>
+              <input type="text" id="cfg-databaseURL" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Project ID</label>
+              <input type="text" id="cfg-projectId" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
+            </div>
+            <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-sm transition">Salvar na Nuvem</button>
+          </form>
+        </div>
+      </section>
 
     </div>
   </main>
 
-  <!-- MODAL DINÂMICO -->
-  <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-xl p-6 space-y-4">
-      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-        <h3 id="modal-title" class="font-bold text-white text-lg">Novo Registro</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+  <!-- ================= MODAIS ================= -->
+
+  <!-- Modal Casos Geral -->
+  <div id="modal-caso" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Novo Caso Geral</h3>
+        <button onclick="closeModal('modal-caso')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
       </div>
-      <form id="modal-form" onsubmit="handleFormSubmit(event)" class="space-y-3">
-        <div id="modal-fields" class="space-y-3"></div>
-        <div class="flex justify-end space-x-2 pt-3">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">Salvar na Nuvem</button>
+      <form onsubmit="saveCaso(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Tipo de Ocorrência</label>
+          <select id="caso-tipo" onchange="handleCasoTipoChange()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Advertência">Advertência</option>
+            <option value="Rebaixamento">Rebaixamento</option>
+            <option value="Exílio">Exílio</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
+          <input type="text" id="caso-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        
+        <!-- Bloco para Advertência / Rebaixamento (Data Atual Fixa) -->
+        <div id="caso-date-single">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Data da Ocorrência</label>
+          <input type="date" id="caso-data" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+        </div>
+
+        <!-- Bloco para Exílio (Início e Fim) -->
+        <div id="caso-date-range" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+            <input type="date" id="caso-data-inicio" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Data Término (Até)</label>
+            <input type="date" id="caso-data-fim" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Motivo / Descrição</label>
+          <textarea id="caso-motivo" required rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500"></textarea>
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-caso')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- Modal Aprendiz / Estagiário -->
+  <div id="modal-aprendiz" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Novo Aprendiz / Estagiário</h3>
+        <button onclick="closeModal('modal-aprendiz')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveAprendiz(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
+          <select id="ap-categoria" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Estagiário">Estagiário</option>
+            <option value="Aprendiz">Aprendiz</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
+          <input type="text" id="ap-nome" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+          <input type="date" id="ap-inicio" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Status / Observações</label>
+          <input type="text" id="ap-status" placeholder="Ex: Em avaliação / Módulo I" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-aprendiz')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Setor -->
+  <div id="modal-setor" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Atribuir ao Setor</h3>
+        <button onclick="closeModal('modal-setor')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveSetorMembro(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Setor</label>
+          <select id="st-nome" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Rebaixamento e Advertências">Rebaixamento e Advertências</option>
+            <option value="Exílio">Exílio</option>
+            <option value="Instrução">Instrução</option>
+            <option value="Aposentadoria">Aposentadoria</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
+          <input type="text" id="st-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Cargo Hierárquico</label>
+          <select id="st-cargo" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Corregedor Geral">Corregedor Geral (Topo)</option>
+            <option value="Corregedor">Corregedor (Destaque)</option>
+            <option value="Coordenador">Coordenador</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Analista">Analista</option>
+            <option value="Sênior">Sênior</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Função Específica</label>
+          <select id="st-funcao" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Auditor">Auditor</option>
+            <option value="Responsável">Responsável (⭐ Destaque)</option>
+          </select>
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-setor')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Metas -->
+  <div id="modal-meta" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Nova Meta Operacional</h3>
+        <button onclick="closeModal('modal-meta')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveMeta(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Título da Meta</label>
+          <input type="text" id="mt-titulo" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Progresso (%)</label>
+          <input type="number" id="mt-progresso" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Prazo / Target</label>
+          <input type="text" id="mt-prazo" placeholder="Ex: Mensal / Fim do Trimestre" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-meta')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Biblioteca -->
+  <div id="modal-biblio" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Adicionar à Biblioteca</h3>
+        <button onclick="closeModal('modal-biblio')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveBiblio(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Título do Documento</label>
+          <input type="text" id="bb-titulo" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
+          <input type="text" id="bb-categoria" placeholder="Ex: Regimento, Diretrizes, Modelos" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">URL / Link do Documento</label>
+          <input type="url" id="bb-link" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-biblio')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE NAVEGAÇÃO E LÓGICA -->
   <script>
-    // CONFIGURAÇÃO COMPLETA DO FIREBASE EM MODO COMPATÍVEL (NATIVE BROWSER SCRIPT)
-    const firebaseConfig = {
-      apiKey: "AIzaSyB6vkQZ-SOYbtEtXJOoRWV03PsTA2rUvoI",
-      authDomain: "cgex-e7d18.firebaseapp.com",
+    // Configurações Padrão
+    const defaultConfig = {
+      apiKey: "AIzaSyDummyKeyForTemplatePurposes123",
       databaseURL: "https://cgex-e7d18-default-rtdb.firebaseio.com",
-      projectId: "cgex-e7d18",
-      storageBucket: "cgex-e7d18.firebasestorage.app",
-      messagingSenderId: "828709040823",
-      appId: "1:828709040823:web:bd54de8c0f6610c840d332",
-      measurementId: "G-KM4PZ8CW9K"
+      projectId: "cgex-e7d18"
     };
 
-    // Inicialização da aplicação e do Realtime Database
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    let db = null;
 
-    // LISTA DE SETORES DEFINIDOS
-    const listaSetores = [
-      "Rebaixamento e Advertências",
-      "Exílios",
-      "Avais",
-      "Revogações",
-      "Promoções",
-      "Instrutores",
-      "Autorização"
-    ];
-
-    let appData = {
-      casos: [],
-      metas: [],
-      equipe: [],
-      setores: []
-    };
-
-    let currentModalType = "";
-
-    // MONITORAR CONEXÃO E LEITURA EM TEMPO REAL
-    const statusText = document.getElementById('connection-status');
-
-    db.ref('.info/connected').on('value', (snap) => {
-      if (snap.val() === true) {
-        if(statusText) {
-          statusText.className = "text-[10px] text-emerald-400 flex items-center gap-1 justify-end";
-          statusText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Conectado';
-        }
-      } else {
-        if(statusText) {
-          statusText.className = "text-[10px] text-amber-400 flex items-center gap-1 justify-end";
-          statusText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> Reconectando...';
-        }
-      }
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+      handleCasoTipoChange();
     });
 
-    db.ref('cgex_db').on('value', (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        appData = {
-          casos: data.casos || [],
-          metas: data.metas || [],
-          equipe: data.equipe || [],
-          setores: data.setores || []
-        };
-      } else {
-        appData = { casos: [], metas: [], equipe: [], setores: [] };
-      }
-      renderAll();
-    }, (error) => {
-      console.error("Erro ao ler do Firebase:", error);
-    });
+    function initFirebase() {
+      const savedConfig = JSON.parse(localStorage.getItem('cgex_fb_config')) || defaultConfig;
+      document.getElementById('cfg-apiKey').value = savedConfig.apiKey;
+      document.getElementById('cfg-databaseURL').value = savedConfig.databaseURL;
+      document.getElementById('cfg-projectId').value = savedConfig.projectId;
 
-    function saveData() {
-      db.ref('cgex_db').set(appData)
-        .then(() => {
-          console.log("Dados gravados com sucesso!");
-        })
-        .catch((error) => {
-          console.error("Erro ao gravar dados:", error);
-          alert("Erro ao gravar no Firebase. Verifique se as Regras do Realtime Database estão públicas (.read: true, .write: true).");
-        });
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(savedConfig);
+        }
+        db = firebase.database();
+        listenToDatabase();
+      } catch (err) {
+        console.error("Erro Firebase:", err);
+      }
     }
 
-    // NAVEGAÇÃO ENTRE ABAS
+    function saveFirebaseConfig(e) {
+      e.preventDefault();
+      const config = {
+        apiKey: document.getElementById('cfg-apiKey').value,
+        databaseURL: document.getElementById('cfg-databaseURL').value,
+        projectId: document.getElementById('cfg-projectId').value
+      };
+      localStorage.setItem('cgex_fb_config', JSON.stringify(config));
+      alert("Configurações salvas. A página será recarregada.");
+      location.reload();
+    }
+
+    // Navegação de Abas
     function switchTab(tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById(`tab-${tabId}`).classList.add('active');
 
-      document.querySelectorAll('#sidebar-nav button, #nav-configuracoes').forEach(btn => {
+      document.querySelectorAll('#sidebar-nav button').forEach(btn => {
         btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition";
       });
-      const activeBtn = document.getElementById(`nav-${tabId}`);
-      if (activeBtn) {
-        activeBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20";
+
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20";
       }
     }
 
-    // RENDERIZAÇÃO GERAL
-    function renderAll() {
-      document.getElementById('dash-exilios').innerText = appData.casos.filter(c => c.tipo === "Exílio").length;
-      document.getElementById('dash-rebaixamentos').innerText = appData.casos.filter(c => c.tipo === "Rebaixamento").length;
-      document.getElementById('dash-advertencias').innerText = appData.casos.filter(c => c.tipo === "Advertência").length;
-      document.getElementById('dash-equipe').innerText = appData.equipe.length;
+    // Modal Helpers
+    function openCasoModal() { 
+      document.getElementById('caso-data').valueAsDate = new Date();
+      document.getElementById('caso-data-inicio').valueAsDate = new Date();
+      document.getElementById('caso-data-fim').valueAsDate = new Date();
+      handleCasoTipoChange();
+      document.getElementById('modal-caso').classList.remove('hidden'); 
+    }
+    function openAprendizModal() { document.getElementById('modal-aprendiz').classList.remove('hidden'); }
+    function openSetorModal() { document.getElementById('modal-setor').classList.remove('hidden'); }
+    function openMetaModal() { document.getElementById('modal-meta').classList.remove('hidden'); }
+    function openBiblioModal() { document.getElementById('modal-biblio').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-      // Render Casos
-      const casosBody = document.getElementById('table-casos-body');
-      casosBody.innerHTML = appData.casos.map(c => `
-        <tr class="hover:bg-slate-800/40 transition">
-          <td class="p-3 font-semibold text-white">${c.nome}</td>
-          <td class="p-3"><span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded text-xs">${c.tipo}</span></td>
-          <td class="p-3 text-slate-400">${c.motivo}</td>
-          <td class="p-3 text-slate-400">${c.data}</td>
-          <td class="p-3"><button onclick="deleteItem('casos', ${c.id})" class="text-xs text-red-400 hover:underline">Deletar</button></td>
-        </tr>
-      `).join('');
+    // Alternar campos de data conforme tipo no Caso Geral
+    function handleCasoTipoChange() {
+      const tipo = document.getElementById('caso-tipo').value;
+      const singleDate = document.getElementById('caso-date-single');
+      const rangeDate = document.getElementById('caso-date-range');
 
-      // Render Metas
-      const metasGrid = document.getElementById('grid-metas');
-      metasGrid.innerHTML = appData.metas.map(m => `
-        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
-          <div class="flex justify-between items-center text-sm">
-            <span class="font-bold text-white">${m.setor}</span>
-            <span class="text-xs font-semibold text-indigo-400">${m.porc}%</span>
-          </div>
-          <div class="w-full bg-slate-800 rounded-full h-2">
-            <div class="bg-indigo-500 h-2 rounded-full" style="width: ${m.porc}%"></div>
-          </div>
-          <div class="flex justify-between items-center text-xs text-slate-400">
-            <span>${m.desc}</span>
-            <button onclick="deleteItem('metas', ${m.id})" class="text-red-400 hover:underline">Apagar</button>
-          </div>
-        </div>
-      `).join('');
-
-      // Render Equipe
-      const equipeBody = document.getElementById('table-equipe-body');
-      equipeBody.innerHTML = appData.equipe.map(e => `
-        <tr class="hover:bg-slate-800/40 transition">
-          <td class="p-3 font-semibold text-white">${e.nome}</td>
-          <td class="p-3 text-slate-400">${e.cargo}</td>
-          <td class="p-3 text-slate-400 font-mono text-xs">${e.contagem}</td>
-          <td class="p-3"><span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-xs">${e.situacao}</span></td>
-          <td class="p-3"><button onclick="deleteItem('equipe', ${e.id})" class="text-xs text-red-400 hover:underline">Deletar</button></td>
-        </tr>
-      `).join('');
-
-      // Render Setores
-      renderSetoresPorCategoria();
+      if (tipo === 'Exílio') {
+        singleDate.classList.add('hidden');
+        rangeDate.classList.remove('hidden');
+      } else {
+        singleDate.classList.remove('hidden');
+        rangeDate.classList.add('hidden');
+        document.getElementById('caso-data').valueAsDate = new Date();
+      }
     }
 
-    function renderSetoresPorCategoria() {
+    // ================= BANCO DE DADOS REALTIME =================
+    function listenToDatabase() {
+      if (!db) return;
+
+      // Casos
+      db.ref('casos').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        renderCasos(data);
+      });
+
+      // Aprendizes e Estagiários
+      db.ref('aprendizes').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        renderAprendizes(data);
+      });
+
+      // Setores
+      db.ref('setores').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        renderSetores(data);
+      });
+
+      // Metas
+      db.ref('metas').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        renderMetas(data);
+      });
+
+      // Biblioteca
+      db.ref('biblioteca').on('value', snapshot => {
+        const data = snapshot.val() || {};
+        renderBiblioteca(data);
+      });
+    }
+
+    // RENDERIZAR CASOS GERAIS
+    function renderCasos(casos) {
+      const list = document.getElementById('casos-list');
+      list.innerHTML = '';
+
+      let total = 0, adv = 0, reb = 0, exi = 0;
+
+      Object.keys(casos).forEach(key => {
+        const c = casos[key];
+        total++;
+        if (c.tipo === 'Advertência') adv++;
+        if (c.tipo === 'Rebaixamento') reb++;
+        if (c.tipo === 'Exílio') exi++;
+
+        let badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
+        if (c.tipo === 'Rebaixamento') badgeColor = "bg-orange-500/10 text-orange-400 border-orange-500/20";
+        if (c.tipo === 'Exílio') badgeColor = "bg-rose-500/10 text-rose-400 border-rose-500/20";
+
+        let dateDisplay = c.data || 'N/A';
+        if (c.tipo === 'Exílio' && c.dataInicio && c.dataFim) {
+          dateDisplay = `${c.dataInicio} até ${c.dataFim}`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition searchable-item";
+        tr.innerHTML = `
+          <td class="p-4 font-semibold text-slate-200">${c.membro}</td>
+          <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeColor}">${c.tipo}</span></td>
+          <td class="p-4 text-slate-400 text-xs">${dateDisplay}</td>
+          <td class="p-4 text-slate-300 max-w-xs truncate">${c.motivo}</td>
+          <td class="p-4 text-right">
+            <button onclick="deleteRecord('casos/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+          </td>
+        `;
+        list.appendChild(tr);
+      });
+
+      document.getElementById('dash-total-casos').innerText = total;
+      document.getElementById('dash-advertencias').innerText = adv;
+      document.getElementById('dash-rebaixamentos').innerText = reb;
+      document.getElementById('dash-exilios').innerText = exi;
+    }
+
+    // RENDERIZAR APRENDIZES / ESTAGIÁRIOS (SEPARADOS)
+    function renderAprendizes(data) {
+      const listEstagiarios = document.getElementById('estagiarios-list');
+      const listAprendizes = document.getElementById('aprendizes-list');
+
+      listEstagiarios.innerHTML = '';
+      listAprendizes.innerHTML = '';
+
+      let countEstagiarios = 0;
+      let countAprendizes = 0;
+
+      Object.keys(data).forEach(key => {
+        const item = data[key];
+        const categoria = item.categoria || 'Aprendiz';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition searchable-item";
+        tr.innerHTML = `
+          <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
+          <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
+          <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">${item.status}</span></td>
+          <td class="p-4 text-right">
+            <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+          </td>
+        `;
+
+        if (categoria === 'Estagiário') {
+          listEstagiarios.appendChild(tr);
+          countEstagiarios++;
+        } else {
+          listAprendizes.appendChild(tr);
+          countAprendizes++;
+        }
+      });
+
+      if (countEstagiarios === 0) {
+        listEstagiarios.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum estagiário cadastrado.</td></tr>`;
+      }
+      if (countAprendizes === 0) {
+        listAprendizes.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum aprendiz cadastrado.</td></tr>`;
+      }
+    }
+
+    // HIERARQUIA DE CARGOS PARA ORDENAÇÃO
+    const HIERARQUIA = {
+      "Corregedor Geral": 1,
+      "Corregedor": 2,
+      "Coordenador": 3,
+      "Supervisor": 4,
+      "Analista": 5,
+      "Sênior": 6
+    };
+
+    // RENDERIZAR SETORES COM DESTAQUE, ORDENAÇÃO E BOTÕES MOVER
+    function renderSetores(data) {
       const container = document.getElementById('setores-container');
       container.innerHTML = '';
 
-      listaSetores.forEach(nomeSetor => {
-        const membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
+      const setoresPadrao = [
+        "Rebaixamento e Advertências",
+        "Exílio",
+        "Instrução",
+        "Aposentadoria"
+      ];
 
-        let membrosHTML = '';
-        if (membrosDoSetor.length === 0) {
-          membrosHTML = `<p class="text-xs text-slate-500 italic p-3">Nenhum membro atribuído a este setor.</p>`;
+      setoresPadrao.forEach(setorNome => {
+        // Filtrar membros do setor
+        let membros = [];
+        Object.keys(data).forEach(k => {
+          if (data[k].setor === setorNome) {
+            membros.push({ key: k, ...data[k] });
+          }
+        });
+
+        // Ordenar primeiramente pela ordem customizada (se existir) ou pela Hierarquia do cargo
+        membros.sort((a, b) => {
+          const rankA = HIERARQUIA[a.cargo] || 99;
+          const rankB = HIERARQUIA[b.cargo] || 99;
+          
+          if (rankA !== rankB) return rankA - rankB;
+          return (a.ordem || 0) - (b.ordem || 0);
+        });
+
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 searchable-item";
+
+        let html = `
+          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-slate-200 flex items-center space-x-2">
+              <i class="ph-bold ph-folder-user text-indigo-400"></i>
+              <span>${setorNome}</span>
+            </h3>
+            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded-md font-semibold">${membros.length} membros</span>
+          </div>
+          <div class="space-y-2">
+        `;
+
+        if (membros.length === 0) {
+          html += `<p class="text-xs text-slate-500 py-2">Nenhum membro atribuído a este setor.</p>`;
         } else {
-          membrosHTML = `
-            <div class="divide-y divide-slate-800/60">
-              ${membrosDoSetor.map(m => `
-                <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-800/30 transition">
+          membros.forEach((m, idx) => {
+            const isCorregedorTopo = (m.cargo === 'Corregedor Geral' || m.cargo === 'Corregedor');
+            const isResponsavel = (m.funcao === 'Responsável');
+
+            let cardStyle = "bg-slate-950 border-slate-800/80";
+            if (isCorregedorTopo) {
+              cardStyle = "bg-gradient-to-r from-indigo-950/40 to-slate-950 border-indigo-500/40 shadow-sm";
+            }
+
+            html += `
+              <div class="p-3 rounded-lg border ${cardStyle} flex items-center justify-between group">
+                <div class="flex items-center space-x-3">
+                  ${isCorregedorTopo ? '<i class="ph-bold ph-crown text-amber-400 text-base" title="Alta Cúpula"></i>' : ''}
                   <div>
-                    <span class="font-semibold text-white block text-sm">${m.nome}</span>
-                    <span class="text-indigo-400 font-medium">${m.cargo}</span> • <span class="text-slate-400">${m.funcao}</span>
+                    <div class="flex items-center space-x-2">
+                      <p class="font-bold text-sm ${isCorregedorTopo ? 'text-indigo-300' : 'text-slate-200'}">${m.membro}</p>
+                      ${isResponsavel ? '<span class="text-amber-400 text-xs" title="Responsável pelo Setor">⭐</span>' : ''}
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                      <span class="font-medium text-slate-300">${m.cargo}</span> • ${m.funcao}
+                    </p>
                   </div>
-                  <button onclick="deleteItem('setores', ${m.id})" class="text-red-400 hover:underline text-xs">Remover</button>
                 </div>
-              `).join('')}
-            </div>
-          `;
+
+                <div class="flex items-center space-x-1 opacity-80 group-hover:opacity-100 transition">
+                  <button onclick="moveMembro('${m.key}', ${idx - 1}, '${setorNome}')" class="p-1 text-slate-500 hover:text-slate-200 text-xs" title="Mover para cima">▲</button>
+                  <button onclick="moveMembro('${m.key}', ${idx + 1}, '${setorNome}')" class="p-1 text-slate-500 hover:text-slate-200 text-xs" title="Mover para baixo">▼</button>
+                  <button onclick="deleteRecord('setores/${m.key}')" class="p-1 text-slate-500 hover:text-rose-400 text-xs ml-1"><i class="ph-bold ph-trash"></i></button>
+                </div>
+              </div>
+            `;
+          });
         }
 
-        container.innerHTML += `
-          <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col">
-            <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
-              <h4 class="font-bold text-sm text-indigo-400 flex items-center gap-2">
-                <i class="ph-bold ph-folder text-indigo-500"></i> ${nomeSetor}
-              </h4>
-              <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full font-bold">
-                ${membrosDoSetor.length}
-              </span>
-            </div>
-            <div class="flex-1">
-              ${membrosHTML}
-            </div>
-          </div>
-        `;
+        html += `</div>`;
+        card.innerHTML = html;
+        container.appendChild(card);
       });
     }
 
-    function deleteItem(category, id) {
-      if (confirm("Tem certeza que deseja apagar este registro?")) {
-        appData[category] = appData[category].filter(item => item.id !== id);
-        saveData();
-      }
+    // Mover ordem de membros
+    function moveMembro(key, newIndex, setorNome) {
+      if (!db) return;
+      db.ref(`setores/${key}`).update({ ordem: newIndex });
     }
 
-    function resetSystemData() {
-      if (confirm("Deseja apagar todos os dados do banco de dados na nuvem?")) {
-        appData = { casos: [], metas: [], equipe: [], setores: [] };
-        saveData();
-      }
+    // RENDERIZAR METAS E BIBLIOTECA
+    function renderMetas(data) {
+      const list = document.getElementById('metas-list');
+      list.innerHTML = '';
+      Object.keys(data).forEach(key => {
+        const m = data[key];
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 searchable-item";
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <h3 class="font-bold text-slate-200 text-sm">${m.titulo}</h3>
+            <button onclick="deleteRecord('metas/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs text-slate-400 mb-1">
+              <span>Progresso</span>
+              <span class="font-bold text-indigo-400">${m.progresso}%</span>
+            </div>
+            <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
+              <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: ${m.progresso}%"></div>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 pt-1">Prazo: ${m.prazo}</p>
+        `;
+        list.appendChild(card);
+      });
     }
 
-    // MODAIS DINÂMICOS
-    function openModal(type) {
-      currentModalType = type;
-      const modal = document.getElementById('modal');
-      const modalTitle = document.getElementById('modal-title');
-      const modalFields = document.getElementById('modal-fields');
-
-      if (type === 'caso') {
-        modalTitle.innerText = 'Novo Caso / Punição';
-        modalFields.innerHTML = `
-          <input type="text" id="field-nome" placeholder="Nome do usuário" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <select id="field-tipo" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-            <option value="Exílio">Exílio</option>
-            <option value="Rebaixamento">Rebaixamento</option>
-            <option value="Advertência">Advertência</option>
-          </select>
-          <input type="text" id="field-motivo" placeholder="Motivo" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="date" id="field-data" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+    function renderBiblioteca(data) {
+      const list = document.getElementById('biblioteca-list');
+      list.innerHTML = '';
+      Object.keys(data).forEach(key => {
+        const b = data[key];
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 flex flex-col justify-between searchable-item";
+        card.innerHTML = `
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">${b.categoria}</span>
+            <h3 class="font-bold text-slate-200 text-sm mt-2">${b.titulo}</h3>
+          </div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+            <a href="${b.link}" target="_blank" class="text-xs text-indigo-400 hover:underline flex items-center space-x-1">
+              <span>Acessar Documento</span>
+              <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+            <button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
+          </div>
         `;
-      } else if (type === 'meta') {
-        modalTitle.innerText = 'Nova Meta';
-        modalFields.innerHTML = `
-          <input type="text" id="field-setor" placeholder="Setor / Nome da Meta" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="number" id="field-porc" placeholder="Porcentagem concluída (0 a 100)" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-desc" placeholder="Descrição / Qtd (Ex: 5/10 Treinos)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-        `;
-      } else if (type === 'equipe') {
-        modalTitle.innerText = 'Novo Membro da Equipe';
-        modalFields.innerHTML = `
-          <input type="text" id="field-nome" placeholder="Nome do Membro" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <select id="field-cargo" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-            <option value="Aprendiz">Aprendiz</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Instrutor">Instrutor</option>
-            <option value="Coordenador">Coordenador</option>
-          </select>
-          <input type="text" id="field-contagem" placeholder="ID DO DISCORD" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-situacao" placeholder="Situação (Ex: Regular, Pendente)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-        `;
-      } else if (type === 'setor') {
-        modalTitle.innerText = 'Atribuir ao Setor';
-        modalFields.innerHTML = `
-          <select id="field-setor-nome" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-            ${listaSetores.map(s => `<option value="${s}">${s}</option>`).join('')}
-          </select>
-          <input type="text" id="field-membro-nome" placeholder="Nome do Membro" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-membro-cargo" placeholder="Cargo (Ex: Supervisor, Coordenador)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-membro-funcao" placeholder="Função Específica (Ex: Auditor, Responsável)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-        `;
-      }
-
-      modal.classList.remove('hidden');
+        list.appendChild(card);
+      });
     }
 
-    function closeModal() {
-      document.getElementById('modal').classList.add('hidden');
-    }
-
-    function handleFormSubmit(e) {
+    // ================= SALVAMENTO DE DADOS =================
+    function saveCaso(e) {
       e.preventDefault();
-      const id = Date.now();
+      const tipo = document.getElementById('caso-tipo').value;
+      const membro = document.getElementById('caso-membro').value;
+      const motivo = document.getElementById('caso-motivo').value;
 
-      if (currentModalType === 'caso') {
-        appData.casos.push({
-          id,
-          nome: document.getElementById('field-nome').value,
-          tipo: document.getElementById('field-tipo').value,
-          motivo: document.getElementById('field-motivo').value,
-          data: document.getElementById('field-data').value
-        });
-      } else if (currentModalType === 'meta') {
-        appData.metas.push({
-          id,
-          setor: document.getElementById('field-setor').value,
-          porc: document.getElementById('field-porc').value,
-          desc: document.getElementById('field-desc').value
-        });
-      } else if (currentModalType === 'equipe') {
-        appData.equipe.push({
-          id,
-          nome: document.getElementById('field-nome').value,
-          cargo: document.getElementById('field-cargo').value,
-          contagem: document.getElementById('field-contagem').value,
-          situacao: document.getElementById('field-situacao').value
-        });
-      } else if (currentModalType === 'setor') {
-        appData.setores.push({
-          id,
-          setor: document.getElementById('field-setor-nome').value,
-          nome: document.getElementById('field-membro-nome').value,
-          cargo: document.getElementById('field-membro-cargo').value,
-          funcao: document.getElementById('field-membro-funcao').value
-        });
+      let payload = { tipo, membro, motivo, createdAt: Date.now() };
+
+      if (tipo === 'Exílio') {
+        payload.dataInicio = document.getElementById('caso-data-inicio').value;
+        payload.dataFim = document.getElementById('caso-data-fim').value;
+      } else {
+        payload.data = document.getElementById('caso-data').value;
       }
 
-      saveData();
-      closeModal();
+      db.ref('casos').push(payload, () => {
+        closeModal('modal-caso');
+        e.target.reset();
+      });
     }
 
-    function copyToClipboard(text) {
-      navigator.clipboard.writeText(text);
-      alert("Script copiado para a área de transferência!");
+    function saveAprendiz(e) {
+      e.preventDefault();
+      const payload = {
+        categoria: document.getElementById('ap-categoria').value,
+        nome: document.getElementById('ap-nome').value,
+        inicio: document.getElementById('ap-inicio').value,
+        status: document.getElementById('ap-status').value,
+        createdAt: Date.now()
+      };
+      db.ref('aprendizes').push(payload, () => {
+        closeModal('modal-aprendiz');
+        e.target.reset();
+      });
+    }
+
+    function saveSetorMembro(e) {
+      e.preventDefault();
+      const payload = {
+        setor: document.getElementById('st-nome').value,
+        membro: document.getElementById('st-membro').value,
+        cargo: document.getElementById('st-cargo').value,
+        funcao: document.getElementById('st-funcao').value,
+        ordem: 0,
+        createdAt: Date.now()
+      };
+      db.ref('setores').push(payload, () => {
+        closeModal('modal-setor');
+        e.target.reset();
+      });
+    }
+
+    function saveMeta(e) {
+      e.preventDefault();
+      const payload = {
+        titulo: document.getElementById('mt-titulo').value,
+        progresso: document.getElementById('mt-progresso').value,
+        prazo: document.getElementById('mt-prazo').value,
+        createdAt: Date.now()
+      };
+      db.ref('metas').push(payload, () => {
+        closeModal('modal-meta');
+        e.target.reset();
+      });
+    }
+
+    function saveBiblio(e) {
+      e.preventDefault();
+      const payload = {
+        titulo: document.getElementById('bb-titulo').value,
+        categoria: document.getElementById('bb-categoria').value,
+        link: document.getElementById('bb-link').value,
+        createdAt: Date.now()
+      };
+      db.ref('biblioteca').push(payload, () => {
+        closeModal('modal-biblio');
+        e.target.reset();
+      });
+    }
+
+    function deleteRecord(path) {
+      if (confirm("Deseja realmente excluir este registro?")) {
+        db.ref(path).remove();
+      }
+    }
+
+    // PESQUISA GLOBAL
+    function applyGlobalSearch() {
+      const term = document.getElementById('global-search').value.toLowerCase();
+      document.querySelectorAll('.searchable-item').forEach(el => {
+        const text = el.innerText.toLowerCase();
+        if (text.includes(term)) {
+          el.style.display = '';
+        } else {
+          el.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>
