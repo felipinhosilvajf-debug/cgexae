@@ -171,7 +171,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="metas-list"></div>
       </section>
 
-      <!-- ================= ABA 4: CONTROLE APRENDIZ (SEPARADO) ================= -->
+      <!-- ================= ABA 4: CONTROLE APRENDIZ ================= -->
       <section id="tab-equipe" class="tab-content space-y-6">
         <div class="flex items-center justify-between">
           <div>
@@ -231,8 +231,8 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="setores-container">
-          <!-- Os setores predefinidos serão injetados via JavaScript -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="setores-container">
+          <!-- Setores injetados via JS -->
         </div>
       </section>
 
@@ -296,13 +296,11 @@
           <input type="text" id="caso-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
         </div>
         
-        <!-- Bloco para Advertência / Rebaixamento (Data Atual Fixa) -->
         <div id="caso-date-single">
           <label class="block text-xs font-medium text-slate-400 mb-1">Data da Ocorrência</label>
           <input type="date" id="caso-data" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
         </div>
 
-        <!-- Bloco para Exílio (Início e Fim) -->
         <div id="caso-date-range" class="hidden space-y-3">
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
@@ -373,9 +371,12 @@
           <label class="block text-xs font-medium text-slate-400 mb-1">Setor</label>
           <select id="st-nome" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
             <option value="Rebaixamento e Advertências">Rebaixamento e Advertências</option>
-            <option value="Exílio">Exílio</option>
-            <option value="Instrução">Instrução</option>
-            <option value="Aposentadoria">Aposentadoria</option>
+            <option value="Promoções">Promoções</option>
+            <option value="Instruções">Instruções</option>
+            <option value="Avais">Avais</option>
+            <option value="Autorização">Autorização</option>
+            <option value="Revogações">Revogações</option>
+            <option value="Exílios">Exílios</option>
           </select>
         </div>
         <div>
@@ -559,34 +560,24 @@
     function listenToDatabase() {
       if (!db) return;
 
-      // Casos
       db.ref('casos').on('value', snapshot => {
-        const data = snapshot.val() || {};
-        renderCasos(data);
+        renderCasos(snapshot.val() || {});
       });
 
-      // Aprendizes e Estagiários
       db.ref('aprendizes').on('value', snapshot => {
-        const data = snapshot.val() || {};
-        renderAprendizes(data);
+        renderAprendizes(snapshot.val() || {});
       });
 
-      // Setores
       db.ref('setores').on('value', snapshot => {
-        const data = snapshot.val() || {};
-        renderSetores(data);
+        renderSetores(snapshot.val() || {});
       });
 
-      // Metas
       db.ref('metas').on('value', snapshot => {
-        const data = snapshot.val() || {};
-        renderMetas(data);
+        renderMetas(snapshot.val() || {});
       });
 
-      // Biblioteca
       db.ref('biblioteca').on('value', snapshot => {
-        const data = snapshot.val() || {};
-        renderBiblioteca(data);
+        renderBiblioteca(snapshot.val() || {});
       });
     }
 
@@ -633,7 +624,7 @@
       document.getElementById('dash-exilios').innerText = exi;
     }
 
-    // RENDERIZAR APRENDIZES / ESTAGIÁRIOS (SEPARADOS)
+    // RENDERIZAR APRENDIZES / ESTAGIÁRIOS
     function renderAprendizes(data) {
       const listEstagiarios = document.getElementById('estagiarios-list');
       const listAprendizes = document.getElementById('aprendizes-list');
@@ -650,21 +641,29 @@
 
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-900/50 transition searchable-item";
-        tr.innerHTML = `
-          <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
-          <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
-          <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">${item.status}</span></td>
-          <td class="p-4 text-right">
-            <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-          </td>
-        `;
 
         if (categoria === 'Estagiário') {
-          listEstagiarios.appendChild(tr);
           countEstagiarios++;
+          tr.innerHTML = `
+            <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
+            <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">${item.status}</span></td>
+            <td class="p-4 text-right">
+              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+            </td>
+          `;
+          listEstagiarios.appendChild(tr);
         } else {
-          listAprendizes.appendChild(tr);
           countAprendizes++;
+          tr.innerHTML = `
+            <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
+            <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status}</span></td>
+            <td class="p-4 text-right">
+              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+            </td>
+          `;
+          listAprendizes.appendChild(tr);
         }
       });
 
@@ -676,178 +675,183 @@
       }
     }
 
-    // HIERARQUIA DE CARGOS PARA ORDENAÇÃO
-    const HIERARQUIA = {
-      "Corregedor Geral": 1,
-      "Corregedor": 2,
-      "Coordenador": 3,
-      "Supervisor": 4,
-      "Analista": 5,
-      "Sênior": 6
-    };
-
-    // RENDERIZAR SETORES COM DESTAQUE, ORDENAÇÃO E BOTÕES MOVER
+    // RENDERIZAR SETORES OPERACIONAIS (LISTA ATUALIZADA DE SETORES)
     function renderSetores(data) {
       const container = document.getElementById('setores-container');
       container.innerHTML = '';
 
-      const setoresPadrao = [
-        "Rebaixamento e Advertências",
-        "Exílio",
-        "Instrução",
-        "Aposentadoria"
+      const listaSetores = [
+        "Rebaixamento e Advertências", 
+        "Promoções", 
+        "Instruções", 
+        "Avais", 
+        "Autorização", 
+        "Revogações", 
+        "Exílios"
       ];
 
-      setoresPadrao.forEach(setorNome => {
-        // Filtrar membros do setor
-        let membros = [];
+      const hierarquiaOrdem = {
+        "Corregedor Geral": 1,
+        "Corregedor": 2,
+        "Coordenador": 3,
+        "Supervisor": 4,
+        "Analista": 5,
+        "Sênior": 6
+      };
+
+      listaSetores.forEach(setorNome => {
+        const membrosSetor = [];
         Object.keys(data).forEach(k => {
           if (data[k].setor === setorNome) {
-            membros.push({ key: k, ...data[k] });
+            membrosSetor.push({ key: k, ...data[k] });
           }
         });
 
-        // Ordenar primeiramente pela ordem customizada (se existir) ou pela Hierarquia do cargo
-        membros.sort((a, b) => {
-          const rankA = HIERARQUIA[a.cargo] || 99;
-          const rankB = HIERARQUIA[b.cargo] || 99;
-          
-          if (rankA !== rankB) return rankA - rankB;
-          return (a.ordem || 0) - (b.ordem || 0);
+        // Ordenar por hierarquia
+        membrosSetor.sort((a, b) => {
+          const oA = hierarquiaOrdem[a.cargo] || 99;
+          const oB = hierarquiaOrdem[b.cargo] || 99;
+          return oA - oB;
         });
 
-        const card = document.createElement('div');
-        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 searchable-item";
-
-        let html = `
-          <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-            <h3 class="font-bold text-slate-200 flex items-center space-x-2">
-              <i class="ph-bold ph-folder-user text-indigo-400"></i>
-              <span>${setorNome}</span>
-            </h3>
-            <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded-md font-semibold">${membros.length} membros</span>
-          </div>
-          <div class="space-y-2">
-        `;
-
-        if (membros.length === 0) {
-          html += `<p class="text-xs text-slate-500 py-2">Nenhum membro atribuído a este setor.</p>`;
+        let membrosHTML = '';
+        if (membrosSetor.length === 0) {
+          membrosHTML = `<p class="text-xs text-slate-500 italic p-3 text-center">Nenhum membro neste setor.</p>`;
         } else {
-          membros.forEach((m, idx) => {
-            const isCorregedorTopo = (m.cargo === 'Corregedor Geral' || m.cargo === 'Corregedor');
-            const isResponsavel = (m.funcao === 'Responsável');
+          membrosSetor.forEach(m => {
+            const isCorregedorGeral = m.cargo === "Corregedor Geral";
+            const isCorregedor = m.cargo === "Corregedor";
+            const isResponsavel = m.funcao === "Responsável";
 
-            let cardStyle = "bg-slate-950 border-slate-800/80";
-            if (isCorregedorTopo) {
-              cardStyle = "bg-gradient-to-r from-indigo-950/40 to-slate-950 border-indigo-500/40 shadow-sm";
+            let bgStyle = "bg-slate-950/60 border-slate-800/80";
+            let badgeStyle = "bg-slate-800 text-slate-400 border-slate-700";
+
+            if (isCorregedorGeral) {
+              bgStyle = "bg-gradient-to-r from-amber-950/40 to-slate-900 border-amber-500/40 shadow-sm";
+              badgeStyle = "bg-amber-500/20 text-amber-300 border-amber-500/30";
+            } else if (isCorregedor) {
+              bgStyle = "bg-gradient-to-r from-indigo-950/40 to-slate-900 border-indigo-500/40 shadow-sm";
+              badgeStyle = "bg-indigo-500/20 text-indigo-300 border-indigo-500/30";
             }
 
-            html += `
-              <div class="p-3 rounded-lg border ${cardStyle} flex items-center justify-between group">
-                <div class="flex items-center space-x-3">
-                  ${isCorregedorTopo ? '<i class="ph-bold ph-crown text-amber-400 text-base" title="Alta Cúpula"></i>' : ''}
-                  <div>
-                    <div class="flex items-center space-x-2">
-                      <p class="font-bold text-sm ${isCorregedorTopo ? 'text-indigo-300' : 'text-slate-200'}">${m.membro}</p>
-                      ${isResponsavel ? '<span class="text-amber-400 text-xs" title="Responsável pelo Setor">⭐</span>' : ''}
-                    </div>
-                    <p class="text-xs text-slate-400 mt-0.5">
-                      <span class="font-medium text-slate-300">${m.cargo}</span> • ${m.funcao}
-                    </p>
+            membrosHTML += `
+              <div class="flex items-center justify-between p-3 rounded-lg border ${bgStyle} transition searchable-item">
+                <div class="space-y-0.5">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="font-semibold text-sm text-slate-100">${m.membro}</span>
+                    ${isResponsavel ? '<span class="text-amber-400 text-xs" title="Responsável pelo Setor">⭐</span>' : ''}
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeStyle}">${m.cargo || 'Membro'}</span>
+                    <span class="text-[11px] text-slate-400">${m.funcao || 'Auditor'}</span>
                   </div>
                 </div>
-
-                <div class="flex items-center space-x-1 opacity-80 group-hover:opacity-100 transition">
-                  <button onclick="moveMembro('${m.key}', ${idx - 1}, '${setorNome}')" class="p-1 text-slate-500 hover:text-slate-200 text-xs" title="Mover para cima">▲</button>
-                  <button onclick="moveMembro('${m.key}', ${idx + 1}, '${setorNome}')" class="p-1 text-slate-500 hover:text-slate-200 text-xs" title="Mover para baixo">▼</button>
-                  <button onclick="deleteRecord('setores/${m.key}')" class="p-1 text-slate-500 hover:text-rose-400 text-xs ml-1"><i class="ph-bold ph-trash"></i></button>
-                </div>
+                <button onclick="deleteRecord('setores/${m.key}')" class="text-slate-600 hover:text-rose-400 p-1 transition"><i class="ph-bold ph-trash"></i></button>
               </div>
             `;
           });
         }
 
-        html += `</div>`;
-        card.innerHTML = html;
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col justify-between";
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center space-x-2">
+                <i class="ph-bold ph-folder text-indigo-400 text-lg"></i>
+                <h3 class="font-bold text-slate-200">${setorNome}</h3>
+              </div>
+              <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-medium">${membrosSetor.length}</span>
+            </div>
+            <div class="space-y-2">
+              ${membrosHTML}
+            </div>
+          </div>
+        `;
         container.appendChild(card);
       });
     }
 
-    // Mover ordem de membros
-    function moveMembro(key, newIndex, setorNome) {
-      if (!db) return;
-      db.ref(`setores/${key}`).update({ ordem: newIndex });
-    }
+    // RENDERIZAR METAS
+    function renderMetas(metas) {
+      const container = document.getElementById('metas-list');
+      container.innerHTML = '';
 
-    // RENDERIZAR METAS E BIBLIOTECA
-    function renderMetas(data) {
-      const list = document.getElementById('metas-list');
-      list.innerHTML = '';
-      Object.keys(data).forEach(key => {
-        const m = data[key];
+      Object.keys(metas).forEach(key => {
+        const m = metas[key];
         const card = document.createElement('div');
         card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 searchable-item";
         card.innerHTML = `
           <div class="flex justify-between items-start">
-            <h3 class="font-bold text-slate-200 text-sm">${m.titulo}</h3>
+            <div>
+              <h3 class="font-semibold text-slate-200">${m.titulo}</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Target: ${m.prazo}</p>
+            </div>
             <button onclick="deleteRecord('metas/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
           </div>
           <div>
-            <div class="flex justify-between text-xs text-slate-400 mb-1">
-              <span>Progresso</span>
-              <span class="font-bold text-indigo-400">${m.progresso}%</span>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-400">Progresso</span>
+              <span class="text-indigo-400">${m.progresso}%</span>
             </div>
             <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
-              <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: ${m.progresso}%"></div>
+              <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${m.progresso}%"></div>
             </div>
           </div>
-          <p class="text-xs text-slate-500 pt-1">Prazo: ${m.prazo}</p>
         `;
-        list.appendChild(card);
+        container.appendChild(card);
       });
     }
 
-    function renderBiblioteca(data) {
-      const list = document.getElementById('biblioteca-list');
-      list.innerHTML = '';
-      Object.keys(data).forEach(key => {
-        const b = data[key];
+    // RENDERIZAR BIBLIOTECA
+    function renderBiblioteca(docs) {
+      const container = document.getElementById('biblioteca-list');
+      container.innerHTML = '';
+
+      Object.keys(docs).forEach(key => {
+        const d = docs[key];
         const card = document.createElement('div');
-        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3 flex flex-col justify-between searchable-item";
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between hover:border-slate-700 transition searchable-item";
         card.innerHTML = `
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">${b.categoria}</span>
-            <h3 class="font-bold text-slate-200 text-sm mt-2">${b.titulo}</h3>
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-lg">
+              <i class="ph-bold ph-file-text text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-sm text-slate-200">${d.titulo}</h3>
+              <span class="text-xs text-slate-400">${d.categoria}</span>
+            </div>
           </div>
-          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
-            <a href="${b.link}" target="_blank" class="text-xs text-indigo-400 hover:underline flex items-center space-x-1">
-              <span>Acessar Documento</span>
+          <div class="flex items-center space-x-2">
+            <a href="${d.link}" target="_blank" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center space-x-1 transition">
               <i class="ph-bold ph-arrow-square-out"></i>
             </a>
-            <button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
+            <button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400 p-2"><i class="ph-bold ph-trash"></i></button>
           </div>
         `;
-        list.appendChild(card);
+        container.appendChild(card);
       });
     }
 
-    // ================= SALVAMENTO DE DADOS =================
+    // ================= SALVAMENTO DE REGISTROS =================
     function saveCaso(e) {
       e.preventDefault();
       const tipo = document.getElementById('caso-tipo').value;
-      const membro = document.getElementById('caso-membro').value;
-      const motivo = document.getElementById('caso-motivo').value;
-
-      let payload = { tipo, membro, motivo, createdAt: Date.now() };
+      const dataObj = {
+        membro: document.getElementById('caso-membro').value,
+        tipo: tipo,
+        motivo: document.getElementById('caso-motivo').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      };
 
       if (tipo === 'Exílio') {
-        payload.dataInicio = document.getElementById('caso-data-inicio').value;
-        payload.dataFim = document.getElementById('caso-data-fim').value;
+        dataObj.dataInicio = document.getElementById('caso-data-inicio').value;
+        dataObj.dataFim = document.getElementById('caso-data-fim').value;
       } else {
-        payload.data = document.getElementById('caso-data').value;
+        dataObj.data = document.getElementById('caso-data').value;
       }
 
-      db.ref('casos').push(payload, () => {
+      db.ref('casos').push(dataObj, () => {
         closeModal('modal-caso');
         e.target.reset();
       });
@@ -855,14 +859,13 @@
 
     function saveAprendiz(e) {
       e.preventDefault();
-      const payload = {
+      db.ref('aprendizes').push({
         categoria: document.getElementById('ap-categoria').value,
         nome: document.getElementById('ap-nome').value,
         inicio: document.getElementById('ap-inicio').value,
         status: document.getElementById('ap-status').value,
-        createdAt: Date.now()
-      };
-      db.ref('aprendizes').push(payload, () => {
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
         closeModal('modal-aprendiz');
         e.target.reset();
       });
@@ -870,29 +873,26 @@
 
     function saveSetorMembro(e) {
       e.preventDefault();
-      const payload = {
+      db.ref('setores').push({
         setor: document.getElementById('st-nome').value,
         membro: document.getElementById('st-membro').value,
         cargo: document.getElementById('st-cargo').value,
         funcao: document.getElementById('st-funcao').value,
-        ordem: 0,
-        createdAt: Date.now()
-      };
-      db.ref('setores').push(payload, () => {
-        closeModal('modal-setor');
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
+        closeModal('modal-setor').reset();
         e.target.reset();
       });
     }
 
     function saveMeta(e) {
       e.preventDefault();
-      const payload = {
+      db.ref('metas').push({
         titulo: document.getElementById('mt-titulo').value,
         progresso: document.getElementById('mt-progresso').value,
         prazo: document.getElementById('mt-prazo').value,
-        createdAt: Date.now()
-      };
-      db.ref('metas').push(payload, () => {
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
         closeModal('modal-meta');
         e.target.reset();
       });
@@ -900,13 +900,12 @@
 
     function saveBiblio(e) {
       e.preventDefault();
-      const payload = {
+      db.ref('biblioteca').push({
         titulo: document.getElementById('bb-titulo').value,
         categoria: document.getElementById('bb-categoria').value,
         link: document.getElementById('bb-link').value,
-        createdAt: Date.now()
-      };
-      db.ref('biblioteca').push(payload, () => {
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
         closeModal('modal-biblio');
         e.target.reset();
       });
@@ -918,15 +917,15 @@
       }
     }
 
-    // PESQUISA GLOBAL
+    // BUSCA GLOBAL DENTRO DOS ELEMENTOS
     function applyGlobalSearch() {
       const term = document.getElementById('global-search').value.toLowerCase();
-      document.querySelectorAll('.searchable-item').forEach(el => {
-        const text = el.innerText.toLowerCase();
+      document.querySelectorAll('.searchable-item').forEach(item => {
+        const text = item.innerText.toLowerCase();
         if (text.includes(term)) {
-          el.style.display = '';
+          item.style.display = '';
         } else {
-          el.style.display = 'none';
+          item.style.display = 'none';
         }
       });
     }
