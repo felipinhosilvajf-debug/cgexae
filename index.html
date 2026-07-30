@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CGEx OS - Central do Corregedor</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex">
+
+  <!-- MENU LATERAL -->
+  <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between hidden md:flex shrink-0">
+    <div>
+      <div class="p-5 border-b border-slate-800 flex items-center space-x-3">
+        <div class="p-2 bg-indigo-600 rounded-lg text-white">
+          <i class="ph-bold ph-shield-check text-xl"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-none tracking-wide text-white">CGEx OS</h1>
+          <span class="text-xs text-slate-400">Sistema Corregedor</span>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-1 text-sm font-medium" id="sidebar-nav">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">
+          <i class="ph-bold ph-house text-lg"></i>
+          <span>Dashboard</span>
+        </button>
+        <button onclick="switchTab('casos')" id="nav-casos" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+          <i class="ph-bold ph-gavel text-lg"></i>
+          <span>Casos Geral</span>
+        </button>
+        <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+          <i class="ph-bold ph-target text-lg"></i>
+          <span>Metas</span>
+        </button>
+        <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+          <i class="ph-bold ph-users-three text-lg"></i>
+          <span>Supervisores & Instrutores</span>
+        </button>
+        <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+          <i class="ph-bold ph-buildings text-lg"></i>
+          <span>Setores</span>
+        </button>
+        <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+          <i class="ph-bold ph-book-open text-lg"></i>
+          <span>Biblioteca</span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-slate-800">
+      <button onclick="switchTab('configuracoes')" id="nav-configuracoes" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-sm font-medium">
+        <i class="ph-bold ph-gear text-lg"></i>
+        <span>Configurações</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+
+    <!-- HEADER SUPERIOR -->
+    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10">
+      <div class="relative w-full max-w-md">
+        <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          type="text" 
+          id="global-search"
+          placeholder="Pesquisar nos casos, membros ou biblioteca..." 
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition placeholder-slate-500"
+        />
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="text-right hidden sm:block">
+          <p class="text-xs font-semibold text-slate-200">Painel Noturno</p>
+          <p class="text-[10px] text-slate-400">30/07/2026</p>
+        </div>
+        <div class="h-8 w-8 bg-indigo-600/30 border border-indigo-500 rounded-full flex items-center justify-center font-bold text-xs text-indigo-400">
+          CG
+        </div>
+      </div>
+    </header>
+
+    <div class="p-6 space-y-6 max-w-7xl w-full mx-auto">
+
+      <!-- ABA 1: DASHBOARD -->
+      <div id="tab-dashboard" class="tab-content active space-y-6">
+        <section class="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 rounded-xl p-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center space-x-2 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Central do Corregedor • Visão Geral</span>
+              </div>
+              <h2 class="text-2xl font-bold text-white">Status Operacional</h2>
+            </div>
+            <button onclick="openModal('caso')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
+              + Registrar Novo Caso
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+            <div class="bg-slate-950/50 border border-amber-500/20 rounded-lg p-3 text-center">
+              <span id="dash-exilios" class="text-2xl font-bold text-amber-400">0</span>
+              <span class="block text-[11px] text-slate-400 mt-0.5">Exílios</span>
+            </div>
+            <div class="bg-slate-950/50 border border-blue-500/20 rounded-lg p-3 text-center">
+              <span id="dash-rebaixamentos" class="text-2xl font-bold text-blue-400">0</span>
+              <span class="block text-[11px] text-slate-400 mt-0.5">Rebaixamentos</span>
+            </div>
+            <div class="bg-slate-950/50 border border-emerald-500/20 rounded-lg p-3 text-center">
+              <span id="dash-advertencias" class="text-2xl font-bold text-emerald-400">0</span>
+              <span class="block text-[11px] text-slate-400 mt-0.5">Advertências</span>
+            </div>
+            <div class="bg-slate-950/50 border border-purple-500/20 rounded-lg p-3 text-center">
+              <span id="dash-equipe" class="text-2xl font-bold text-purple-400">0</span>
+              <span class="block text-[11px] text-slate-400 mt-0.5">Equipe Total</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- AÇÕES RÁPIDAS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <button onclick="switchTab('casos')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
+            <i class="ph-bold ph-gavel text-amber-400 text-xl mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Casos & Punições</h4>
+            <p class="text-xs text-slate-400">Gerenciar exílios e advertências</p>
+          </button>
+          <button onclick="switchTab('metas')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
+            <i class="ph-bold ph-target text-indigo-400 text-xl mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Metas Semanais</h4>
+            <p class="text-xs text-slate-400">Acompanhar rendimento</p>
+          </button>
+          <button onclick="switchTab('setores')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
+            <i class="ph-bold ph-buildings text-sky-400 text-xl mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Setores Operacionais</h4>
+            <p class="text-xs text-slate-400">Atribuição de membros por categoria</p>
+          </button>
+          <button onclick="switchTab('biblioteca')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
+            <i class="ph-bold ph-book-open text-emerald-400 text-xl mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Biblioteca</h4>
+            <p class="text-xs text-slate-400">Modelos, frases e regras</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- ABA 2: CASOS -->
+      <div id="tab-casos" class="tab-content space-y-4">
+        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
+          <div>
+            <h3 class="font-bold text-lg text-white">Registro de Casos & Punições</h3>
+            <p class="text-xs text-slate-400">Exílios, Rebaixamentos e Advertências registrados</p>
+          </div>
+          <button onclick="openModal('caso')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
+            + Novo Caso
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-300">
+            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-3">Nome</th>
+                <th class="p-3">Tipo</th>
+                <th class="p-3">Motivo</th>
+                <th class="p-3">Data</th>
+                <th class="p-3">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="table-casos-body" class="divide-y divide-slate-800/50"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA 3: METAS -->
+      <div id="tab-metas" class="tab-content space-y-4">
+        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
+          <div>
+            <h3 class="font-bold text-lg text-white">Controle de Metas Semanal</h3>
+            <p class="text-xs text-slate-400">Monitore o cumprimento de metas de cada setor</p>
+          </div>
+          <button onclick="openModal('meta')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
+            + Nova Meta
+          </button>
+        </div>
+
+        <div id="grid-metas" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+      </div>
+
+      <!-- ABA 4: EQUIPE -->
+      <div id="tab-equipe" class="tab-content space-y-4">
+        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
+          <div>
+            <h3 class="font-bold text-lg text-white">Supervisores & Instrutores</h3>
+            <p class="text-xs text-slate-400">Membros da equipe e pendências técnicas</p>
+          </div>
+          <button onclick="openModal('equipe')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
+            + Novo Membro
+          </button>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
+          <table class="w-full text-left text-sm text-slate-300">
+            <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-3">Nome</th>
+                <th class="p-3">Cargo</th>
+                <th class="p-3">ID DISCORD</th>
+                <th class="p-3">Situação</th>
+                <th class="p-3">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="table-equipe-body" class="divide-y divide-slate-800/50"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA 5: SETORES (CATEGORIZADO) -->
+      <div id="tab-setores" class="tab-content space-y-6">
+        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
+          <div>
+            <h3 class="font-bold text-lg text-white">Divisão por Setores Operacionais</h3>
+            <p class="text-xs text-slate-400">Membros organizados individualmente por cada setor e função</p>
+          </div>
+          <button onclick="openModal('setor')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
+            + Adicionar ao Setor
+          </button>
+        </div>
+
+        <!-- CONTAINERS DOS SETORES -->
+        <div id="setores-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Gerado dinamicamente via JS -->
+        </div>
+      </div>
+
+      <!-- ABA 6: BIBLIOTECA -->
+      <div id="tab-biblioteca" class="tab-content space-y-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+          <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3">Biblioteca de Scripts & Regras</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <h4 class="font-bold text-indigo-400 text-sm">Script: Modelo de Exílio</h4>
+              <p class="text-xs text-slate-400 bg-slate-900 p-3 rounded font-mono border border-slate-800">
+                [EXÍLIO CGEx]<br>
+                Usuário: {NOME}<br>
+                Motivo: {MOTIVO}<br>
+                Data: {DATA}<br>
+                Veredito: Confirmado pela Corregedoria.
+              </p>
+              <button onclick="copyToClipboard('[EXÍLIO CGEx]\nUsuário: \nMotivo: \nData: \nVeredito: Confirmado.')" class="text-xs text-indigo-400 hover:underline">Copiar Script</button>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+              <h4 class="font-bold text-indigo-400 text-sm">Script: Modelo de Advertência</h4>
+              <p class="text-xs text-slate-400 bg-slate-900 p-3 rounded font-mono border border-slate-800">
+                [ADVERTÊNCIA CGEx]<br>
+                Usuário: {NOME}<br>
+                Infração: {MOTIVO}<br>
+                Qtd: {QUANTIDADE}ª Advertência
+              </p>
+              <button onclick="copyToClipboard('[ADVERTÊNCIA CGEx]\nUsuário: \nInfração: \nQtd: ')" class="text-xs text-indigo-400 hover:underline">Copiar Script</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 7: CONFIGURAÇÕES -->
+      <div id="tab-configuracoes" class="tab-content space-y-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+          <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3">Gerenciamento do Sistema</h3>
+          <p class="text-sm text-slate-400">Você pode apagar e redefinir todos os registros gravados no seu navegador.</p>
+          <button onclick="resetSystemData()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition">
+            ⚠️ Limpar e Resetar Todos os Dados
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL DINÂMICO PARA NOVO REGISTRO -->
+  <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-xl p-6 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <h3 id="modal-title" class="font-bold text-white text-lg">Novo Registro</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form id="modal-form" onsubmit="handleFormSubmit(event)" class="space-y-3">
+        <div id="modal-fields" class="space-y-3"></div>
+        <div class="flex justify-end space-x-2 pt-3">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // LISTA PADRÃO DE SETORES
+    const listaSetores = [
+      "Rebaixamento e Advertências",
+      "Exílios",
+      "Avais",
+      "Revogações",
+      "Promoções",
+      "Instrutores",
+      "Autorização"
+    ];
+
+    // ESTADO E PERSISTÊNCIA (localStorage)
+    const initialData = {
+      casos: [
+        { id: 1, nome: "Fulano_User", tipo: "Exílio", motivo: "Insubordinação grave", data: "2026-07-25" },
+        { id: 2, nome: "Beltrano_Officer", tipo: "Rebaixamento", motivo: "Meta zerada", data: "2026-07-28" }
+      ],
+      metas: [
+        { id: 1, setor: "Supervisores", porc: 100, desc: "10/10 Relatórios" },
+        { id: 2, setor: "Instrutores", porc: 60, desc: "6/10 Treinos" }
+      ],
+      equipe: [
+        { id: 1, nome: "Alpha_Supervisor", cargo: "Supervisor", contagem: "123456789", situacao: "Regular" },
+        { id: 2, nome: "Bravo_Instrutor", cargo: "Instrutor", contagem: "987654321", situacao: "Pendente Relatório" }
+      ],
+      setores: [
+        { id: 1, setor: "Rebaixamento e Advertências", nome: "Carlos_Officer", cargo: "Supervisor", funcao: "Relator de Punições" },
+        { id: 2, setor: "Exílios", nome: "Roberto_Corregedor", cargo: "Coordenador", funcao: "Auditor Final" },
+        { id: 3, setor: "Avais", nome: "Lucas_Supervisor", cargo: "Supervisor", funcao: "Avaliador" }
+      ]
+    };
+
+    let appData = JSON.parse(localStorage.getItem("cgex_db")) || initialData;
+    let currentModalType = "";
+
+    function saveData() {
+      localStorage.setItem("cgex_db", JSON.stringify(appData));
+      renderAll();
+    }
+
+    // NAVEGAÇÃO ENTRE ABAS
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+
+      document.querySelectorAll('#sidebar-nav button, #nav-configuracoes').forEach(btn => {
+        btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition";
+      });
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn) {
+        activeBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20";
+      }
+    }
+
+    // RENDERIZAÇÃO
+    function renderAll() {
+      // Dashboard Stats
+      document.getElementById('dash-exilios').innerText = appData.casos.filter(c => c.tipo === "Exílio").length;
+      document.getElementById('dash-rebaixamentos').innerText = appData.casos.filter(c => c.tipo === "Rebaixamento").length;
+      document.getElementById('dash-advertencias').innerText = appData.casos.filter(c => c.tipo === "Advertência").length;
+      document.getElementById('dash-equipe').innerText = appData.equipe.length;
+
+      // Render Tabela Casos
+      const casosBody = document.getElementById('table-casos-body');
+      casosBody.innerHTML = appData.casos.map(c => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3 font-semibold text-white">${c.nome}</td>
+          <td class="p-3"><span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded text-xs">${c.tipo}</span></td>
+          <td class="p-3 text-slate-400">${c.motivo}</td>
+          <td class="p-3 text-slate-400">${c.data}</td>
+          <td class="p-3"><button onclick="deleteItem('casos', ${c.id})" class="text-xs text-red-400 hover:underline">Deletar</button></td>
+        </tr>
+      `).join('');
+
+      // Render Grid Metas
+      const metasGrid = document.getElementById('grid-metas');
+      metasGrid.innerHTML = appData.metas.map(m => `
+        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
+          <div class="flex justify-between items-center text-sm">
+            <span class="font-bold text-white">${m.setor}</span>
+            <span class="text-xs font-semibold text-indigo-400">${m.porc}%</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2">
+            <div class="bg-indigo-500 h-2 rounded-full" style="width: ${m.porc}%"></div>
+          </div>
+          <div class="flex justify-between items-center text-xs text-slate-400">
+            <span>${m.desc}</span>
+            <button onclick="deleteItem('metas', ${m.id})" class="text-red-400 hover:underline">Apagar</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Render Tabela Equipe
+      const equipeBody = document.getElementById('table-equipe-body');
+      equipeBody.innerHTML = appData.equipe.map(e => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3 font-semibold text-white">${e.nome}</td>
+          <td class="p-3 text-slate-400">${e.cargo}</td>
+          <td class="p-3 text-slate-400 font-mono text-xs">${e.contagem}</td>
+          <td class="p-3"><span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-xs">${e.situacao}</span></td>
+          <td class="p-3"><button onclick="deleteItem('equipe', ${e.id})" class="text-xs text-red-400 hover:underline">Deletar</button></td>
+        </tr>
+      `).join('');
+
+      // Render Setores por Categorias
+      renderSetoresPorCategoria();
+    }
+
+    function renderSetoresPorCategoria() {
+      const container = document.getElementById('setores-container');
+      container.innerHTML = '';
+
+      listaSetores.forEach(nomeSetor => {
+        const membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
+
+        let membrosHTML = '';
+        if (membrosDoSetor.length === 0) {
+          membrosHTML = `<p class="text-xs text-slate-500 italic p-3">Nenhum membro atribuído a este setor.</p>`;
+        } else {
+          membrosHTML = `
+            <div class="divide-y divide-slate-800/60">
+              ${membrosDoSetor.map(m => `
+                <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-800/30 transition">
+                  <div>
+                    <span class="font-semibold text-white block text-sm">${m.nome}</span>
+                    <span class="text-indigo-400 font-medium">${m.cargo}</span> • <span class="text-slate-400">${m.funcao}</span>
+                  </div>
+                  <button onclick="deleteItem('setores', ${m.id})" class="text-red-400 hover:underline text-xs">Remover</button>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        container.innerHTML += `
+          <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col">
+            <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+              <h4 class="font-bold text-sm text-indigo-400 flex items-center gap-2">
+                <i class="ph-bold ph-folder text-indigo-500"></i> ${nomeSetor}
+              </h4>
+              <span class="text-xs bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-0.5 rounded-full font-bold">
+                ${membrosDoSetor.length}
+              </span>
+            </div>
+            <div class="flex-1">
+              ${membrosHTML}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // REMOVER REGISTROS
+    function deleteItem(category, id) {
+      if (confirm("Tem certeza que deseja apagar este registro?")) {
+        appData[category] = appData[category].filter(item => item.id !== id);
+        saveData();
+      }
+    }
+
+    // RESETA O SISTEMA
+    function resetSystemData() {
+      if (confirm("Deseja apagar todos os dados e restaurar o padrão?")) {
+        localStorage.removeItem("cgex_db");
+        appData = JSON.parse(JSON.stringify(initialData));
+        saveData();
+      }
+    }
+
+    // SISTEMA DE MODAIS DINÂMICOS
+    function openModal(type) {
+      currentModalType = type;
+      const modal = document.getElementById('modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalFields = document.getElementById('modal-fields');
+
+      if (type === 'caso') {
+        modalTitle.innerText = 'Novo Caso / Punição';
+        modalFields.innerHTML = `
+          <input type="text" id="field-nome" placeholder="Nome do usuário" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <select id="field-tipo" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+            <option value="Exílio">Exílio</option>
+            <option value="Rebaixamento">Rebaixamento</option>
+            <option value="Advertência">Advertência</option>
+          </select>
+          <input type="text" id="field-motivo" placeholder="Motivo" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="date" id="field-data" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+        `;
+      } else if (type === 'meta') {
+        modalTitle.innerText = 'Nova Meta';
+        modalFields.innerHTML = `
+          <input type="text" id="field-setor" placeholder="Setor / Nome da Meta" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="number" id="field-porc" placeholder="Porcentagem concluída (0 a 100)" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-desc" placeholder="Descrição / Qtd (Ex: 5/10 Treinos)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+        `;
+      } else if (type === 'equipe') {
+        modalTitle.innerText = 'Novo Membro da Equipe';
+        modalFields.innerHTML = `
+          <input type="text" id="field-nome" placeholder="Nome do Membro" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <select id="field-cargo" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+            <option value="Aprendiz">Aprendiz</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Instrutor">Instrutor</option>
+            <option value="Coordenador">Coordenador</option>
+          </select>
+          <input type="text" id="field-contagem" placeholder="ID DO DISCORD" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-situacao" placeholder="Situação (Ex: Regular, Pendente)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+        `;
+      } else if (type === 'setor') {
+        modalTitle.innerText = 'Atribuir ao Setor';
+        modalFields.innerHTML = `
+          <select id="field-setor-nome" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+            ${listaSetores.map(s => `<option value="${s}">${s}</option>`).join('')}
+          </select>
+          <input type="text" id="field-membro-nome" placeholder="Nome do Membro" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-membro-cargo" placeholder="Cargo (Ex: Supervisor, Coordenador)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-membro-funcao" placeholder="Função Específica (Ex: Auditor, Responsável)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+        `;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const id = Date.now();
+
+      if (currentModalType === 'caso') {
+        appData.casos.push({
+          id,
+          nome: document.getElementById('field-nome').value,
+          tipo: document.getElementById('field-tipo').value,
+          motivo: document.getElementById('field-motivo').value,
+          data: document.getElementById('field-data').value
+        });
+      } else if (currentModalType === 'meta') {
+        appData.metas.push({
+          id,
+          setor: document.getElementById('field-setor').value,
+          porc: document.getElementById('field-porc').value,
+          desc: document.getElementById('field-desc').value
+        });
+      } else if (currentModalType === 'equipe') {
+        appData.equipe.push({
+          id,
+          nome: document.getElementById('field-nome').value,
+          cargo: document.getElementById('field-cargo').value,
+          contagem: document.getElementById('field-contagem').value,
+          situacao: document.getElementById('field-situacao').value
+        });
+      } else if (currentModalType === 'setor') {
+        appData.setores.push({
+          id,
+          setor: document.getElementById('field-setor-nome').value,
+          nome: document.getElementById('field-membro-nome').value,
+          cargo: document.getElementById('field-membro-cargo').value,
+          funcao: document.getElementById('field-membro-funcao').value
+        });
+      }
+
+      saveData();
+      closeModal();
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert("Script copiado para a área de transferência!");
+    }
+
+    // Inicialização ao carregar a página
+    renderAll();
+  </script>
+</body>
+</html>
