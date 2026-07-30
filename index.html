@@ -24,12 +24,13 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex relative overflow-x-hidden">
 
-  <!-- OVERLAY ESCURO PARA MOBILE -->
-  <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden md:hidden"></div>
+  <!-- OVERLAY ESCURO PARA MOBILE (Ao clicar nele, fecha o menu) -->
+  <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden transition-opacity"></div>
 
   <!-- MENU LATERAL (SIDEBAR) -->
   <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between z-50 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out shrink-0">
     <div>
+      <!-- Cabeçalho da Sidebar -->
       <div class="p-5 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="p-2 bg-indigo-600 rounded-lg text-white">
@@ -40,34 +41,35 @@
             <span class="text-xs text-slate-400">Sistema Corregedor</span>
           </div>
         </div>
-        <!-- Botão para fechar sidebar no celular -->
-        <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1">
+        <!-- Botão 'X' para fechar no celular -->
+        <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1 rounded-lg">
           <i class="ph-bold ph-x text-xl"></i>
         </button>
       </div>
 
+      <!-- Links de Navegação -->
       <nav class="p-4 space-y-1 text-sm font-medium" id="sidebar-nav">
-        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 text-left">
           <i class="ph-bold ph-house text-lg"></i>
           <span>Dashboard</span>
         </button>
-        <button onclick="switchTab('casos')" id="nav-casos" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+        <button onclick="switchTab('casos')" id="nav-casos" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
           <i class="ph-bold ph-gavel text-lg"></i>
           <span>Casos Geral</span>
         </button>
-        <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+        <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
           <i class="ph-bold ph-target text-lg"></i>
           <span>Metas</span>
         </button>
-        <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+        <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
           <i class="ph-bold ph-student text-lg"></i>
           <span>Controle Aprendiz</span>
         </button>
-        <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+        <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
           <i class="ph-bold ph-buildings text-lg"></i>
           <span>Setores</span>
         </button>
-        <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
+        <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
           <i class="ph-bold ph-book-open text-lg"></i>
           <span>Biblioteca</span>
         </button>
@@ -75,7 +77,7 @@
     </div>
 
     <div class="p-4 border-t border-slate-800">
-      <button onclick="switchTab('configuracoes')" id="nav-configuracoes" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-sm font-medium">
+      <button onclick="switchTab('configuracoes')" id="nav-configuracoes" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-sm font-medium text-left">
         <i class="ph-bold ph-gear text-lg"></i>
         <span>Configurações</span>
       </button>
@@ -89,7 +91,7 @@
     <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30 space-x-3">
       <div class="flex items-center space-x-3 w-full max-w-md">
         <!-- BOTÃO HAMBÚRGUER (CELULAR) -->
-        <button onclick="toggleMobileSidebar()" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none shrink-0">
+        <button onclick="toggleMobileSidebar()" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none shrink-0 border border-slate-700">
           <i class="ph-bold ph-list text-xl"></i>
         </button>
 
@@ -101,7 +103,6 @@
             id="global-search"
             placeholder="Pesquisar..." 
             class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200 placeholder-slate-500"
-            onkeyup="applyGlobalSearch()"
           />
         </div>
       </div>
@@ -114,9 +115,10 @@
       </div>
     </header>
 
+    <!-- ÁREA DAS ABAS DE CONTEÚDO -->
     <div class="p-4 md:p-6 space-y-6 max-w-7xl w-full mx-auto">
 
-      <!-- ================= ABA 1: DASHBOARD ================= -->
+      <!-- ABA 1: DASHBOARD -->
       <section id="tab-dashboard" class="tab-content active space-y-6">
         <h2 class="text-xl font-bold tracking-tight">Visão Geral</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -151,313 +153,108 @@
         </div>
       </section>
 
-      <!-- ================= ABA 2: CASOS GERAL ================= -->
+      <!-- ABA 2: CASOS GERAL -->
       <section id="tab-casos" class="tab-content space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 class="text-xl font-bold">Registro de Casos</h2>
-          <button onclick="openCasoModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
-            <i class="ph-bold ph-plus"></i><span>Novo Caso</span>
-          </button>
         </div>
-
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
-          <table class="w-full text-left text-sm min-w-[600px]">
-            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th class="p-4">Membro</th>
-                <th class="p-4">Tipo</th>
-                <th class="p-4">Data / Período</th>
-                <th class="p-4">Motivo</th>
-                <th class="p-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="casos-list" class="divide-y divide-slate-800"></tbody>
-          </table>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p class="text-slate-400 text-sm">Conteúdo da aba Casos...</p>
         </div>
       </section>
 
-      <!-- ================= ABA 3: METAS ================= -->
+      <!-- ABA 3: METAS -->
       <section id="tab-metas" class="tab-content space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h2 class="text-xl font-bold">Controle de Metas</h2>
-          <button onclick="openMetaModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
-            <i class="ph-bold ph-plus"></i><span>Nova Meta</span>
-          </button>
+        <h2 class="text-xl font-bold">Controle de Metas</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p class="text-slate-400 text-sm">Conteúdo da aba Metas...</p>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="metas-list"></div>
       </section>
 
-      <!-- ================= ABA 4: CONTROLE APRENDIZ ================= -->
+      <!-- ABA 4: CONTROLE APRENDIZ -->
       <section id="tab-equipe" class="tab-content space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 class="text-xl font-bold">Controle de Aprendizes & Estagiários</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Gestão de membros em formação técnica</p>
-          </div>
-          <button onclick="openAprendizModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
-            <i class="ph-bold ph-plus"></i><span>Novo Membro</span>
-          </button>
+        <h2 class="text-xl font-bold">Controle Aprendiz</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p class="text-slate-400 text-sm">Conteúdo de Aprendizes...</p>
         </div>
+      </section>
 
-        <!-- Seção 1: Estagiários -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
-          <div classAqui está o código completo e atualizado. Adicionei um **botão de menu hambúrguer** (que aparece apenas em telas menores/celular) e uma barra lateral colapsável com transição suave, além de ajustar o layout para que todo o conteúdo fique 100% responsivo e bem enquadrado.
-
-### Código Completo (HTML, CSS e JS)
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Usuário</title>
-    <style>
-        /* --- RESET E ESTILOS GERAIS --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
-            color: #333;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* --- OVERLAY PARA DISPOSITIVOS MÓVEIS --- */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 99;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* --- BARRA LATERAL (SIDEBAR) --- */
-        .sidebar {
-            width: 250px;
-            background-color: #1e293b;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
-            z-index: 100;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            background-color: #0f172a;
-            border-bottom: 1px solid #334155;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 10px 0;
-            flex: 1;
-        }
-
-        .sidebar-menu li a {
-            display: block;
-            padding: 15px 20px;
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .sidebar-menu li a:hover,
-        .sidebar-menu li a.active {
-            color: #fff;
-            background-color: #334155;
-            border-left: 4px solid #3b82f6;
-        }
-
-        /* --- ÁREA PRINCIPAL --- */
-        .main-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            overflow-y: auto;
-        }
-
-        /* --- CABEÇALHO SUPERIOR (TOPBAR) --- */
-        .topbar {
-            background-color: #fff;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        /* Botão Hambúrguer (Mobile) */
-        .menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #1e293b;
-            margin-right: 15px;
-        }
-
-        .topbar h1 {
-            font-size: 1.25rem;
-            color: #1e293b;
-        }
-
-        /* --- CONTEÚDO DAS ABAS --- */
-        .content {
-            padding: 20px;
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-        }
-
-        .tab-panel {
-            display: none;
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        .tab-panel h2 {
-            margin-bottom: 15px;
-            color: #1e293b;
-        }
-
-        /* --- LAYOUT RESPONSIVO (TELAS ATÉ 768px) --- */
-        @media (max-width: 768px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100%;
-                transform: translateX(-100%); /* Esconde a sidebar fora da tela */
-            }
-
-            .sidebar.open {
-                transform: translateX(0); /* Mostra a sidebar */
-            }
-
-            .menu-btn {
-                display: block; /* Exibe o botão de menu no celular */
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Escurecimento de fundo ao abrir menu mobile -->
-    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
-
-    <!-- BARRA LATERAL -->
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span>Meu App</span>
+      <!-- ABA 5: SETORES -->
+      <section id="tab-setores" class="tab-content space-y-6">
+        <h2 class="text-xl font-bold">Setores</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p class="text-slate-400 text-sm">Conteúdo de Setores...</p>
         </div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="nav-link active" onclick="switchTab(event, 'aba1')">Dashboard</a></li>
-            <li><a href="#" class="nav-link" onclick="switchTab(event, 'aba2')">Relatórios</a></li>
-            <li><a href="#" class="nav-link" onclick="switchTab(event, 'aba3')">Configurações</a></li>
-        </ul>
-    </aside>
+      </section>
 
-    <!-- ÁREA DE CONTEÚDO PRINCIPAL -->
-    <div class="main-wrapper">
-        <header class="topbar">
-            <!-- Botão do Menu Hambúrguer -->
-            <button class="menu-btn" onclick="toggleSidebar()" aria-label="Abrir Menu">
-                &#9776;
-            </button>
-            <h1 id="page-title">Dashboard</h1>
-        </header>
+      <!-- ABA 6: BIBLIOTECA -->
+      <section id="tab-biblioteca" class="tab-content space-y-6">
+        <h2 class="text-xl font-bold">Biblioteca</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p class="text-slate-400 text-sm">Conteúdo da Biblioteca...</p>
+        </div>
+      </section>
 
-        <main class="content">
-            <!-- CONTEÚDO DA ABA 1 -->
-            <section id="aba1" class="tab-panel active">
-                <h2>Visão Geral</h2>
-                <p>Aqui fica o conteúdo da primeira aba. Todos os elementos foram adaptados para manter o alinhamento perfeito tanto no PC quanto no smartphone.</p>
-            </section>
+      <!-- ABA 7: CONFIGURAÇÕES -->
+      <section id="tab-configuracoes" class="tab-content space-y-6">
+        <h2 class="text-xl font-bold">Configurações</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4">
+          <p class="text-slate-400 text-sm">Ajustes do sistema...</p>
+        </div>
+      </section>
 
-            <!-- CONTEÚDO DA ABA 2 -->
-            <section id="aba2" class="tab-panel">
-                <h2>Relatórios detalhados</h2>
-                <p>Conteúdo referente aos relatórios da sua aplicação.</p>
-            </section>
-
-            <!-- CONTEÚDO DA ABA 3 -->
-            <section id="aba3" class="tab-panel">
-                <h2>Configurações do Sistema</h2>
-                <p>Ajustes e preferências gerais da conta.</p>
-            </section>
-        </main>
     </div>
+  </main>
 
-    <!-- JAVASCRIPT -->
-    <script>
-        // Função para alternar entre as abas
-        function switchTab(event, tabId) {
-            event.preventDefault();
+  <!-- JAVASCRIPT CORRIGIDO -->
+  <script>
+    // Função para Abrir / Fechar a Sidebar no Celular
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobile-overlay');
 
-            // Oculta todas as abas
-            const panels = document.querySelectorAll('.tab-panel');
-            panels.forEach(panel => panel.classList.remove('active'));
+      if (sidebar.classList.contains('-translate-x-full')) {
+        // Abrir
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        // Fechar
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
 
-            // Remove o destaque dos links do menu
-            const links = document.querySelectorAll('.nav-link');
-            links.forEach(link => link.classList.remove('active'));
+    // Função para Trocar de Aba
+    function switchTab(tabId) {
+      // 1. Esconder todo o conteúdo das abas
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
 
-            // Exibe a aba clicada e ativa o item do menu
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+      // 2. Mostrar a aba selecionada
+      const targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+      }
 
-            // Atualiza o título do topo
-            document.getElementById('page-title').innerText = event.currentTarget.innerText;
+      // 3. Atualizar estilos dos botões do menu
+      const navButtons = document.querySelectorAll('#sidebar-nav button, #nav-configuracoes');
+      navButtons.forEach(btn => {
+        btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left";
+      });
 
-            // Fecha o menu lateral automaticamente em dispositivos móveis
-            closeSidebar();
-        }
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 text-left font-medium";
+      }
 
-        // Abrir/Fechar a Sidebar no Celular
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-        }
-
-        // Fechar a Sidebar ao clicar fora
-        function closeSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        }
-    </script>
+      // 4. Fechar o menu automaticamente no celular ao clicar em uma aba
+      if (window.innerWidth < 768) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-overlay');
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+  </script>
 </body>
 </html>
