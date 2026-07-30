@@ -8,6 +8,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Firebase SDKs (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
@@ -43,15 +48,15 @@
         </button>
         <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-target text-lg"></i>
-          <span>Metas</span>
+          <span>Metas Setoriais</span>
         </button>
         <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-users-three text-lg"></i>
-          <span>Supervisores & Instrutores</span>
+          <span>Equipe & Desempenho</span>
         </button>
         <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-buildings text-lg"></i>
-          <span>Setores</span>
+          <span>Setores Operacionais</span>
         </button>
         <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-book-open text-lg"></i>
@@ -85,8 +90,10 @@
 
       <div class="flex items-center space-x-4">
         <div class="text-right hidden sm:block">
-          <p class="text-xs font-semibold text-slate-200">Painel Noturno</p>
-          <p class="text-[10px] text-slate-400">30/07/2026</p>
+          <p class="text-xs font-semibold text-slate-200">Painel Nuvem</p>
+          <p id="connection-status" class="text-[10px] text-emerald-400 flex items-center gap-1 justify-end">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Firebase Conectado
+          </p>
         </div>
         <div class="h-8 w-8 bg-indigo-600/30 border border-indigo-500 rounded-full flex items-center justify-center font-bold text-xs text-indigo-400">
           CG
@@ -103,7 +110,7 @@
             <div>
               <div class="flex items-center space-x-2 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-1">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Central do Corregedor • Visão Geral</span>
+                <span>Central do Corregedor • Sincronizado</span>
               </div>
               <h2 class="text-2xl font-bold text-white">Status Operacional</h2>
             </div>
@@ -132,7 +139,6 @@
           </div>
         </section>
 
-        <!-- AÇÕES RÁPIDAS -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <button onclick="switchTab('casos')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
             <i class="ph-bold ph-gavel text-amber-400 text-xl mb-1"></i>
@@ -144,15 +150,15 @@
             <h4 class="text-sm font-bold text-white">Metas Semanais</h4>
             <p class="text-xs text-slate-400">Acompanhar rendimento</p>
           </button>
+          <button onclick="switchTab('equipe')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
+            <i class="ph-bold ph-users-three text-emerald-400 text-xl mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Equipe & Desempenho</h4>
+            <p class="text-xs text-slate-400">Supervisores, Instrutores e Aprendizes</p>
+          </button>
           <button onclick="switchTab('setores')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
             <i class="ph-bold ph-buildings text-sky-400 text-xl mb-1"></i>
             <h4 class="text-sm font-bold text-white">Setores Operacionais</h4>
-            <p class="text-xs text-slate-400">Atribuição de membros por categoria</p>
-          </button>
-          <button onclick="switchTab('biblioteca')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
-            <i class="ph-bold ph-book-open text-emerald-400 text-xl mb-1"></i>
-            <h4 class="text-sm font-bold text-white">Biblioteca</h4>
-            <p class="text-xs text-slate-400">Modelos, frases e regras</p>
+            <p class="text-xs text-slate-400">Atribuição e prioridades por setor</p>
           </button>
         </div>
       </div>
@@ -185,30 +191,30 @@
         </div>
       </div>
 
-      <!-- ABA 3: METAS -->
+      <!-- ABA 3: METAS SETORIAIS -->
       <div id="tab-metas" class="tab-content space-y-4">
         <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
           <div>
-            <h3 class="font-bold text-lg text-white">Controle de Metas Semanal</h3>
-            <p class="text-xs text-slate-400">Monitore o cumprimento de metas de cada setor</p>
+            <h3 class="font-bold text-lg text-white">Controle de Metas Setoriais</h3>
+            <p class="text-xs text-slate-400">Monitore o cumprimento geral de metas de cada setor</p>
           </div>
           <button onclick="openModal('meta')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Nova Meta
+            + Nova Meta Setorial
           </button>
         </div>
 
         <div id="grid-metas" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- ABA 4: EQUIPE -->
+      <!-- ABA 4: EQUIPE (SUPERVISORES, INSTRUTORES & APRENDIZES) -->
       <div id="tab-equipe" class="tab-content space-y-4">
-        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl gap-4">
           <div>
-            <h3 class="font-bold text-lg text-white">Supervisores & Instrutores</h3>
-            <p class="text-xs text-slate-400">Membros da equipe e pendências técnicas</p>
+            <h3 class="font-bold text-lg text-white">Supervisores, Instrutores & Aprendizes</h3>
+            <p class="text-xs text-slate-400">Acompanhamento semanal de tickets e avaliação de desempenho</p>
           </div>
-          <button onclick="openModal('equipe')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Novo Membro
+          <button onclick="openModal('equipe')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition self-start sm:self-auto">
+            + Novo Membro da Equipe
           </button>
         </div>
 
@@ -217,10 +223,11 @@
             <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-3">Nome</th>
-                <th class="p-3">Cargo</th>
-                <th class="p-3">ID DISCORD</th>
-                <th class="p-3">Situação</th>
-                <th class="p-3">Ações</th>
+                <th class="p-3">Cargo / Função</th>
+                <th class="p-3">ID (Discord)</th>
+                <th class="p-3">Tickets Semanais</th>
+                <th class="p-3">Último Desempenho</th>
+                <th class="p-3 text-right">Ações</th>
               </tr>
             </thead>
             <tbody id="table-equipe-body" class="divide-y divide-slate-800/50"></tbody>
@@ -228,22 +235,19 @@
         </div>
       </div>
 
-      <!-- ABA 5: SETORES (CATEGORIZADO) -->
+      <!-- ABA 5: SETORES (ORGANIZAÇÃO E PRIORIZAÇÃO) -->
       <div id="tab-setores" class="tab-content space-y-6">
         <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
           <div>
             <h3 class="font-bold text-lg text-white">Divisão por Setores Operacionais</h3>
-            <p class="text-xs text-slate-400">Membros organizados individualmente por cada setor e função</p>
+            <p class="text-xs text-slate-400">Responsável destacado no topo e reordenação manual de membros (▲ / ▼)</p>
           </div>
           <button onclick="openModal('setor')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
             + Adicionar ao Setor
           </button>
         </div>
 
-        <!-- CONTAINERS DOS SETORES -->
-        <div id="setores-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Gerado dinamicamente via JS -->
-        </div>
+        <div id="setores-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
       </div>
 
       <!-- ABA 6: BIBLIOTECA -->
@@ -279,10 +283,10 @@
       <!-- ABA 7: CONFIGURAÇÕES -->
       <div id="tab-configuracoes" class="tab-content space-y-4">
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-          <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3">Gerenciamento do Sistema</h3>
-          <p class="text-sm text-slate-400">Você pode apagar e redefinir todos os registros gravados no seu navegador.</p>
+          <h3 class="font-bold text-lg text-white border-b border-slate-800 pb-3">Gerenciamento do Banco de Dados</h3>
+          <p class="text-sm text-slate-400">Esta ação limpa o banco de dados do Firebase para todos os usuários.</p>
           <button onclick="resetSystemData()" class="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition">
-            ⚠️ Limpar e Resetar Todos os Dados
+            ⚠️ Limpar Banco de Dados
           </button>
         </div>
       </div>
@@ -290,7 +294,7 @@
     </div>
   </main>
 
-  <!-- MODAL DINÂMICO PARA NOVO REGISTRO -->
+  <!-- MODAL DINÂMICO -->
   <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-xl p-6 space-y-4">
       <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -301,14 +305,31 @@
         <div id="modal-fields" class="space-y-3"></div>
         <div class="flex justify-end space-x-2 pt-3">
           <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">Salvar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold">Salvar na Nuvem</button>
         </div>
       </form>
     </div>
   </div>
 
   <script>
-    // LISTA PADRÃO DE SETORES
+    // -------------------------------------------------------------
+    // CONFIGURAÇÃO DO FIREBASE
+    // -------------------------------------------------------------
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6vkQZ-SOYbtEtXJOoRWV03PsTA2rUvoI", // Insira a sua API Key do Firebase
+      authDomain: "cgex-e7d18.firebaseapp.com",
+      databaseURL: "https://cgex-e7d18-default-rtdb.firebaseio.com",
+      projectId: "cgex-e7d18",
+      storageBucket: "cgex-e7d18.appspot.com",
+      messagingSenderId: "828709040823",
+      appId: "1:828709040823:web:bd54de8c0f6610c840d332" 
+    };
+
+    // Inicialização do Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // LISTA DE SETORES
     const listaSetores = [
       "Rebaixamento e Advertências",
       "Exílios",
@@ -319,33 +340,33 @@
       "Autorização"
     ];
 
-    // ESTADO E PERSISTÊNCIA (localStorage)
-    const initialData = {
-      casos: [
-        { id: 1, nome: "Fulano_User", tipo: "Exílio", motivo: "Insubordinação grave", data: "2026-07-25" },
-        { id: 2, nome: "Beltrano_Officer", tipo: "Rebaixamento", motivo: "Meta zerada", data: "2026-07-28" }
-      ],
-      metas: [
-        { id: 1, setor: "Supervisores", porc: 100, desc: "10/10 Relatórios" },
-        { id: 2, setor: "Instrutores", porc: 60, desc: "6/10 Treinos" }
-      ],
-      equipe: [
-        { id: 1, nome: "Alpha_Supervisor", cargo: "Supervisor", contagem: "123456789", situacao: "Regular" },
-        { id: 2, nome: "Bravo_Instrutor", cargo: "Instrutor", contagem: "987654321", situacao: "Pendente Relatório" }
-      ],
-      setores: [
-        { id: 1, setor: "Rebaixamento e Advertências", nome: "Carlos_Officer", cargo: "Supervisor", funcao: "Relator de Punições" },
-        { id: 2, setor: "Exílios", nome: "Roberto_Corregedor", cargo: "Coordenador", funcao: "Auditor Final" },
-        { id: 3, setor: "Avais", nome: "Lucas_Supervisor", cargo: "Supervisor", funcao: "Avaliador" }
-      ]
+    let appData = {
+      casos: [],
+      metas: [],
+      equipe: [],
+      setores: []
     };
 
-    let appData = JSON.parse(localStorage.getItem("cgex_db")) || initialData;
     let currentModalType = "";
 
-    function saveData() {
-      localStorage.setItem("cgex_db", JSON.stringify(appData));
+    // ESCUTAR MUDANÇAS EM TEMPO REAL NO FIREBASE
+    db.ref('cgex_db').on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        appData = {
+          casos: data.casos || [],
+          metas: data.metas || [],
+          equipe: data.equipe || [],
+          setores: data.setores || []
+        };
+      } else {
+        appData = { casos: [], metas: [], equipe: [], setores: [] };
+      }
       renderAll();
+    });
+
+    function saveData() {
+      db.ref('cgex_db').set(appData);
     }
 
     // NAVEGAÇÃO ENTRE ABAS
@@ -362,15 +383,14 @@
       }
     }
 
-    // RENDERIZAÇÃO
+    // RENDERIZAÇÃO GERAL
     function renderAll() {
-      // Dashboard Stats
       document.getElementById('dash-exilios').innerText = appData.casos.filter(c => c.tipo === "Exílio").length;
       document.getElementById('dash-rebaixamentos').innerText = appData.casos.filter(c => c.tipo === "Rebaixamento").length;
       document.getElementById('dash-advertencias').innerText = appData.casos.filter(c => c.tipo === "Advertência").length;
       document.getElementById('dash-equipe').innerText = appData.equipe.length;
 
-      // Render Tabela Casos
+      // Render Casos
       const casosBody = document.getElementById('table-casos-body');
       casosBody.innerHTML = appData.casos.map(c => `
         <tr class="hover:bg-slate-800/40 transition">
@@ -382,7 +402,7 @@
         </tr>
       `).join('');
 
-      // Render Grid Metas
+      // Render Metas
       const metasGrid = document.getElementById('grid-metas');
       metasGrid.innerHTML = appData.metas.map(m => `
         <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 space-y-2">
@@ -400,28 +420,72 @@
         </div>
       `).join('');
 
-      // Render Tabela Equipe
-      const equipeBody = document.getElementById('table-equipe-body');
-      equipeBody.innerHTML = appData.equipe.map(e => `
-        <tr class="hover:bg-slate-800/40 transition">
-          <td class="p-3 font-semibold text-white">${e.nome}</td>
-          <td class="p-3 text-slate-400">${e.cargo}</td>
-          <td class="p-3 text-slate-400 font-mono text-xs">${e.contagem}</td>
-          <td class="p-3"><span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-xs">${e.situacao}</span></td>
-          <td class="p-3"><button onclick="deleteItem('equipe', ${e.id})" class="text-xs text-red-400 hover:underline">Deletar</button></td>
-        </tr>
-      `).join('');
+      // Render Equipe (Supervisores, Instrutores & Aprendizes)
+      renderEquipeTable();
 
-      // Render Setores por Categorias
+      // Render Setores
       renderSetoresPorCategoria();
     }
 
+    // RENDER EQUIPE COM TICKETS E SITUAÇÃO BOM/MÉDIO/RUIM
+    function renderEquipeTable() {
+      const equipeBody = document.getElementById('table-equipe-body');
+      equipeBody.innerHTML = appData.equipe.map(e => {
+        let situacaoBadge = "";
+        const situacao = e.situacao || "Médio";
+        if (situacao === "Bom") {
+          situacaoBadge = `<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold">Bom</span>`;
+        } else if (situacao === "Ruim") {
+          situacaoBadge = `<span class="px-2 py-0.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full text-xs font-bold">Ruim</span>`;
+        } else {
+          situacaoBadge = `<span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full text-xs font-bold">Médio</span>`;
+        }
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="p-3 font-semibold text-white">${e.nome}</td>
+            <td class="p-3 text-indigo-400 text-xs font-medium">${e.cargo}</td>
+            <td class="p-3 text-slate-400 font-mono text-xs">${e.contagem}</td>
+            <td class="p-3 font-bold text-slate-200">${e.tickets || 0}</td>
+            <td class="p-3">${situacaoBadge}</td>
+            <td class="p-3 text-right space-x-2">
+              <button onclick="updateSituacao(${e.id})" class="text-xs text-indigo-400 hover:underline">Alterar Situação</button>
+              <button onclick="deleteItem('equipe', ${e.id})" class="text-xs text-red-400 hover:underline">Deletar</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateSituacao(id) {
+      const membro = appData.equipe.find(e => e.id === id);
+      if (!membro) return;
+
+      const novaSituacao = prompt("Defina a situação (Bom, Médio ou Ruim):", membro.situacao || "Médio");
+      if (novaSituacao && ["Bom", "Médio", "Ruim"].includes(novaSituacao.trim())) {
+        membro.situacao = novaSituacao.trim();
+        saveData();
+      } else if (novaSituacao !== null) {
+        alert("Opção inválida! Digite exatamente: Bom, Médio ou Ruim");
+      }
+    }
+
+    // RENDER SETORES COM DESTAQUE AO RESPONSÁVEL E BOTÕES SUBIR/DESCER
     function renderSetoresPorCategoria() {
       const container = document.getElementById('setores-container');
       container.innerHTML = '';
 
       listaSetores.forEach(nomeSetor => {
-        const membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
+        let membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
+
+        // ORDENAÇÃO: Garante que "Responsável" fique no topo
+        membrosDoSetor.sort((a, b) => {
+          const aResp = (a.funcao && a.funcao.toLowerCase().includes("responsável")) || (a.isResponsavel === true);
+          const bResp = (b.funcao && b.funcao.toLowerCase().includes("responsável")) || (b.isResponsavel === true);
+          if (aResp && !bResp) return -1;
+          if (!aResp && bResp) return 1;
+          return 0;
+        });
 
         let membrosHTML = '';
         if (membrosDoSetor.length === 0) {
@@ -429,15 +493,28 @@
         } else {
           membrosHTML = `
             <div class="divide-y divide-slate-800/60">
-              ${membrosDoSetor.map(m => `
-                <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-800/30 transition">
-                  <div>
-                    <span class="font-semibold text-white block text-sm">${m.nome}</span>
-                    <span class="text-indigo-400 font-medium">${m.cargo}</span> • <span class="text-slate-400">${m.funcao}</span>
+              ${membrosDoSetor.map((m, index) => {
+                const isResp = (m.funcao && m.funcao.toLowerCase().includes("responsável")) || m.isResponsavel;
+                
+                return `
+                  <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-800/30 transition ${isResp ? 'bg-amber-500/10 border-l-4 border-amber-500' : ''}">
+                    <div class="flex items-center space-x-3">
+                      <!-- Botões Mover Cima / Baixo -->
+                      <div class="flex flex-col text-[10px] text-slate-500">
+                        <button onclick="moveMember('${nomeSetor}', ${index}, -1)" class="hover:text-indigo-400 p-0.5">▲</button>
+                        <button onclick="moveMember('${nomeSetor}', ${index}, 1)" class="hover:text-indigo-400 p-0.5">▼</button>
+                      </div>
+                      <div>
+                        <span class="font-semibold ${isResp ? 'text-amber-300' : 'text-white'} block text-sm flex items-center gap-1">
+                          ${isResp ? '<i class="ph-bold ph-star text-amber-400"></i>' : ''} ${m.nome}
+                        </span>
+                        <span class="text-indigo-400 font-medium">${m.cargo}</span> • <span class="text-slate-400">${m.funcao}</span>
+                      </div>
+                    </div>
+                    <button onclick="deleteItem('setores', ${m.id})" class="text-red-400 hover:underline text-xs">Remover</button>
                   </div>
-                  <button onclick="deleteItem('setores', ${m.id})" class="text-red-400 hover:underline text-xs">Remover</button>
-                </div>
-              `).join('')}
+                `;
+              }).join('')}
             </div>
           `;
         }
@@ -460,7 +537,25 @@
       });
     }
 
-    // REMOVER REGISTROS
+    // MOVER MEMBROS PARA CIMA / BAIXO NO SETOR
+    function moveMember(nomeSetor, index, direction) {
+      const membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
+      const targetIndex = index + direction;
+
+      if (targetIndex < 0 || targetIndex >= membrosDoSetor.length) return;
+
+      // Troca os elementos de posição
+      const temp = membrosDoSetor[index];
+      membrosDoSetor[index] = membrosDoSetor[targetIndex];
+      membrosDoSetor[targetIndex] = temp;
+
+      // Atualiza o array global de setores mantendo a ordem relativa
+      const outrosSetores = appData.setores.filter(s => s.setor !== nomeSetor);
+      appData.setores = [...outrosSetores, ...membrosDoSetor];
+
+      saveData();
+    }
+
     function deleteItem(category, id) {
       if (confirm("Tem certeza que deseja apagar este registro?")) {
         appData[category] = appData[category].filter(item => item.id !== id);
@@ -468,16 +563,14 @@
       }
     }
 
-    // RESETA O SISTEMA
     function resetSystemData() {
-      if (confirm("Deseja apagar todos os dados e restaurar o padrão?")) {
-        localStorage.removeItem("cgex_db");
-        appData = JSON.parse(JSON.stringify(initialData));
+      if (confirm("Deseja apagar todos os dados do banco de dados na nuvem?")) {
+        appData = { casos: [], metas: [], equipe: [], setores: [] };
         saveData();
       }
     }
 
-    // SISTEMA DE MODAIS DINÂMICOS
+    // MODAIS DINÂMICOS
     function openModal(type) {
       currentModalType = type;
       const modal = document.getElementById('modal');
@@ -497,11 +590,11 @@
           <input type="date" id="field-data" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       } else if (type === 'meta') {
-        modalTitle.innerText = 'Nova Meta';
+        modalTitle.innerText = 'Nova Meta Setorial';
         modalFields.innerHTML = `
           <input type="text" id="field-setor" placeholder="Setor / Nome da Meta" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
           <input type="number" id="field-porc" placeholder="Porcentagem concluída (0 a 100)" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-desc" placeholder="Descrição / Qtd (Ex: 5/10 Treinos)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-desc" placeholder="Descrição / Meta (Ex: 10/10 Relatórios)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       } else if (type === 'equipe') {
         modalTitle.innerText = 'Novo Membro da Equipe';
@@ -513,8 +606,13 @@
             <option value="Instrutor">Instrutor</option>
             <option value="Coordenador">Coordenador</option>
           </select>
-          <input type="text" id="field-contagem" placeholder="ID DO DISCORD" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-situacao" placeholder="Situação (Ex: Regular, Pendente)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-contagem" placeholder="ID (Discord)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="number" id="field-tickets" placeholder="Tickets Concluídos na Semana" required min="0" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <select id="field-situacao" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+            <option value="Bom">Última Situação: Bom</option>
+            <option value="Médio" selected>Última Situação: Médio</option>
+            <option value="Ruim">Última Situação: Ruim</option>
+          </select>
         `;
       } else if (type === 'setor') {
         modalTitle.innerText = 'Atribuir ao Setor';
@@ -524,7 +622,7 @@
           </select>
           <input type="text" id="field-membro-nome" placeholder="Nome do Membro" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
           <input type="text" id="field-membro-cargo" placeholder="Cargo (Ex: Supervisor, Coordenador)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-membro-funcao" placeholder="Função Específica (Ex: Auditor, Responsável)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-membro-funcao" placeholder="Função Específica (Ex: Responsável, Auditor)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       }
 
@@ -560,15 +658,20 @@
           nome: document.getElementById('field-nome').value,
           cargo: document.getElementById('field-cargo').value,
           contagem: document.getElementById('field-contagem').value,
+          tickets: document.getElementById('field-tickets').value,
           situacao: document.getElementById('field-situacao').value
         });
       } else if (currentModalType === 'setor') {
+        const funcao = document.getElementById('field-membro-funcao').value;
+        const isResponsavel = funcao.toLowerCase().includes("responsável");
+
         appData.setores.push({
           id,
           setor: document.getElementById('field-setor-nome').value,
           nome: document.getElementById('field-membro-nome').value,
           cargo: document.getElementById('field-membro-cargo').value,
-          funcao: document.getElementById('field-membro-funcao').value
+          funcao: funcao,
+          isResponsavel: isResponsavel
         });
       }
 
@@ -580,9 +683,6 @@
       navigator.clipboard.writeText(text);
       alert("Script copiado para a área de transferência!");
     }
-
-    // Inicialização ao carregar a página
-    renderAll();
   </script>
 </body>
 </html>
