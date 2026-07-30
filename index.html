@@ -9,7 +9,7 @@
   <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
-  <!-- Firebase SDKs (Compat) -->
+  <!-- Firebase SDKs (Compat v9) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -48,15 +48,15 @@
         </button>
         <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-target text-lg"></i>
-          <span>Metas Setoriais</span>
+          <span>Metas</span>
         </button>
         <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-users-three text-lg"></i>
-          <span>Equipe & Desempenho</span>
+          <span>Supervisores & Instrutores</span>
         </button>
         <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-buildings text-lg"></i>
-          <span>Setores Operacionais</span>
+          <span>Setores</span>
         </button>
         <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-book-open text-lg"></i>
@@ -150,15 +150,15 @@
             <h4 class="text-sm font-bold text-white">Metas Semanais</h4>
             <p class="text-xs text-slate-400">Acompanhar rendimento</p>
           </button>
-          <button onclick="switchTab('equipe')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
-            <i class="ph-bold ph-users-three text-emerald-400 text-xl mb-1"></i>
-            <h4 class="text-sm font-bold text-white">Equipe & Desempenho</h4>
-            <p class="text-xs text-slate-400">Supervisores, Instrutores e Aprendizes</p>
-          </button>
           <button onclick="switchTab('setores')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
             <i class="ph-bold ph-buildings text-sky-400 text-xl mb-1"></i>
             <h4 class="text-sm font-bold text-white">Setores Operacionais</h4>
-            <p class="text-xs text-slate-400">Atribuição e prioridades por setor</p>
+            <p class="text-xs text-slate-400">Atribuição de membros por categoria</p>
+          </button>
+          <button onclick="switchTab('biblioteca')" class="p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-indigo-500/50 text-left transition">
+            <i class="ph-bold ph-book-open text-emerald-400 text-xl mb-1"></i>
+            <h4 class="text-sm font-bold text-white">Biblioteca</h4>
+            <p class="text-xs text-slate-400">Modelos, frases e regras</p>
           </button>
         </div>
       </div>
@@ -191,30 +191,30 @@
         </div>
       </div>
 
-      <!-- ABA 3: METAS SETORIAIS -->
+      <!-- ABA 3: METAS -->
       <div id="tab-metas" class="tab-content space-y-4">
         <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
           <div>
-            <h3 class="font-bold text-lg text-white">Controle de Metas Setoriais</h3>
-            <p class="text-xs text-slate-400">Monitore o cumprimento geral de metas de cada setor</p>
+            <h3 class="font-bold text-lg text-white">Controle de Metas Semanal</h3>
+            <p class="text-xs text-slate-400">Monitore o cumprimento de metas de cada setor</p>
           </div>
           <button onclick="openModal('meta')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
-            + Nova Meta Setorial
+            + Nova Meta
           </button>
         </div>
 
         <div id="grid-metas" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- ABA 4: EQUIPE (SUPERVISORES, INSTRUTORES & APRENDIZES) -->
+      <!-- ABA 4: EQUIPE -->
       <div id="tab-equipe" class="tab-content space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl gap-4">
+        <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
           <div>
-            <h3 class="font-bold text-lg text-white">Supervisores, Instrutores & Aprendizes</h3>
-            <p class="text-xs text-slate-400">Acompanhamento semanal de tickets e avaliação de desempenho</p>
+            <h3 class="font-bold text-lg text-white">Supervisores & Instrutores</h3>
+            <p class="text-xs text-slate-400">Membros da equipe e pendências técnicas</p>
           </div>
-          <button onclick="openModal('equipe')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition self-start sm:self-auto">
-            + Novo Membro da Equipe
+          <button onclick="openModal('equipe')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
+            + Novo Membro
           </button>
         </div>
 
@@ -223,11 +223,10 @@
             <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-3">Nome</th>
-                <th class="p-3">Cargo / Função</th>
-                <th class="p-3">ID (Discord)</th>
-                <th class="p-3">Tickets Semanais</th>
-                <th class="p-3">Último Desempenho</th>
-                <th class="p-3 text-right">Ações</th>
+                <th class="p-3">Cargo</th>
+                <th class="p-3">ID DISCORD</th>
+                <th class="p-3">Situação</th>
+                <th class="p-3">Ações</th>
               </tr>
             </thead>
             <tbody id="table-equipe-body" class="divide-y divide-slate-800/50"></tbody>
@@ -235,12 +234,12 @@
         </div>
       </div>
 
-      <!-- ABA 5: SETORES (ORGANIZAÇÃO E PRIORIZAÇÃO) -->
+      <!-- ABA 5: SETORES -->
       <div id="tab-setores" class="tab-content space-y-6">
         <div class="flex items-center justify-between bg-slate-900 p-4 border border-slate-800 rounded-xl">
           <div>
             <h3 class="font-bold text-lg text-white">Divisão por Setores Operacionais</h3>
-            <p class="text-xs text-slate-400">Responsável destacado no topo e reordenação manual de membros (▲ / ▼)</p>
+            <p class="text-xs text-slate-400">Membros organizados individualmente por cada setor e função</p>
           </div>
           <button onclick="openModal('setor')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs px-4 py-2 rounded-lg transition">
             + Adicionar ao Setor
@@ -313,23 +312,23 @@
 
   <script>
     // -------------------------------------------------------------
-    // CONFIGURAÇÃO DO FIREBASE
+    // CONFIGURAÇÃO COMPLETA DO FIREBASE
     // -------------------------------------------------------------
     const firebaseConfig = {
-      apiKey: "AIzaSyB6vkQZ-SOYbtEtXJOoRWV03PsTA2rUvoI", // Insira a sua API Key do Firebase
+      apiKey: "AIzaSyB6vkQZ-SOYbtEtXJOoRWV03PsTA2rUvoI",
       authDomain: "cgex-e7d18.firebaseapp.com",
       databaseURL: "https://cgex-e7d18-default-rtdb.firebaseio.com",
       projectId: "cgex-e7d18",
       storageBucket: "cgex-e7d18.appspot.com",
       messagingSenderId: "828709040823",
-      appId: "1:828709040823:web:bd54de8c0f6610c840d332" 
+      appId: "1:828709040823:web:bd54de8c0f6610c840d332"
     };
 
     // Inicialização do Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // LISTA DE SETORES
+    // LISTA DE SETORES DEFINIDOS
     const listaSetores = [
       "Rebaixamento e Advertências",
       "Exílios",
@@ -420,72 +419,28 @@
         </div>
       `).join('');
 
-      // Render Equipe (Supervisores, Instrutores & Aprendizes)
-      renderEquipeTable();
+      // Render Equipe
+      const equipeBody = document.getElementById('table-equipe-body');
+      equipeBody.innerHTML = appData.equipe.map(e => `
+        <tr class="hover:bg-slate-800/40 transition">
+          <td class="p-3 font-semibold text-white">${e.nome}</td>
+          <td class="p-3 text-slate-400">${e.cargo}</td>
+          <td class="p-3 text-slate-400 font-mono text-xs">${e.contagem}</td>
+          <td class="p-3"><span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-xs">${e.situacao}</span></td>
+          <td class="p-3"><button onclick="deleteItem('equipe', ${e.id})" class="text-xs text-red-400 hover:underline">Deletar</button></td>
+        </tr>
+      `).join('');
 
       // Render Setores
       renderSetoresPorCategoria();
     }
 
-    // RENDER EQUIPE COM TICKETS E SITUAÇÃO BOM/MÉDIO/RUIM
-    function renderEquipeTable() {
-      const equipeBody = document.getElementById('table-equipe-body');
-      equipeBody.innerHTML = appData.equipe.map(e => {
-        let situacaoBadge = "";
-        const situacao = e.situacao || "Médio";
-        if (situacao === "Bom") {
-          situacaoBadge = `<span class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold">Bom</span>`;
-        } else if (situacao === "Ruim") {
-          situacaoBadge = `<span class="px-2 py-0.5 bg-red-500/10 text-red-400 border border-red-500/20 rounded-full text-xs font-bold">Ruim</span>`;
-        } else {
-          situacaoBadge = `<span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full text-xs font-bold">Médio</span>`;
-        }
-
-        return `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="p-3 font-semibold text-white">${e.nome}</td>
-            <td class="p-3 text-indigo-400 text-xs font-medium">${e.cargo}</td>
-            <td class="p-3 text-slate-400 font-mono text-xs">${e.contagem}</td>
-            <td class="p-3 font-bold text-slate-200">${e.tickets || 0}</td>
-            <td class="p-3">${situacaoBadge}</td>
-            <td class="p-3 text-right space-x-2">
-              <button onclick="updateSituacao(${e.id})" class="text-xs text-indigo-400 hover:underline">Alterar Situação</button>
-              <button onclick="deleteItem('equipe', ${e.id})" class="text-xs text-red-400 hover:underline">Deletar</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function updateSituacao(id) {
-      const membro = appData.equipe.find(e => e.id === id);
-      if (!membro) return;
-
-      const novaSituacao = prompt("Defina a situação (Bom, Médio ou Ruim):", membro.situacao || "Médio");
-      if (novaSituacao && ["Bom", "Médio", "Ruim"].includes(novaSituacao.trim())) {
-        membro.situacao = novaSituacao.trim();
-        saveData();
-      } else if (novaSituacao !== null) {
-        alert("Opção inválida! Digite exatamente: Bom, Médio ou Ruim");
-      }
-    }
-
-    // RENDER SETORES COM DESTAQUE AO RESPONSÁVEL E BOTÕES SUBIR/DESCER
     function renderSetoresPorCategoria() {
       const container = document.getElementById('setores-container');
       container.innerHTML = '';
 
       listaSetores.forEach(nomeSetor => {
-        let membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
-
-        // ORDENAÇÃO: Garante que "Responsável" fique no topo
-        membrosDoSetor.sort((a, b) => {
-          const aResp = (a.funcao && a.funcao.toLowerCase().includes("responsável")) || (a.isResponsavel === true);
-          const bResp = (b.funcao && b.funcao.toLowerCase().includes("responsável")) || (b.isResponsavel === true);
-          if (aResp && !bResp) return -1;
-          if (!aResp && bResp) return 1;
-          return 0;
-        });
+        const membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
 
         let membrosHTML = '';
         if (membrosDoSetor.length === 0) {
@@ -493,28 +448,15 @@
         } else {
           membrosHTML = `
             <div class="divide-y divide-slate-800/60">
-              ${membrosDoSetor.map((m, index) => {
-                const isResp = (m.funcao && m.funcao.toLowerCase().includes("responsável")) || m.isResponsavel;
-                
-                return `
-                  <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-800/30 transition ${isResp ? 'bg-amber-500/10 border-l-4 border-amber-500' : ''}">
-                    <div class="flex items-center space-x-3">
-                      <!-- Botões Mover Cima / Baixo -->
-                      <div class="flex flex-col text-[10px] text-slate-500">
-                        <button onclick="moveMember('${nomeSetor}', ${index}, -1)" class="hover:text-indigo-400 p-0.5">▲</button>
-                        <button onclick="moveMember('${nomeSetor}', ${index}, 1)" class="hover:text-indigo-400 p-0.5">▼</button>
-                      </div>
-                      <div>
-                        <span class="font-semibold ${isResp ? 'text-amber-300' : 'text-white'} block text-sm flex items-center gap-1">
-                          ${isResp ? '<i class="ph-bold ph-star text-amber-400"></i>' : ''} ${m.nome}
-                        </span>
-                        <span class="text-indigo-400 font-medium">${m.cargo}</span> • <span class="text-slate-400">${m.funcao}</span>
-                      </div>
-                    </div>
-                    <button onclick="deleteItem('setores', ${m.id})" class="text-red-400 hover:underline text-xs">Remover</button>
+              ${membrosDoSetor.map(m => `
+                <div class="p-3 flex items-center justify-between text-xs hover:bg-slate-800/30 transition">
+                  <div>
+                    <span class="font-semibold text-white block text-sm">${m.nome}</span>
+                    <span class="text-indigo-400 font-medium">${m.cargo}</span> • <span class="text-slate-400">${m.funcao}</span>
                   </div>
-                `;
-              }).join('')}
+                  <button onclick="deleteItem('setores', ${m.id})" class="text-red-400 hover:underline text-xs">Remover</button>
+                </div>
+              `).join('')}
             </div>
           `;
         }
@@ -535,25 +477,6 @@
           </div>
         `;
       });
-    }
-
-    // MOVER MEMBROS PARA CIMA / BAIXO NO SETOR
-    function moveMember(nomeSetor, index, direction) {
-      const membrosDoSetor = appData.setores.filter(s => s.setor === nomeSetor);
-      const targetIndex = index + direction;
-
-      if (targetIndex < 0 || targetIndex >= membrosDoSetor.length) return;
-
-      // Troca os elementos de posição
-      const temp = membrosDoSetor[index];
-      membrosDoSetor[index] = membrosDoSetor[targetIndex];
-      membrosDoSetor[targetIndex] = temp;
-
-      // Atualiza o array global de setores mantendo a ordem relativa
-      const outrosSetores = appData.setores.filter(s => s.setor !== nomeSetor);
-      appData.setores = [...outrosSetores, ...membrosDoSetor];
-
-      saveData();
     }
 
     function deleteItem(category, id) {
@@ -590,11 +513,11 @@
           <input type="date" id="field-data" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       } else if (type === 'meta') {
-        modalTitle.innerText = 'Nova Meta Setorial';
+        modalTitle.innerText = 'Nova Meta';
         modalFields.innerHTML = `
           <input type="text" id="field-setor" placeholder="Setor / Nome da Meta" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
           <input type="number" id="field-porc" placeholder="Porcentagem concluída (0 a 100)" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-desc" placeholder="Descrição / Meta (Ex: 10/10 Relatórios)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-desc" placeholder="Descrição / Qtd (Ex: 5/10 Treinos)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       } else if (type === 'equipe') {
         modalTitle.innerText = 'Novo Membro da Equipe';
@@ -606,13 +529,8 @@
             <option value="Instrutor">Instrutor</option>
             <option value="Coordenador">Coordenador</option>
           </select>
-          <input type="text" id="field-contagem" placeholder="ID (Discord)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="number" id="field-tickets" placeholder="Tickets Concluídos na Semana" required min="0" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <select id="field-situacao" class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-            <option value="Bom">Última Situação: Bom</option>
-            <option value="Médio" selected>Última Situação: Médio</option>
-            <option value="Ruim">Última Situação: Ruim</option>
-          </select>
+          <input type="text" id="field-contagem" placeholder="ID DO DISCORD" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-situacao" placeholder="Situação (Ex: Regular, Pendente)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       } else if (type === 'setor') {
         modalTitle.innerText = 'Atribuir ao Setor';
@@ -622,7 +540,7 @@
           </select>
           <input type="text" id="field-membro-nome" placeholder="Nome do Membro" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
           <input type="text" id="field-membro-cargo" placeholder="Cargo (Ex: Supervisor, Coordenador)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
-          <input type="text" id="field-membro-funcao" placeholder="Função Específica (Ex: Responsável, Auditor)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
+          <input type="text" id="field-membro-funcao" placeholder="Função Específica (Ex: Auditor, Responsável)" required class="w-full bg-slate-950 border border-slate-800 p-2 rounded text-sm text-white">
         `;
       }
 
@@ -658,20 +576,15 @@
           nome: document.getElementById('field-nome').value,
           cargo: document.getElementById('field-cargo').value,
           contagem: document.getElementById('field-contagem').value,
-          tickets: document.getElementById('field-tickets').value,
           situacao: document.getElementById('field-situacao').value
         });
       } else if (currentModalType === 'setor') {
-        const funcao = document.getElementById('field-membro-funcao').value;
-        const isResponsavel = funcao.toLowerCase().includes("responsável");
-
         appData.setores.push({
           id,
           setor: document.getElementById('field-setor-nome').value,
           nome: document.getElementById('field-membro-nome').value,
           cargo: document.getElementById('field-membro-cargo').value,
-          funcao: funcao,
-          isResponsavel: isResponsavel
+          funcao: document.getElementById('field-membro-funcao').value
         });
       }
 
