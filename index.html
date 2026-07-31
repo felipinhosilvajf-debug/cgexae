@@ -11,6 +11,7 @@
   
   <!-- Firebase SDKs (Compat v9) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <style>
@@ -20,6 +21,7 @@
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    .auth-only { display: none; } /* Oculta elementos que exigem login por padrão */
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex">
@@ -100,6 +102,27 @@
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span>Online</span>
         </div>
+
+        <!-- CONTROLE DE LOGIN / AUTENTICAÇÃO -->
+        <div id="auth-controls">
+          <!-- Botão Entrar (Visitante) -->
+          <button id="btn-login-open" onclick="openLoginModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-xs font-semibold text-white transition flex items-center space-x-1.5">
+            <i class="ph-bold ph-sign-in text-sm"></i>
+            <span>Entrar</span>
+          </button>
+          
+          <!-- Menu do Usuário Logado -->
+          <div id="user-logged-info" class="hidden flex items-center space-x-2">
+            <span class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-1 rounded font-semibold flex items-center space-x-1">
+              <i class="ph-bold ph-user-check"></i>
+              <span id="user-email-display">Admin</span>
+            </span>
+            <button onclick="logout()" class="px-2.5 py-1 bg-slate-800 hover:bg-rose-900/40 text-slate-300 hover:text-rose-400 border border-slate-700 hover:border-rose-500/30 rounded-lg text-xs font-semibold transition flex items-center space-x-1">
+              <i class="ph-bold ph-sign-out text-sm"></i>
+              <span>Sair</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -144,7 +167,7 @@
       <section id="tab-casos" class="tab-content space-y-6">
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-bold">Registro de Casos</h2>
-          <button onclick="openCasoModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openCasoModal()" class="auth-only px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Caso</span>
           </button>
         </div>
@@ -158,7 +181,7 @@
                 <th class="p-4">Tipo</th>
                 <th class="p-4">Data / Período</th>
                 <th class="p-4">Motivo</th>
-                <th class="p-4 text-right">Ações</th>
+                <th class="p-4 text-right auth-only">Ações</th>
               </tr>
             </thead>
             <tbody id="casos-list" class="divide-y divide-slate-800"></tbody>
@@ -170,7 +193,7 @@
       <section id="tab-metas" class="tab-content space-y-6">
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-bold">Controle de Metas</h2>
-          <button onclick="openMetaModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openMetaModal()" class="auth-only px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Nova Meta</span>
           </button>
         </div>
@@ -185,7 +208,7 @@
             <h2 class="text-xl font-bold">Controle de Aprendizes & Estagiários</h2>
             <p class="text-xs text-slate-400 mt-0.5">Gestão de membros em formação técnica</p>
           </div>
-          <button onclick="openAprendizModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openAprendizModal()" class="auth-only px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Membro</span>
           </button>
         </div>
@@ -206,7 +229,7 @@
                   <th class="p-4">Nome do Membro</th>
                   <th class="p-4">ID</th>
                   <th class="p-4">Status/Tickets</th>
-                  <th class="p-4 text-right">Ações</th>
+                  <th class="p-4 text-right auth-only">Ações</th>
                 </tr>
               </thead>
               <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
@@ -230,7 +253,7 @@
                   <th class="p-4">Nome do Membro</th>
                   <th class="p-4">ID</th>
                   <th class="p-4">Status/Tickets</th>
-                  <th class="p-4 text-right">Ações</th>
+                  <th class="p-4 text-right auth-only">Ações</th>
                 </tr>
               </thead>
               <tbody id="aprendizes-list" class="divide-y divide-slate-800"></tbody>
@@ -243,7 +266,7 @@
       <section id="tab-setores" class="tab-content space-y-6">
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-bold">Divisão por Setores Operacionais</h2>
-          <button onclick="openSetorModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openSetorModal()" class="auth-only px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Atribuir ao Setor</span>
           </button>
         </div>
@@ -257,7 +280,7 @@
       <section id="tab-biblioteca" class="tab-content space-y-6">
         <div class="flex items-center justify-between">
           <h2 class="text-xl font-bold">Biblioteca de Documentos & Modelos</h2>
-          <button onclick="openBiblioModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openBiblioModal()" class="auth-only px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Documento</span>
           </button>
         </div>
@@ -282,7 +305,8 @@
               <label class="block text-xs font-semibold text-slate-400 mb-1">Project ID</label>
               <input type="text" id="cfg-projectId" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
             </div>
-            <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-sm transition">Salvar na Nuvem</button>
+            <button type="submit" class="auth-only w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-sm transition">Salvar na Nuvem</button>
+            <p id="cfg-readonly-warning" class="text-xs text-amber-400/80 italic mt-2">Você precisa estar logado como Administrador para alterar as configurações do banco.</p>
           </form>
         </div>
       </section>
@@ -291,6 +315,36 @@
   </main>
 
   <!-- ================= MODAIS ================= -->
+
+  <!-- Modal Login -->
+  <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <i class="ph-bold ph-lock-key text-indigo-400 text-xl"></i>
+          <h3 class="font-bold text-lg text-white">Acesso Restrito</h3>
+        </div>
+        <button onclick="closeModal('modal-login')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div id="login-error" class="hidden p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs rounded-lg"></div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">E-mail do Administrador</label>
+          <input type="email" id="login-email" required placeholder="corregedoria@cgex.com" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-200" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Senha de Acesso</label>
+          <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-200" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2 border-t border-slate-800">
+          <button type="button" onclick="closeModal('modal-login')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-semibold text-slate-300">Cancelar</button>
+          <button type="submit" id="btn-submit-login" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white flex items-center space-x-2">
+            <span>Autenticar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Modal Casos Geral -->
   <div id="modal-caso" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
@@ -498,6 +552,8 @@
     };
 
     let db = null;
+    let auth = null;
+    let currentUser = null;
     let cacheAprendizes = {};
 
     // Inicialização
@@ -517,14 +573,88 @@
           firebase.initializeApp(savedConfig);
         }
         db = firebase.database();
-        listenToDatabase();
+        auth = firebase.auth();
+
+        // Monitorar estado de autenticação
+        auth.onAuthStateChanged(user => {
+          currentUser = user;
+          updateAuthUI(user);
+          listenToDatabase(); // Atualiza a renderização de acordo com as permissões
+        });
+
       } catch (err) {
         console.error("Erro Firebase:", err);
       }
     }
 
+    function updateAuthUI(user) {
+      const btnLoginOpen = document.getElementById('btn-login-open');
+      const userLoggedInfo = document.getElementById('user-logged-info');
+      const userEmailDisplay = document.getElementById('user-email-display');
+      const cfgWarning = document.getElementById('cfg-readonly-warning');
+
+      if (user) {
+        // Usuário Logado
+        btnLoginOpen.classList.add('hidden');
+        userLoggedInfo.classList.remove('hidden');
+        userEmailDisplay.innerText = user.email ? user.email.split('@')[0] : 'Admin';
+
+        document.querySelectorAll('.auth-only').forEach(el => el.style.display = 'flex');
+        if (cfgWarning) cfgWarning.classList.add('hidden');
+      } else {
+        // Visitante (Modo Somente Leitura)
+        btnLoginOpen.classList.remove('hidden');
+        userLoggedInfo.classList.add('hidden');
+
+        document.querySelectorAll('.auth-only').forEach(el => el.style.display = 'none');
+        if (cfgWarning) cfgWarning.classList.remove('hidden');
+      }
+    }
+
+    // Modal de Login & Autenticação
+    function openLoginModal() {
+      document.getElementById('login-error').classList.add('hidden');
+      document.getElementById('modal-login').classList.remove('hidden');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const pass = document.getElementById('login-password').value;
+      const errorDiv = document.getElementById('login-error');
+      const btnSubmit = document.getElementById('btn-submit-login');
+
+      errorDiv.classList.add('hidden');
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = "Verificando...";
+
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => {
+          closeModal('modal-login');
+          e.target.reset();
+        })
+        .catch(err => {
+          errorDiv.innerText = "Falha no login: " + (err.message || "Credenciais inválidas.");
+          errorDiv.classList.remove('hidden');
+        })
+        .finally(() => {
+          btnSubmit.disabled = false;
+          btnSubmit.innerText = "Autenticar";
+        });
+    }
+
+    function logout() {
+      if (confirm("Deseja encerrar a sessão de administrador?")) {
+        auth.signOut();
+      }
+    }
+
     function saveFirebaseConfig(e) {
       e.preventDefault();
+      if (!currentUser) {
+        alert("Apenas administradores logados podem alterar a configuração do Firebase!");
+        return;
+      }
       const config = {
         apiKey: document.getElementById('cfg-apiKey').value,
         databaseURL: document.getElementById('cfg-databaseURL').value,
@@ -553,8 +683,9 @@
       }
     }
 
-    // Modal Helpers (CORRIGIDO)
+    // Modal Helpers
     function openCasoModal() { 
+      if (!currentUser) return alert("Acesso negado: Faça login para adicionar registros.");
       document.getElementById('caso-data').valueAsDate = new Date();
       document.getElementById('caso-discord-id').value = '';
       document.getElementById('caso-data-inicio').valueAsDate = new Date();
@@ -564,6 +695,7 @@
     }
 
     function openAprendizModal(key = null) {
+      if (!currentUser) return alert("Acesso negado: Faça login para alterar registros.");
       const modal = document.getElementById('modal-aprendiz');
       const title = document.getElementById('modal-aprendiz-title');
       
@@ -587,9 +719,18 @@
       modal.classList.remove('hidden');
     }
 
-    function openSetorModal() { document.getElementById('modal-setor').classList.remove('hidden'); }
-    function openMetaModal() { document.getElementById('modal-meta').classList.remove('hidden'); }
-    function openBiblioModal() { document.getElementById('modal-biblio').classList.remove('hidden'); }
+    function openSetorModal() { 
+      if (!currentUser) return alert("Acesso negado: Faça login para gerenciar setores.");
+      document.getElementById('modal-setor').classList.remove('hidden'); 
+    }
+    function openMetaModal() { 
+      if (!currentUser) return alert("Acesso negado: Faça login para gerenciar metas.");
+      document.getElementById('modal-meta').classList.remove('hidden'); 
+    }
+    function openBiblioModal() { 
+      if (!currentUser) return alert("Acesso negado: Faça login para alterar a biblioteca.");
+      document.getElementById('modal-biblio').classList.remove('hidden'); 
+    }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
     // Alternar campos de data conforme tipo no Caso Geral
@@ -657,6 +798,10 @@
           dateDisplay = `${c.dataInicio} até ${c.dataFim}`;
         }
 
+        const actionsCell = currentUser 
+          ? `<td class="p-4 text-right"><button onclick="deleteRecord('casos/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button></td>` 
+          : '';
+
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-900/50 transition searchable-item";
         tr.innerHTML = `
@@ -665,9 +810,7 @@
           <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeColor}">${c.tipo}</span></td>
           <td class="p-4 text-slate-400 text-xs">${dateDisplay}</td>
           <td class="p-4 text-slate-300 max-w-xs truncate">${c.motivo}</td>
-          <td class="p-4 text-right">
-            <button onclick="deleteRecord('casos/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-          </td>
+          ${actionsCell}
         `;
         list.appendChild(tr);
       });
@@ -696,12 +839,12 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-900/50 transition searchable-item";
 
-        const actionsHTML = `
+        const actionsHTML = currentUser ? `
           <td class="p-4 text-right space-x-1">
             <button onclick="openAprendizModal('${key}')" class="text-slate-500 hover:text-indigo-400 p-1" title="Editar"><i class="ph-bold ph-pencil-simple"></i></button>
             <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1" title="Excluir"><i class="ph-bold ph-trash"></i></button>
           </td>
-        `;
+        ` : '';
 
         if (categoria === 'Estagiário') {
           countEstagiarios++;
@@ -724,7 +867,6 @@
         }
       });
 
-      // Atualiza os contadores no cabeçalho dos cartões
       document.getElementById('total-estagiarios').innerText = countEstagiarios;
       document.getElementById('total-aprendizes').innerText = countAprendizes;
 
@@ -736,7 +878,7 @@
       }
     }
 
-    // RENDERIZAR SETORES OPERACIONAIS (LISTA ATUALIZADA DE SETORES)
+    // RENDERIZAR SETORES OPERACIONAIS
     function renderSetores(data) {
       const container = document.getElementById('setores-container');
       container.innerHTML = '';
@@ -769,21 +911,18 @@
           }
         });
 
-        // Ordenar por hierarquia
         membrosSetor.sort((a, b) => {
-			const aResponsavel = a.funcao === "Responsável";
-			const bResponsavel = b.funcao === "Responsável";
+          const aResponsavel = a.funcao === "Responsável";
+          const bResponsavel = b.funcao === "Responsável";
 
-		// Responsável sempre fica acima
-		if (aResponsavel && !bResponsavel) return -1;
-		if (!aResponsavel && bResponsavel) return 1;
+          if (aResponsavel && !bResponsavel) return -1;
+          if (!aResponsavel && bResponsavel) return 1;
 
-		// Depois segue a hierarquia dos cargos
-			const oA = hierarquiaOrdem[a.cargo] || 99;
-			const oB = hierarquiaOrdem[b.cargo] || 99;
+          const oA = hierarquiaOrdem[a.cargo] || 99;
+          const oB = hierarquiaOrdem[b.cargo] || 99;
 
-			return oA - oB;
-		});
+          return oA - oB;
+        });
 
         let membrosHTML = '';
         if (membrosSetor.length === 0) {
@@ -809,6 +948,10 @@
               badgeStyle = "bg-indigo-500/20 text-indigo-300 border-indigo-500/30";
             }
 
+            const deleteBtnHTML = currentUser 
+              ? `<button onclick="deleteRecord('setores/${m.key}')" class="text-slate-600 hover:text-rose-400 p-1 transition"><i class="ph-bold ph-trash"></i></button>` 
+              : '';
+
             membrosHTML += `
               <div class="flex items-center justify-between p-3 rounded-lg border ${bgStyle} transition searchable-item">
                 <div class="space-y-0.5">
@@ -821,7 +964,7 @@
                     <span class="text-[11px] text-slate-400">${m.funcao || 'Auditor'}</span>
                   </div>
                 </div>
-                <button onclick="deleteRecord('setores/${m.key}')" class="text-slate-600 hover:text-rose-400 p-1 transition"><i class="ph-bold ph-trash"></i></button>
+                ${deleteBtnHTML}
               </div>
             `;
           });
@@ -856,13 +999,18 @@
         const m = metas[key];
         const card = document.createElement('div');
         card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 searchable-item";
+        
+        const deleteBtnHTML = currentUser 
+          ? `<button onclick="deleteRecord('metas/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>` 
+          : '';
+
         card.innerHTML = `
           <div class="flex justify-between items-start">
             <div>
               <h3 class="font-semibold text-slate-200">${m.titulo}</h3>
               <p class="text-xs text-slate-400 mt-0.5">Target: ${m.prazo}</p>
             </div>
-            <button onclick="deleteRecord('metas/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
+            ${deleteBtnHTML}
           </div>
           <div>
             <div class="flex justify-between text-xs font-semibold mb-1">
@@ -887,6 +1035,11 @@
         const d = docs[key];
         const card = document.createElement('div');
         card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between hover:border-slate-700 transition searchable-item";
+        
+        const deleteBtnHTML = currentUser 
+          ? `<button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400 p-2"><i class="ph-bold ph-trash"></i></button>` 
+          : '';
+
         card.innerHTML = `
           <div class="flex items-center space-x-3">
             <div class="p-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-lg">
@@ -901,7 +1054,7 @@
             <a href="${d.link}" target="_blank" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center space-x-1 transition">
               <i class="ph-bold ph-arrow-square-out"></i>
             </a>
-            <button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400 p-2"><i class="ph-bold ph-trash"></i></button>
+            ${deleteBtnHTML}
           </div>
         `;
         container.appendChild(card);
@@ -911,6 +1064,8 @@
     // ================= SALVAMENTO DE REGISTROS =================
     function saveCaso(e) {
       e.preventDefault();
+      if (!currentUser) return alert("Sessão expirada ou não autorizada.");
+
       const tipo = document.getElementById('caso-tipo').value;
       const dataObj = {
         membro: document.getElementById('caso-membro').value,
@@ -935,6 +1090,8 @@
 
     function saveAprendiz(e) {
       e.preventDefault();
+      if (!currentUser) return alert("Sessão expirada ou não autorizada.");
+
       const key = document.getElementById('ap-key').value;
       const payload = {
         categoria: document.getElementById('ap-categoria').value,
@@ -959,6 +1116,8 @@
 
     function saveSetorMembro(e) {
       e.preventDefault();
+      if (!currentUser) return alert("Sessão expirada ou não autorizada.");
+
       db.ref('setores').push({
         setor: document.getElementById('st-nome').value,
         membro: document.getElementById('st-membro').value,
@@ -973,6 +1132,8 @@
 
     function saveMeta(e) {
       e.preventDefault();
+      if (!currentUser) return alert("Sessão expirada ou não autorizada.");
+
       db.ref('metas').push({
         titulo: document.getElementById('mt-titulo').value,
         progresso: document.getElementById('mt-progresso').value,
@@ -986,6 +1147,8 @@
 
     function saveBiblio(e) {
       e.preventDefault();
+      if (!currentUser) return alert("Sessão expirada ou não autorizada.");
+
       db.ref('biblioteca').push({
         titulo: document.getElementById('bb-titulo').value,
         categoria: document.getElementById('bb-categoria').value,
@@ -998,6 +1161,10 @@
     }
 
     function deleteRecord(path) {
+      if (!currentUser) {
+        alert("Apenas usuários autorizados/logados podem excluir registros!");
+        return;
+      }
       if (confirm("Deseja realmente excluir este registro?")) {
         db.ref(path).remove();
       }
