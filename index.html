@@ -206,7 +206,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Nome do Membro</th>
-                <th class="p-4">Início</th>
+                <th class="p-4">ID</th>
                 <th class="p-4">Status/Tickets</th>
                 <th class="p-4 text-right">Ações</th>
               </tr>
@@ -226,7 +226,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Nome do Membro</th>
-                <th class="p-4">Início</th>
+                <th class="p-4">ID</th>
                 <th class="p-4">Status/Tickets</th>
                 <th class="p-4 text-right">Ações</th>
               </tr>
@@ -317,9 +317,13 @@ class="hidden fixed inset-0 bg-black/50 z-40">
 
         <div id="caso-date-range" class="hidden space-y-3">
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
-            <input type="date" id="caso-data-inicio" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-          </div>
+		<label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+		<input
+			type="text"
+			id="caso-data-inicio"
+			placeholder="Ex.: 30/07/2026"
+			class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+		</div>
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1">Data Término (Até)</label>
             <input type="date" id="caso-data-fim" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
@@ -358,9 +362,13 @@ class="hidden fixed inset-0 bg-black/50 z-40">
           <input type="text" id="ap-nome" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
-          <input type="date" id="ap-inicio" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-        </div>
+		<label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+		<input
+			type="text"
+			id="ap-inicio"
+			placeholder="Ex.: 30/07/2026"
+			class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+		</div>
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1">Status / Observações</label>
           <input type="text" id="ap-status" placeholder="Ex: Bom / 400 tickets" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
