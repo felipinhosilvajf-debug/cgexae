@@ -754,10 +754,19 @@
 
         // Ordenar por hierarquia
         membrosSetor.sort((a, b) => {
-          const oA = hierarquiaOrdem[a.cargo] || 99;
-          const oB = hierarquiaOrdem[b.cargo] || 99;
-          return oA - oB;
-        });
+			const aResponsavel = a.funcao === "Responsável";
+			const bResponsavel = b.funcao === "Responsável";
+
+		// Responsável sempre fica acima
+		if (aResponsavel && !bResponsavel) return -1;
+		if (!aResponsavel && bResponsavel) return 1;
+
+		// Depois segue a hierarquia dos cargos
+			const oA = hierarquiaOrdem[a.cargo] || 99;
+			const oB = hierarquiaOrdem[b.cargo] || 99;
+
+			return oA - oB;
+		});
 
         let membrosHTML = '';
         if (membrosSetor.length === 0) {
