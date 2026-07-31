@@ -74,22 +74,16 @@
       </button>
     </div>
   </aside>
-<div
-id="overlay"
-onclick="toggleSidebar()"
-class="hidden fixed inset-0 bg-black/50 z-40">
-</div>
+  <div id="overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/50 z-40"></div>
+
   <!-- CONTEÚDO PRINCIPAL -->
   <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
 
     <!-- HEADER SUPERIOR -->
     <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10">
-	<button
-    id="menuBtn"
-    class="md:hidden mr-3 text-white text-2xl"
-    onclick="toggleSidebar()">
-    <i class="ph-bold ph-list"></i>
-</button>
+      <button id="menuBtn" class="md:hidden mr-3 text-white text-2xl" onclick="toggleSidebar()">
+        <i class="ph-bold ph-list"></i>
+      </button>
       <div class="relative w-full max-w-md">
         <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
         <input 
@@ -156,7 +150,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         </div>
 
         <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
-			<table class="min-w-[800px] w-full text-left text-sm">
+          <table class="min-w-[800px] w-full text-left text-sm">
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Membro</th>
@@ -196,43 +190,45 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         </div>
 
         <!-- Seção 1: Estagiários -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl">
-		  <div class="overflow-x-auto">
-          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
-            <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
-            <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
+              <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
+              <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
+            </div>
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+                <tr>
+                  <th class="p-4">Nome do Membro</th>
+                  <th class="p-4">ID</th>
+                  <th class="p-4">Status/Tickets</th>
+                  <th class="p-4 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
+            </table>
           </div>
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th class="p-4">Nome do Membro</th>
-                <th class="p-4">ID</th>
-                <th class="p-4">Status/Tickets</th>
-                <th class="p-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
-          </table>
         </div>
 
         <!-- Seção 2: Aprendizes -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
           <div class="overflow-x-auto">
-          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
-            <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
-            <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
+            <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
+              <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
+              <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
+            </div>
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+                <tr>
+                  <th class="p-4">Nome do Membro</th>
+                  <th class="p-4">ID</th>
+                  <th class="p-4">Status/Tickets</th>
+                  <th class="p-4 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="aprendizes-list" class="divide-y divide-slate-800"></tbody>
+            </table>
           </div>
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
-              <tr>
-                <th class="p-4">Nome do Membro</th>
-                <th class="p-4">ID</th>
-                <th class="p-4">Status/Tickets</th>
-                <th class="p-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody id="aprendizes-list" class="divide-y divide-slate-800"></tbody>
-          </table>
         </div>
       </section>
 
@@ -317,13 +313,9 @@ class="hidden fixed inset-0 bg-black/50 z-40">
 
         <div id="caso-date-range" class="hidden space-y-3">
           <div>
-		<label class="block text-xs font-medium text-slate-400 mb-1">ID Discord</label>
-		<input
-			type="text"
-			id="caso-data-inicio"
-			placeholder="ID"
-			class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-		</div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">ID Discord</label>
+            <input type="text" id="caso-data-inicio" placeholder="ID" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+          </div>
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1">Data Término (Até)</label>
             <input type="date" id="caso-data-fim" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
@@ -342,14 +334,15 @@ class="hidden fixed inset-0 bg-black/50 z-40">
     </div>
   </div>
 
-  <!-- Modal Aprendiz / Estagiário -->
+  <!-- Modal Aprendiz / Estagiário (Criar / Editar) -->
   <div id="modal-aprendiz" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
       <div class="flex justify-between items-center">
-        <h3 class="font-bold text-lg">Novo Aprendiz / Estagiário</h3>
+        <h3 class="font-bold text-lg" id="modal-aprendiz-title">Novo Aprendiz / Estagiário</h3>
         <button onclick="closeModal('modal-aprendiz')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
       </div>
       <form onsubmit="saveAprendiz(event)" class="space-y-3">
+        <input type="hidden" id="ap-key" value="" />
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
           <select id="ap-categoria" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
@@ -362,13 +355,9 @@ class="hidden fixed inset-0 bg-black/50 z-40">
           <input type="text" id="ap-nome" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
         </div>
         <div>
-		<label class="block text-xs font-medium text-slate-400 mb-1">ID Discord</label>
-		<input
-			type="text"
-			id="ap-inicio"
-			placeholder="ID"
-			class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
-		</div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">ID Discord</label>
+          <input type="text" id="ap-inicio" placeholder="ID" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+        </div>
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1">Status / Observações</label>
           <input type="text" id="ap-status" placeholder="Ex: Bom / 400 tickets" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
@@ -408,6 +397,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1">Cargo Hierárquico</label>
           <select id="st-cargo" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Sec. Departamento">Sec. Departamento (Topo Supremo)</option>
             <option value="Corregedor Geral">Corregedor Geral (Topo)</option>
             <option value="Corregedor">Corregedor (Destaque)</option>
             <option value="Coordenador">Coordenador</option>
@@ -497,6 +487,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
     };
 
     let db = null;
+    let cacheAprendizes = {};
 
     // Inicialização
     window.addEventListener('DOMContentLoaded', () => {
@@ -535,9 +526,9 @@ class="hidden fixed inset-0 bg-black/50 z-40">
 
     // Navegação de Abas
     function switchTab(tabId) {
-	if (window.innerWidth < 768) {
-		toggleSidebar();
-		}
+      if (window.innerWidth < 768) {
+        toggleSidebar();
+      }
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById(`tab-${tabId}`).classList.add('active');
 
@@ -559,7 +550,31 @@ class="hidden fixed inset-0 bg-black/50 z-40">
       handleCasoTipoChange();
       document.getElementById('modal-caso').classList.remove('hidden'); 
     }
-    function openAprendizModal() { document.getElementById('modal-aprendiz').classList.remove('hidden'); }
+
+    function openAprendizModal(key = null) {
+      const modal = document.getElementById('modal-aprendiz');
+      const title = document.getElementById('modal-aprendiz-title');
+      
+      if (key && cacheAprendizes[key]) {
+        title.innerText = "Editar Aprendiz / Estagiário";
+        const item = cacheAprendizes[key];
+        document.getElementById('ap-key').value = key;
+        document.getElementById('ap-categoria').value = item.categoria || 'Aprendiz';
+        document.getElementById('ap-nome').value = item.nome || '';
+        document.getElementById('ap-inicio').value = item.inicio || '';
+        document.getElementById('ap-status').value = item.status || '';
+      } else {
+        title.innerText = "Novo Aprendiz / Estagiário";
+        document.getElementById('ap-key').value = "";
+        document.getElementById('ap-categoria').value = "Estagiário";
+        document.getElementById('ap-nome').value = "";
+        document.getElementById('ap-inicio').value = "";
+        document.getElementById('ap-status').value = "";
+      }
+      
+      modal.classList.remove('hidden');
+    }
+
     function openSetorModal() { document.getElementById('modal-setor').classList.remove('hidden'); }
     function openMetaModal() { document.getElementById('modal-meta').classList.remove('hidden'); }
     function openBiblioModal() { document.getElementById('modal-biblio').classList.remove('hidden'); }
@@ -590,7 +605,8 @@ class="hidden fixed inset-0 bg-black/50 z-40">
       });
 
       db.ref('aprendizes').on('value', snapshot => {
-        renderAprendizes(snapshot.val() || {});
+        cacheAprendizes = snapshot.val() || {};
+        renderAprendizes(cacheAprendizes);
       });
 
       db.ref('setores').on('value', snapshot => {
@@ -667,15 +683,20 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-900/50 transition searchable-item";
 
+        const actionsHTML = `
+          <td class="p-4 text-right space-x-1">
+            <button onclick="openAprendizModal('${key}')" class="text-slate-500 hover:text-indigo-400 p-1" title="Editar"><i class="ph-bold ph-pencil-simple"></i></button>
+            <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1" title="Excluir"><i class="ph-bold ph-trash"></i></button>
+          </td>
+        `;
+
         if (categoria === 'Estagiário') {
           countEstagiarios++;
           tr.innerHTML = `
             <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
             <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
             <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">${item.status}</span></td>
-            <td class="p-4 text-right">
-              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-            </td>
+            ${actionsHTML}
           `;
           listEstagiarios.appendChild(tr);
         } else {
@@ -684,9 +705,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
             <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
             <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
             <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status}</span></td>
-            <td class="p-4 text-right">
-              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
-            </td>
+            ${actionsHTML}
           `;
           listAprendizes.appendChild(tr);
         }
@@ -716,12 +735,13 @@ class="hidden fixed inset-0 bg-black/50 z-40">
       ];
 
       const hierarquiaOrdem = {
-        "Corregedor Geral": 1,
-        "Corregedor": 2,
-        "Coordenador": 3,
-        "Supervisor": 4,
-        "Analista": 5,
-        "Sênior": 6
+        "Sec. Departamento": 1,
+        "Corregedor Geral": 2,
+        "Corregedor": 3,
+        "Coordenador": 4,
+        "Supervisor": 5,
+        "Analista": 6,
+        "Sênior": 7
       };
 
       listaSetores.forEach(setorNome => {
@@ -744,6 +764,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
           membrosHTML = `<p class="text-xs text-slate-500 italic p-3 text-center">Nenhum membro neste setor.</p>`;
         } else {
           membrosSetor.forEach(m => {
+            const isSecDep = m.cargo === "Sec. Departamento";
             const isCorregedorGeral = m.cargo === "Corregedor Geral";
             const isCorregedor = m.cargo === "Corregedor";
             const isResponsavel = m.funcao === "Responsável";
@@ -751,7 +772,10 @@ class="hidden fixed inset-0 bg-black/50 z-40">
             let bgStyle = "bg-slate-950/60 border-slate-800/80";
             let badgeStyle = "bg-slate-800 text-slate-400 border-slate-700";
 
-            if (isCorregedorGeral) {
+            if (isSecDep) {
+              bgStyle = "bg-gradient-to-r from-purple-950/40 to-slate-900 border-purple-500/40 shadow-sm";
+              badgeStyle = "bg-purple-500/20 text-purple-300 border-purple-500/30";
+            } else if (isCorregedorGeral) {
               bgStyle = "bg-gradient-to-r from-amber-950/40 to-slate-900 border-amber-500/40 shadow-sm";
               badgeStyle = "bg-amber-500/20 text-amber-300 border-amber-500/30";
             } else if (isCorregedor) {
@@ -884,16 +908,26 @@ class="hidden fixed inset-0 bg-black/50 z-40">
 
     function saveAprendiz(e) {
       e.preventDefault();
-      db.ref('aprendizes').push({
+      const key = document.getElementById('ap-key').value;
+      const payload = {
         categoria: document.getElementById('ap-categoria').value,
         nome: document.getElementById('ap-nome').value,
         inicio: document.getElementById('ap-inicio').value,
-        status: document.getElementById('ap-status').value,
-        createdAt: firebase.database.ServerValue.TIMESTAMP
-      }, () => {
-        closeModal('modal-aprendiz');
-        e.target.reset();
-      });
+        status: document.getElementById('ap-status').value
+      };
+
+      if (key) {
+        db.ref(`aprendizes/${key}`).update(payload, () => {
+          closeModal('modal-aprendiz');
+          e.target.reset();
+        });
+      } else {
+        payload.createdAt = firebase.database.ServerValue.TIMESTAMP;
+        db.ref('aprendizes').push(payload, () => {
+          closeModal('modal-aprendiz');
+          e.target.reset();
+        });
+      }
     }
 
     function saveSetorMembro(e) {
@@ -942,13 +976,14 @@ class="hidden fixed inset-0 bg-black/50 z-40">
       }
     }
 
-	function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
 
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");
-	}
+      sidebar.classList.toggle("-translate-x-full");
+      overlay.classList.toggle("hidden");
+    }
+
     // BUSCA GLOBAL DENTRO DOS ELEMENTOS
     function applyGlobalSearch() {
       const term = document.getElementById('global-search').value.toLowerCase();
