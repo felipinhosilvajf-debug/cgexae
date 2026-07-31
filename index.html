@@ -154,6 +154,7 @@
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Membro</th>
+                <th class="p-4">ID Discord</th>
                 <th class="p-4">Tipo</th>
                 <th class="p-4">Data / Período</th>
                 <th class="p-4">Motivo</th>
@@ -311,16 +312,20 @@
           <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
           <input type="text" id="caso-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
         </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">ID Discord</label>
+          <input type="text" id="caso-discord-id" placeholder="ID Discord" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+        </div>
         
         <div id="caso-date-single">
           <label class="block text-xs font-medium text-slate-400 mb-1">Data da Ocorrência</label>
-          <input type="date" id="caso-data" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+          <input type="date" id="caso-data" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
         </div>
 
         <div id="caso-date-range" class="hidden space-y-3">
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">ID Discord</label>
-            <input type="text" id="caso-data-inicio" placeholder="ID" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+            <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+            <input type="date" id="caso-data-inicio" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
           </div>
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1">Data Término (Até)</label>
@@ -551,7 +556,8 @@
     // Modal Helpers (CORRIGIDO)
     function openCasoModal() { 
       document.getElementById('caso-data').valueAsDate = new Date();
-      document.getElementById('caso-data-inicio').value = '';
+      document.getElementById('caso-discord-id').value = '';
+      document.getElementById('caso-data-inicio').valueAsDate = new Date();
       document.getElementById('caso-data-fim').valueAsDate = new Date();
       handleCasoTipoChange();
       document.getElementById('modal-caso').classList.remove('hidden'); 
@@ -655,6 +661,7 @@
         tr.className = "hover:bg-slate-900/50 transition searchable-item";
         tr.innerHTML = `
           <td class="p-4 font-semibold text-slate-200">${c.membro}</td>
+          <td class="p-4 text-slate-400 text-xs">${c.discordId || 'N/A'}</td>
           <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeColor}">${c.tipo}</span></td>
           <td class="p-4 text-slate-400 text-xs">${dateDisplay}</td>
           <td class="p-4 text-slate-300 max-w-xs truncate">${c.motivo}</td>
@@ -907,6 +914,7 @@
       const tipo = document.getElementById('caso-tipo').value;
       const dataObj = {
         membro: document.getElementById('caso-membro').value,
+        discordId: document.getElementById('caso-discord-id').value,
         tipo: tipo,
         motivo: document.getElementById('caso-motivo').value,
         createdAt: firebase.database.ServerValue.TIMESTAMP
