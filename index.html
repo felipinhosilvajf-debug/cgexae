@@ -155,8 +155,8 @@ class="hidden fixed inset-0 bg-black/50 z-40">
           </button>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-          <table class="w-full text-left text-sm">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
+			<table class="min-w-[800px] w-full text-left text-sm">
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Membro</th>
@@ -196,7 +196,8 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         </div>
 
         <!-- Seção 1: Estagiários -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl">
+		  <div class="overflow-x-auto">
           <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
             <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
             <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
@@ -206,7 +207,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
               <tr>
                 <th class="p-4">Nome do Membro</th>
                 <th class="p-4">Início</th>
-                <th class="p-4">Status / Progresso</th>
+                <th class="p-4">Status/Tickets</th>
                 <th class="p-4 text-right">Ações</th>
               </tr>
             </thead>
@@ -215,7 +216,8 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         </div>
 
         <!-- Seção 2: Aprendizes -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl">
+          <div class="overflow-x-auto">
           <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
             <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
             <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
@@ -225,7 +227,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
               <tr>
                 <th class="p-4">Nome do Membro</th>
                 <th class="p-4">Início</th>
-                <th class="p-4">Status / Progresso</th>
+                <th class="p-4">Status/Tickets</th>
                 <th class="p-4 text-right">Ações</th>
               </tr>
             </thead>
@@ -361,7 +363,7 @@ class="hidden fixed inset-0 bg-black/50 z-40">
         </div>
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1">Status / Observações</label>
-          <input type="text" id="ap-status" placeholder="Ex: Em avaliação / Módulo I" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+          <input type="text" id="ap-status" placeholder="Ex: Bom / 400 tickets" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
         </div>
         <div class="flex justify-end space-x-2 pt-2">
           <button type="button" onclick="closeModal('modal-aprendiz')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
