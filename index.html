@@ -192,9 +192,12 @@
         <!-- Seção 1: Estagiários -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
           <div class="overflow-x-auto">
-            <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
-              <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
-              <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
+            <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
+                <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
+              </div>
+              <span id="total-estagiarios" class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-medium">0</span>
             </div>
             <table class="w-full text-left text-sm">
               <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
@@ -213,9 +216,12 @@
         <!-- Seção 2: Aprendizes -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
           <div class="overflow-x-auto">
-            <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
-              <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
-              <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
+            <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
+                <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
+              </div>
+              <span id="total-aprendizes" class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-medium">0</span>
             </div>
             <table class="w-full text-left text-sm">
               <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
@@ -710,6 +716,10 @@
           listAprendizes.appendChild(tr);
         }
       });
+
+      // Atualiza os contadores no cabeçalho dos cartões
+      document.getElementById('total-estagiarios').innerText = countEstagiarios;
+      document.getElementById('total-aprendizes').innerText = countAprendizes;
 
       if (countEstagiarios === 0) {
         listEstagiarios.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum estagiário cadastrado.</td></tr>`;
