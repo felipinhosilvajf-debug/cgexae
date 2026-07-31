@@ -548,10 +548,10 @@
       }
     }
 
-    // Modal Helpers
+    // Modal Helpers (CORRIGIDO)
     function openCasoModal() { 
       document.getElementById('caso-data').valueAsDate = new Date();
-      document.getElementById('caso-data-inicio').valueAsDate = new Date();
+      document.getElementById('caso-data-inicio').value = '';
       document.getElementById('caso-data-fim').valueAsDate = new Date();
       handleCasoTipoChange();
       document.getElementById('modal-caso').classList.remove('hidden'); 
