@@ -22,54 +22,43 @@
     .tab-content.active { display: block; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex relative overflow-x-hidden">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex">
 
-  <!-- OVERLAY ESCURO PARA MOBILE -->
-  <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden transition-opacity"></div>
-
-  <!-- MENU LATERAL (SIDEBAR) -->
-  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between z-50 transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out shrink-0">
+  <!-- MENU LATERAL -->
+  <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between hidden md:flex shrink-0">
     <div>
-      <!-- Cabeçalho da Sidebar -->
-      <div class="p-5 border-b border-slate-800 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="p-2 bg-indigo-600 rounded-lg text-white">
-            <i class="ph-bold ph-shield-check text-xl"></i>
-          </div>
-          <div>
-            <h1 class="font-bold text-lg leading-none tracking-wide text-white">CGEx OS</h1>
-            <span class="text-xs text-slate-400">Sistema Corregedor</span>
-          </div>
+      <div class="p-5 border-b border-slate-800 flex items-center space-x-3">
+        <div class="p-2 bg-indigo-600 rounded-lg text-white">
+          <i class="ph-bold ph-shield-check text-xl"></i>
         </div>
-        <!-- Botão para fechar sidebar no celular -->
-        <button onclick="toggleMobileSidebar()" class="md:hidden text-slate-400 hover:text-white p-1 rounded-lg">
-          <i class="ph-bold ph-x text-xl"></i>
-        </button>
+        <div>
+          <h1 class="font-bold text-lg leading-none tracking-wide text-white">CGEx OS</h1>
+          <span class="text-xs text-slate-400">Sistema Corregedor</span>
+        </div>
       </div>
 
-      <!-- Links de Navegação -->
       <nav class="p-4 space-y-1 text-sm font-medium" id="sidebar-nav">
-        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 text-left">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20">
           <i class="ph-bold ph-house text-lg"></i>
           <span>Dashboard</span>
         </button>
-        <button onclick="switchTab('casos')" id="nav-casos" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
+        <button onclick="switchTab('casos')" id="nav-casos" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-gavel text-lg"></i>
           <span>Casos Geral</span>
         </button>
-        <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
+        <button onclick="switchTab('metas')" id="nav-metas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-target text-lg"></i>
           <span>Metas</span>
         </button>
-        <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
+        <button onclick="switchTab('equipe')" id="nav-equipe" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-student text-lg"></i>
           <span>Controle Aprendiz</span>
         </button>
-        <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
+        <button onclick="switchTab('setores')" id="nav-setores" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-buildings text-lg"></i>
           <span>Setores</span>
         </button>
-        <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-left">
+        <button onclick="switchTab('biblioteca')" id="nav-biblioteca" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition">
           <i class="ph-bold ph-book-open text-lg"></i>
           <span>Biblioteca</span>
         </button>
@@ -77,7 +66,7 @@
     </div>
 
     <div class="p-4 border-t border-slate-800">
-      <button onclick="switchTab('configuracoes')" id="nav-configuracoes" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-sm font-medium text-left">
+      <button onclick="switchTab('configuracoes')" id="nav-configuracoes" class="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition text-sm font-medium">
         <i class="ph-bold ph-gear text-lg"></i>
         <span>Configurações</span>
       </button>
@@ -85,43 +74,35 @@
   </aside>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto w-full">
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
 
     <!-- HEADER SUPERIOR -->
-    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 md:px-6 sticky top-0 z-30 space-x-3">
-      <div class="flex items-center space-x-3 w-full max-w-md">
-        <!-- BOTÃO HAMBÚRGUER (CELULAR) -->
-        <button onclick="toggleMobileSidebar()" class="md:hidden p-2 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 focus:outline-none shrink-0 border border-slate-700">
-          <i class="ph-bold ph-list text-xl"></i>
-        </button>
-
-        <!-- BUSCA -->
-        <div class="relative w-full">
-          <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input 
-            type="text" 
-            id="global-search"
-            placeholder="Pesquisar..." 
-            class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200 placeholder-slate-500"
-            onkeyup="applyGlobalSearch()"
-          />
-        </div>
+    <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-6 sticky top-0 z-10">
+      <div class="relative w-full max-w-md">
+        <i class="ph-bold ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          type="text" 
+          id="global-search"
+          placeholder="Pesquisar..." 
+          class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-indigo-500 transition text-slate-200 placeholder-slate-500"
+          onkeyup="applyGlobalSearch()"
+        />
       </div>
 
-      <div class="flex items-center space-x-3 shrink-0">
+      <div class="flex items-center space-x-3">
         <div class="flex items-center space-x-2 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="hidden sm:inline">Online</span>
+          <span>Online</span>
         </div>
       </div>
     </header>
 
-    <div class="p-4 md:p-6 space-y-6 max-w-7xl w-full mx-auto">
+    <div class="p-6 space-y-6 max-w-7xl w-full mx-auto">
 
       <!-- ================= ABA 1: DASHBOARD ================= -->
       <section id="tab-dashboard" class="tab-content active space-y-6">
         <h2 class="text-xl font-bold tracking-tight">Visão Geral</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
             <div>
               <p class="text-slate-400 text-xs font-medium uppercase tracking-wider">Total de Casos</p>
@@ -155,15 +136,15 @@
 
       <!-- ================= ABA 2: CASOS GERAL ================= -->
       <section id="tab-casos" class="tab-content space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center justify-between">
           <h2 class="text-xl font-bold">Registro de Casos</h2>
-          <button onclick="openCasoModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openCasoModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Caso</span>
           </button>
         </div>
 
-        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-x-auto">
-          <table class="w-full text-left text-sm min-w-[600px]">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <table class="w-full text-left text-sm">
             <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
               <tr>
                 <th class="p-4">Membro</th>
@@ -180,9 +161,9 @@
 
       <!-- ================= ABA 3: METAS ================= -->
       <section id="tab-metas" class="tab-content space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center justify-between">
           <h2 class="text-xl font-bold">Controle de Metas</h2>
-          <button onclick="openMetaModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openMetaModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Nova Meta</span>
           </button>
         </div>
@@ -192,389 +173,762 @@
 
       <!-- ================= ABA 4: CONTROLE APRENDIZ ================= -->
       <section id="tab-equipe" class="tab-content space-y-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center justify-between">
           <div>
             <h2 class="text-xl font-bold">Controle de Aprendizes & Estagiários</h2>
             <p class="text-xs text-slate-400 mt-0.5">Gestão de membros em formação técnica</p>
           </div>
-          <button onclick="openAprendizModal()" class="w-full sm:w-auto justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+          <button onclick="openAprendizModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
             <i class="ph-bold ph-plus"></i><span>Novo Membro</span>
           </button>
         </div>
 
         <!-- Seção 1: Estagiários -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-          <div class="p-4 border-b border-slate-800 bg-slate-900/50">
-            <h3 class="font-bold text-amber-400 flex items-center space-x-2 text-sm">
-              <i class="ph-bold ph-star"></i>
-              <span>Estagiários</span>
-            </h3>
+          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
+            <i class="ph-bold ph-student text-indigo-400 text-lg"></i>
+            <h3 class="font-bold text-sm text-indigo-300 uppercase tracking-wider">Estagiários</h3>
           </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm min-w-[600px]">
-              <thead class="bg-slate-950 text-slate-400 text-xs uppercase border-b border-slate-800">
-                <tr>
-                  <th class="p-3">Nome</th>
-                  <th class="p-3">Cargo Atual</th>
-                  <th class="p-3">Responsável</th>
-                  <th class="p-3">Início</th>
-                  <th class="p-3 text-right">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
-            </table>
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-4">Nome do Membro</th>
+                <th class="p-4">Início</th>
+                <th class="p-4">Status / Progresso</th>
+                <th class="p-4 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="estagiarios-list" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+
+        <!-- Seção 2: Aprendizes -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+          <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex items-center space-x-2">
+            <i class="ph-bold ph-graduation-cap text-emerald-400 text-lg"></i>
+            <h3 class="font-bold text-sm text-emerald-300 uppercase tracking-wider">Aprendizes</h3>
+          </div>
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-950 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-4">Nome do Membro</th>
+                <th class="p-4">Início</th>
+                <th class="p-4">Status / Progresso</th>
+                <th class="p-4 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="aprendizes-list" class="divide-y divide-slate-800"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= ABA 5: SETORES ================= -->
+      <section id="tab-setores" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Divisão por Setores Operacionais</h2>
+          <button onclick="openSetorModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Atribuir ao Setor</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="setores-container">
+          <!-- Setores injetados via JS -->
+        </div>
+      </section>
+
+      <!-- ================= ABA 6: BIBLIOTECA ================= -->
+      <section id="tab-biblioteca" class="tab-content space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold">Biblioteca de Documentos & Modelos</h2>
+          <button onclick="openBiblioModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold text-white transition flex items-center space-x-2">
+            <i class="ph-bold ph-plus"></i><span>Novo Documento</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="biblioteca-list"></div>
+      </section>
+
+      <!-- ================= ABA 7: CONFIGURAÇÕES ================= -->
+      <section id="tab-configuracoes" class="tab-content space-y-6">
+        <h2 class="text-xl font-bold">Configurações do Banco de Dados</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 max-w-xl">
+          <form onsubmit="saveFirebaseConfig(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">API Key</label>
+              <input type="text" id="cfg-apiKey" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Database URL</label>
+              <input type="text" id="cfg-databaseURL" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Project ID</label>
+              <input type="text" id="cfg-projectId" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm focus:border-indigo-500 outline-none" />
+            </div>
+            <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold text-sm transition">Salvar na Nuvem</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ================= MODAIS ================= -->
+
+  <!-- Modal Casos Geral -->
+  <div id="modal-caso" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Novo Caso Geral</h3>
+        <button onclick="closeModal('modal-caso')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveCaso(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Tipo de Ocorrência</label>
+          <select id="caso-tipo" onchange="handleCasoTipoChange()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Advertência">Advertência</option>
+            <option value="Rebaixamento">Rebaixamento</option>
+            <option value="Exílio">Exílio</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
+          <input type="text" id="caso-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        
+        <div id="caso-date-single">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Data da Ocorrência</label>
+          <input type="date" id="caso-data" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+        </div>
+
+        <div id="caso-date-range" class="hidden space-y-3">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+            <input type="date" id="caso-data-inicio" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Data Término (Até)</label>
+            <input type="date" id="caso-data-fim" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
           </div>
         </div>
 
-        <!-- SeçãoAqui está o código HTML, CSS e JavaScript **100% completo e funcional** para a sua página `index.html`. Nenhuma parte foi resumida e não foram utilizados textos genéricos ou marcadores de posição (*placeholders*).
-
-Você pode salvar o código abaixo diretamente em um arquivo chamado `index.html` e abri-lo no seu navegador:
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Interativo de Abas</title>
-    <style>
-        /* Estilos Gerais */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f4f6f9;
-            color: #333333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Container Principal */
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-
-        /* Cabeçalho */
-        .header {
-            background-color: #1e293b;
-            color: #ffffff;
-            padding: 24px 32px;
-            border-bottom: 3px solid #3b82f6;
-        }
-
-        .header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 6px;
-        }
-
-        .header p {
-            color: #94a3b8;
-            font-size: 0.95rem;
-        }
-
-        /* Navegação das Abas */
-        .tabs-nav {
-            display: flex;
-            background-color: #f1f5f9;
-            border-bottom: 1px solid #e2e8f0;
-            overflow-x: auto;
-        }
-
-        .tab-button {
-            flex: 1;
-            padding: 16px 20px;
-            background: none;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-button:hover {
-            color: #1e293b;
-            background-color: #e2e8f0;
-        }
-
-        .tab-button.active {
-            color: #2563eb;
-            border-bottom-color: #2563eb;
-            background-color: #ffffff;
-        }
-
-        /* Conteúdo das Abas */
-        .tabs-content {
-            padding: 32px;
-        }
-
-        .tab-pane {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Estilização Interna das Seções */
-        .tab-pane h2 {
-            font-size: 1.5rem;
-            color: #0f172a;
-            margin-bottom: 16px;
-        }
-
-        .tab-pane p {
-            line-height: 1.6;
-            color: #475569;
-            margin-bottom: 16px;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .feature-card {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-        }
-
-        .feature-card h3 {
-            font-size: 1.1rem;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
-
-        .feature-card p {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 0;
-        }
-
-        .list-group {
-            list-style-type: none;
-            margin-top: 12px;
-        }
-
-        .list-group li {
-            padding: 10px 14px;
-            background-color: #f8fafc;
-            border-left: 4px solid #2563eb;
-            margin-bottom: 8px;
-            border-radius: 0 6px 6px 0;
-            color: #334155;
-            font-size: 0.95rem;
-        }
-
-        /* Formulário de Contato */
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #334155;
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: #2563eb;
-        }
-
-        .btn-submit {
-            background-color: #2563eb;
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-submit:hover {
-            background-color: #1d4ed8;
-        }
-
-        /* Rodapé */
-        .footer {
-            background-color: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-            text-align: center;
-            padding: 16px;
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <!-- Cabeçalho -->
-        <header class="header">
-            <h1>Portal de Gestão Integrada</h1>
-            <p>Selecione uma das abas abaixo para visualizar as informações completas de cada setor.</p>
-        </header>
-
-        <!-- Navegação por Abas -->
-        <nav class="tabs-nav" aria-label="Navegação do Painel">
-            <button class="tab-button active" onclick="openTab(event, 'inicio')">Início</button>
-            <button class="tab-button" onclick="openTab(event, 'sobre')">Sobre Nós</button>
-            <button class="tab-button" onclick="openTab(event, 'servicos')">Serviços</button>
-            <button class="tab-button" onclick="openTab(event, 'contato')">Contato</button>
-        </nav>
-
-        <!-- Conteúdos Completo das Abas -->
-        <main class="tabs-content">
-            
-            <!-- ABA 1: INÍCIO -->
-            <section id="inicio" class="tab-pane active">
-                <h2>Visão Geral do Sistema</h2>
-                <p>Bem-vindo ao painel central de informações. Esta plataforma foi projetada para otimizar o fluxo de trabalho e oferecer acesso imediato às ferramentas essenciais do projeto.</p>
-                
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <h3>Desempenho em Tempo Real</h3>
-                        <p>Acompanhe métricas, relatórios atualizados e a evolução diária dos processos internos.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Interface Adaptativa</h3>
-                        <p>Design moderno responsivo, construído para se ajustar perfeitamente a computadores, tablets e smartphones.</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Segurança Integrada</h3>
-                        <p>Controle de acesso rigoroso e proteção contínua dos dados transmitidos na rede.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABA 2: SOBRE NÓS -->
-            <section id="sobre" class="tab-pane">
-                <h2>Nossa História e Propósito</h2>
-                <p>Desde a nossa fundação, temos como objetivo principal transformar a forma como as equipes interagem com a tecnologia. Desenvolvemos soluções com foco em simplicidade, eficiência e alta performance.</p>
-                <p>Nossa equipe é formada por especialistas dedicados à constante inovação e ao aprimoramento contínuo dos nossos produtos.</p>
-                
-                <ul class="list-group">
-                    <li><strong>Missão:</strong> Entregar valor real através de tecnologia intuitiva e acessível.</li>
-                    <li><strong>Visão:</strong> Ser referência no mercado em termos de usabilidade e satisfação do usuário.</li>
-                    <li><strong>Valores:</strong> Transparência, inovação contínua, compromisso com a excelência e foco nas pessoas.</li>
-                </ul>
-            </section>
-
-            <!-- ABA 3: SERVIÇOS -->
-            <section id="servicos" class="tab-pane">
-                <h2>Soluções Disponíveis</h2>
-                <p>Oferecemos um conjunto completo de ferramentas personalizadas para atender às diferentes necessidades do seu negócio:</p>
-                
-                <ul class="list-group">
-                    <li><strong>Consultoria Técnica:</strong> Análise detalhada da arquitetura de software e otimização de infraestrutura.</li>
-                    <li><strong>Desenvolvimento Sob Medida:</strong> Criação de sistemas web, APIs e aplicações mobile sob demanda.</li>
-                    <li><strong>Suporte 24/7:</strong> Acompanhamento contínuo para garantir a estabilidade e máxima disponibilidade dos sistemas.</li>
-                    <li><strong>Automação de Processos:</strong> Redução de tarefas manuais repetitivas através da integração de sistemas.</li>
-                </ul>
-            </section>
-
-            <!-- ABA 4: CONTATO -->
-            <section id="contato" class="tab-pane">
-                <h2>Fale Conosco</h2>
-                <p>Preencha o formulário abaixo para enviar uma mensagem diretamente para a nossa equipe de suporte.</p>
-                
-                <form onsubmit="handleSubmit(event)">
-                    <div class="form-group">
-                        <label for="nome">Nome Completo</label>
-                        <input type="text" id="nome" required placeholder="Digite seu nome completo">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail de Contato</label>
-                        <input type="email" id="email" required placeholder="seuemail@exemplo.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="mensagem">Mensagem</label>
-                        <textarea id="mensagem" rows="4" required placeholder="Escreva sua mensagem aqui..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit">Enviar Mensagem</button>
-                </form>
-            </section>
-
-        </main>
-
-        <!-- Rodapé -->
-        <footer class="footer">
-            <p>&copy; 2026 Painel de Gestão Integrada. Todos os direitos reservados.</p>
-        </footer>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Motivo / Descrição</label>
+          <textarea id="caso-motivo" required rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500"></textarea>
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-caso')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- JavaScript para Troca de Abas -->
-    <script>
-        function openTab(event, tabId) {
-            // Esconde todas as abas
-            const tabPanes = document.querySelectorAll('.tab-pane');
-            tabPanes.forEach(pane => {
-                pane.classList.remove('active');
-            });
+  <!-- Modal Aprendiz / Estagiário -->
+  <div id="modal-aprendiz" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Novo Aprendiz / Estagiário</h3>
+        <button onclick="closeModal('modal-aprendiz')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveAprendiz(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
+          <select id="ap-categoria" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Estagiário">Estagiário</option>
+            <option value="Aprendiz">Aprendiz</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
+          <input type="text" id="ap-nome" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Data Início</label>
+          <input type="date" id="ap-inicio" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500 text-slate-300" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Status / Observações</label>
+          <input type="text" id="ap-status" placeholder="Ex: Em avaliação / Módulo I" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-aprendiz')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            // Remove a classe 'active' de todos os botões
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
+  <!-- Modal Setor -->
+  <div id="modal-setor" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Atribuir ao Setor</h3>
+        <button onclick="closeModal('modal-setor')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveSetorMembro(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Setor</label>
+          <select id="st-nome" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Rebaixamento e Advertências">Rebaixamento e Advertências</option>
+            <option value="Promoções">Promoções</option>
+            <option value="Instruções">Instruções</option>
+            <option value="Avais">Avais</option>
+            <option value="Autorização">Autorização</option>
+            <option value="Revogações">Revogações</option>
+            <option value="Exílios">Exílios</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Nome do Membro</label>
+          <input type="text" id="st-membro" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Cargo Hierárquico</label>
+          <select id="st-cargo" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Corregedor Geral">Corregedor Geral (Topo)</option>
+            <option value="Corregedor">Corregedor (Destaque)</option>
+            <option value="Coordenador">Coordenador</option>
+            <option value="Supervisor">Supervisor</option>
+            <option value="Analista">Analista</option>
+            <option value="Sênior">Sênior</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Função Específica</label>
+          <select id="st-funcao" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500">
+            <option value="Auditor">Auditor</option>
+            <option value="Responsável">Responsável (⭐ Destaque)</option>
+          </select>
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-setor')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-            // Exibe a aba selecionada e adiciona a classe 'active' ao botão clicado
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+  <!-- Modal Metas -->
+  <div id="modal-meta" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Nova Meta Operacional</h3>
+        <button onclick="closeModal('modal-meta')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveMeta(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Título da Meta</label>
+          <input type="text" id="mt-titulo" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Progresso (%)</label>
+          <input type="number" id="mt-progresso" min="0" max="100" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Prazo / Target</label>
+          <input type="text" id="mt-prazo" placeholder="Ex: Mensal / Fim do Trimestre" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-meta')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Biblioteca -->
+  <div id="modal-biblio" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 w-full max-w-md space-y-4">
+      <div class="flex justify-between items-center">
+        <h3 class="font-bold text-lg">Adicionar à Biblioteca</h3>
+        <button onclick="closeModal('modal-biblio')" class="text-slate-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
+      </div>
+      <form onsubmit="saveBiblio(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Título do Documento</label>
+          <input type="text" id="bb-titulo" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Categoria</label>
+          <input type="text" id="bb-categoria" placeholder="Ex: Regimento, Diretrizes, Modelos" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">URL / Link do Documento</label>
+          <input type="url" id="bb-link" required class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-sm outline-none focus:border-indigo-500" />
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('modal-biblio')" class="px-4 py-2 bg-slate-800 rounded-lg text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 rounded-lg text-sm font-semibold">Salvar na Nuvem</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE NAVEGAÇÃO E LÓGICA -->
+  <script>
+    // Configurações Padrão
+    const defaultConfig = {
+      apiKey: "AIzaSyDummyKeyForTemplatePurposes123",
+      databaseURL: "https://cgex-e7d18-default-rtdb.firebaseio.com",
+      projectId: "cgex-e7d18"
+    };
+
+    let db = null;
+
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+      handleCasoTipoChange();
+    });
+
+    function initFirebase() {
+      const savedConfig = JSON.parse(localStorage.getItem('cgex_fb_config')) || defaultConfig;
+      document.getElementById('cfg-apiKey').value = savedConfig.apiKey;
+      document.getElementById('cfg-databaseURL').value = savedConfig.databaseURL;
+      document.getElementById('cfg-projectId').value = savedConfig.projectId;
+
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(savedConfig);
+        }
+        db = firebase.database();
+        listenToDatabase();
+      } catch (err) {
+        console.error("Erro Firebase:", err);
+      }
+    }
+
+    function saveFirebaseConfig(e) {
+      e.preventDefault();
+      const config = {
+        apiKey: document.getElementById('cfg-apiKey').value,
+        databaseURL: document.getElementById('cfg-databaseURL').value,
+        projectId: document.getElementById('cfg-projectId').value
+      };
+      localStorage.setItem('cgex_fb_config', JSON.stringify(config));
+      alert("Configurações salvas. A página será recarregada.");
+      location.reload();
+    }
+
+    // Navegação de Abas
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+
+      document.querySelectorAll('#sidebar-nav button').forEach(btn => {
+        btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-slate-200 transition";
+      });
+
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-indigo-600/10 text-indigo-400 border border-indigo-500/20";
+      }
+    }
+
+    // Modal Helpers
+    function openCasoModal() { 
+      document.getElementById('caso-data').valueAsDate = new Date();
+      document.getElementById('caso-data-inicio').valueAsDate = new Date();
+      document.getElementById('caso-data-fim').valueAsDate = new Date();
+      handleCasoTipoChange();
+      document.getElementById('modal-caso').classList.remove('hidden'); 
+    }
+    function openAprendizModal() { document.getElementById('modal-aprendiz').classList.remove('hidden'); }
+    function openSetorModal() { document.getElementById('modal-setor').classList.remove('hidden'); }
+    function openMetaModal() { document.getElementById('modal-meta').classList.remove('hidden'); }
+    function openBiblioModal() { document.getElementById('modal-biblio').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    // Alternar campos de data conforme tipo no Caso Geral
+    function handleCasoTipoChange() {
+      const tipo = document.getElementById('caso-tipo').value;
+      const singleDate = document.getElementById('caso-date-single');
+      const rangeDate = document.getElementById('caso-date-range');
+
+      if (tipo === 'Exílio') {
+        singleDate.classList.add('hidden');
+        rangeDate.classList.remove('hidden');
+      } else {
+        singleDate.classList.remove('hidden');
+        rangeDate.classList.add('hidden');
+        document.getElementById('caso-data').valueAsDate = new Date();
+      }
+    }
+
+    // ================= BANCO DE DADOS REALTIME =================
+    function listenToDatabase() {
+      if (!db) return;
+
+      db.ref('casos').on('value', snapshot => {
+        renderCasos(snapshot.val() || {});
+      });
+
+      db.ref('aprendizes').on('value', snapshot => {
+        renderAprendizes(snapshot.val() || {});
+      });
+
+      db.ref('setores').on('value', snapshot => {
+        renderSetores(snapshot.val() || {});
+      });
+
+      db.ref('metas').on('value', snapshot => {
+        renderMetas(snapshot.val() || {});
+      });
+
+      db.ref('biblioteca').on('value', snapshot => {
+        renderBiblioteca(snapshot.val() || {});
+      });
+    }
+
+    // RENDERIZAR CASOS GERAIS
+    function renderCasos(casos) {
+      const list = document.getElementById('casos-list');
+      list.innerHTML = '';
+
+      let total = 0, adv = 0, reb = 0, exi = 0;
+
+      Object.keys(casos).forEach(key => {
+        const c = casos[key];
+        total++;
+        if (c.tipo === 'Advertência') adv++;
+        if (c.tipo === 'Rebaixamento') reb++;
+        if (c.tipo === 'Exílio') exi++;
+
+        let badgeColor = "bg-amber-500/10 text-amber-400 border-amber-500/20";
+        if (c.tipo === 'Rebaixamento') badgeColor = "bg-orange-500/10 text-orange-400 border-orange-500/20";
+        if (c.tipo === 'Exílio') badgeColor = "bg-rose-500/10 text-rose-400 border-rose-500/20";
+
+        let dateDisplay = c.data || 'N/A';
+        if (c.tipo === 'Exílio' && c.dataInicio && c.dataFim) {
+          dateDisplay = `${c.dataInicio} até ${c.dataFim}`;
         }
 
-        function handleSubmit(event) {
-            event.preventDefault();
-            alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
-            event.target.reset();
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition searchable-item";
+        tr.innerHTML = `
+          <td class="p-4 font-semibold text-slate-200">${c.membro}</td>
+          <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${badgeColor}">${c.tipo}</span></td>
+          <td class="p-4 text-slate-400 text-xs">${dateDisplay}</td>
+          <td class="p-4 text-slate-300 max-w-xs truncate">${c.motivo}</td>
+          <td class="p-4 text-right">
+            <button onclick="deleteRecord('casos/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+          </td>
+        `;
+        list.appendChild(tr);
+      });
+
+      document.getElementById('dash-total-casos').innerText = total;
+      document.getElementById('dash-advertencias').innerText = adv;
+      document.getElementById('dash-rebaixamentos').innerText = reb;
+      document.getElementById('dash-exilios').innerText = exi;
+    }
+
+    // RENDERIZAR APRENDIZES / ESTAGIÁRIOS
+    function renderAprendizes(data) {
+      const listEstagiarios = document.getElementById('estagiarios-list');
+      const listAprendizes = document.getElementById('aprendizes-list');
+
+      listEstagiarios.innerHTML = '';
+      listAprendizes.innerHTML = '';
+
+      let countEstagiarios = 0;
+      let countAprendizes = 0;
+
+      Object.keys(data).forEach(key => {
+        const item = data[key];
+        const categoria = item.categoria || 'Aprendiz';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-900/50 transition searchable-item";
+
+        if (categoria === 'Estagiário') {
+          countEstagiarios++;
+          tr.innerHTML = `
+            <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
+            <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">${item.status}</span></td>
+            <td class="p-4 text-right">
+              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+            </td>
+          `;
+          listEstagiarios.appendChild(tr);
+        } else {
+          countAprendizes++;
+          tr.innerHTML = `
+            <td class="p-4 font-semibold text-slate-200">${item.nome}</td>
+            <td class="p-4 text-slate-400 text-xs">${item.inicio || 'N/A'}</td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${item.status}</span></td>
+            <td class="p-4 text-right">
+              <button onclick="deleteRecord('aprendizes/${key}')" class="text-slate-500 hover:text-rose-400 p-1"><i class="ph-bold ph-trash"></i></button>
+            </td>
+          `;
+          listAprendizes.appendChild(tr);
         }
-    </script>
+      });
+
+      if (countEstagiarios === 0) {
+        listEstagiarios.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum estagiário cadastrado.</td></tr>`;
+      }
+      if (countAprendizes === 0) {
+        listAprendizes.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-xs text-slate-500">Nenhum aprendiz cadastrado.</td></tr>`;
+      }
+    }
+
+    // RENDERIZAR SETORES OPERACIONAIS (LISTA ATUALIZADA DE SETORES)
+    function renderSetores(data) {
+      const container = document.getElementById('setores-container');
+      container.innerHTML = '';
+
+      const listaSetores = [
+        "Rebaixamento e Advertências", 
+        "Promoções", 
+        "Instruções", 
+        "Avais", 
+        "Autorização", 
+        "Revogações", 
+        "Exílios"
+      ];
+
+      const hierarquiaOrdem = {
+        "Corregedor Geral": 1,
+        "Corregedor": 2,
+        "Coordenador": 3,
+        "Supervisor": 4,
+        "Analista": 5,
+        "Sênior": 6
+      };
+
+      listaSetores.forEach(setorNome => {
+        const membrosSetor = [];
+        Object.keys(data).forEach(k => {
+          if (data[k].setor === setorNome) {
+            membrosSetor.push({ key: k, ...data[k] });
+          }
+        });
+
+        // Ordenar por hierarquia
+        membrosSetor.sort((a, b) => {
+          const oA = hierarquiaOrdem[a.cargo] || 99;
+          const oB = hierarquiaOrdem[b.cargo] || 99;
+          return oA - oB;
+        });
+
+        let membrosHTML = '';
+        if (membrosSetor.length === 0) {
+          membrosHTML = `<p class="text-xs text-slate-500 italic p-3 text-center">Nenhum membro neste setor.</p>`;
+        } else {
+          membrosSetor.forEach(m => {
+            const isCorregedorGeral = m.cargo === "Corregedor Geral";
+            const isCorregedor = m.cargo === "Corregedor";
+            const isResponsavel = m.funcao === "Responsável";
+
+            let bgStyle = "bg-slate-950/60 border-slate-800/80";
+            let badgeStyle = "bg-slate-800 text-slate-400 border-slate-700";
+
+            if (isCorregedorGeral) {
+              bgStyle = "bg-gradient-to-r from-amber-950/40 to-slate-900 border-amber-500/40 shadow-sm";
+              badgeStyle = "bg-amber-500/20 text-amber-300 border-amber-500/30";
+            } else if (isCorregedor) {
+              bgStyle = "bg-gradient-to-r from-indigo-950/40 to-slate-900 border-indigo-500/40 shadow-sm";
+              badgeStyle = "bg-indigo-500/20 text-indigo-300 border-indigo-500/30";
+            }
+
+            membrosHTML += `
+              <div class="flex items-center justify-between p-3 rounded-lg border ${bgStyle} transition searchable-item">
+                <div class="space-y-0.5">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="font-semibold text-sm text-slate-100">${m.membro}</span>
+                    ${isResponsavel ? '<span class="text-amber-400 text-xs" title="Responsável pelo Setor">⭐</span>' : ''}
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeStyle}">${m.cargo || 'Membro'}</span>
+                    <span class="text-[11px] text-slate-400">${m.funcao || 'Auditor'}</span>
+                  </div>
+                </div>
+                <button onclick="deleteRecord('setores/${m.key}')" class="text-slate-600 hover:text-rose-400 p-1 transition"><i class="ph-bold ph-trash"></i></button>
+              </div>
+            `;
+          });
+        }
+
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col justify-between";
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div class="flex items-center space-x-2">
+                <i class="ph-bold ph-folder text-indigo-400 text-lg"></i>
+                <h3 class="font-bold text-slate-200">${setorNome}</h3>
+              </div>
+              <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-medium">${membrosSetor.length}</span>
+            </div>
+            <div class="space-y-2">
+              ${membrosHTML}
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // RENDERIZAR METAS
+    function renderMetas(metas) {
+      const container = document.getElementById('metas-list');
+      container.innerHTML = '';
+
+      Object.keys(metas).forEach(key => {
+        const m = metas[key];
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3 searchable-item";
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-semibold text-slate-200">${m.titulo}</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Target: ${m.prazo}</p>
+            </div>
+            <button onclick="deleteRecord('metas/${key}')" class="text-slate-500 hover:text-rose-400"><i class="ph-bold ph-trash"></i></button>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs font-semibold mb-1">
+              <span class="text-slate-400">Progresso</span>
+              <span class="text-indigo-400">${m.progresso}%</span>
+            </div>
+            <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
+              <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${m.progresso}%"></div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // RENDERIZAR BIBLIOTECA
+    function renderBiblioteca(docs) {
+      const container = document.getElementById('biblioteca-list');
+      container.innerHTML = '';
+
+      Object.keys(docs).forEach(key => {
+        const d = docs[key];
+        const card = document.createElement('div');
+        card.className = "bg-slate-900 border border-slate-800 rounded-xl p-5 flex items-center justify-between hover:border-slate-700 transition searchable-item";
+        card.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <div class="p-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-lg">
+              <i class="ph-bold ph-file-text text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-sm text-slate-200">${d.titulo}</h3>
+              <span class="text-xs text-slate-400">${d.categoria}</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <a href="${d.link}" target="_blank" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center space-x-1 transition">
+              <i class="ph-bold ph-arrow-square-out"></i>
+            </a>
+            <button onclick="deleteRecord('biblioteca/${key}')" class="text-slate-500 hover:text-rose-400 p-2"><i class="ph-bold ph-trash"></i></button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ================= SALVAMENTO DE REGISTROS =================
+    function saveCaso(e) {
+      e.preventDefault();
+      const tipo = document.getElementById('caso-tipo').value;
+      const dataObj = {
+        membro: document.getElementById('caso-membro').value,
+        tipo: tipo,
+        motivo: document.getElementById('caso-motivo').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      };
+
+      if (tipo === 'Exílio') {
+        dataObj.dataInicio = document.getElementById('caso-data-inicio').value;
+        dataObj.dataFim = document.getElementById('caso-data-fim').value;
+      } else {
+        dataObj.data = document.getElementById('caso-data').value;
+      }
+
+      db.ref('casos').push(dataObj, () => {
+        closeModal('modal-caso');
+        e.target.reset();
+      });
+    }
+
+    function saveAprendiz(e) {
+      e.preventDefault();
+      db.ref('aprendizes').push({
+        categoria: document.getElementById('ap-categoria').value,
+        nome: document.getElementById('ap-nome').value,
+        inicio: document.getElementById('ap-inicio').value,
+        status: document.getElementById('ap-status').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
+        closeModal('modal-aprendiz');
+        e.target.reset();
+      });
+    }
+
+    function saveSetorMembro(e) {
+      e.preventDefault();
+      db.ref('setores').push({
+        setor: document.getElementById('st-nome').value,
+        membro: document.getElementById('st-membro').value,
+        cargo: document.getElementById('st-cargo').value,
+        funcao: document.getElementById('st-funcao').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
+        closeModal('modal-setor');
+        e.target.reset();
+      });
+    }
+
+    function saveMeta(e) {
+      e.preventDefault();
+      db.ref('metas').push({
+        titulo: document.getElementById('mt-titulo').value,
+        progresso: document.getElementById('mt-progresso').value,
+        prazo: document.getElementById('mt-prazo').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
+        closeModal('modal-meta');
+        e.target.reset();
+      });
+    }
+
+    function saveBiblio(e) {
+      e.preventDefault();
+      db.ref('biblioteca').push({
+        titulo: document.getElementById('bb-titulo').value,
+        categoria: document.getElementById('bb-categoria').value,
+        link: document.getElementById('bb-link').value,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      }, () => {
+        closeModal('modal-biblio');
+        e.target.reset();
+      });
+    }
+
+    function deleteRecord(path) {
+      if (confirm("Deseja realmente excluir este registro?")) {
+        db.ref(path).remove();
+      }
+    }
+
+    // BUSCA GLOBAL DENTRO DOS ELEMENTOS
+    function applyGlobalSearch() {
+      const term = document.getElementById('global-search').value.toLowerCase();
+      document.querySelectorAll('.searchable-item').forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (text.includes(term)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
